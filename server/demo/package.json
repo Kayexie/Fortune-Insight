@@ -1,0 +1,28 @@
+{
+   "name": "demo",
+   "version": "0.0.1",
+   "description": "Awesome project developed with TypeORM.",
+   "type": "commonjs",
+   "devDependencies": {
+      "@types/node": "^16.11.10",
+      "ts-node": "10.4.0",
+      "typescript": "4.5.2"
+   },
+   "dependencies": {
+      "@faker-js/faker": "^8.3.1",
+      "body-parser": "^1.19.1",
+      "class-validator": "^0.14.0",
+      "cors": "^2.8.5",
+      "express": "^4.17.2",
+      "mysql": "^2.14.1",
+      "reflect-metadata": "^0.1.13",
+      "typeorm": "0.2.45",
+      "typeorm-seeding": "^1.6.1"
+   },
+   "scripts": {
+      "start": "nodemon src/index.ts",
+      "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
+      "schema:sync": "ts-node ./node_modules/typeorm/cli.js schema:sync",
+      "db:seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
+   }
+}

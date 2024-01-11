@@ -1,0 +1,50 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.main-page-container {
+  width: 100%;
+  height: 100%;
+  bcakground-color: #ffffff;
+  .main-page-header{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    background-color: #000000;
+    color: #ffffff;
+    text-transform: uppercase;
+    img {
+      width: 200px;
+      height: 200px;
+    }
+  }
+  .main-page-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 800px;
+    //background-color: #f3b8c6;
+    color: #000000;
+    .roductList-container {
+      padding: 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  .main-page-footer{
+    padding: 20px;
+    width: 100%;
+    height: 500px;
+    background-color: #000000;
+    color: #ffffff;
+  }
+}
