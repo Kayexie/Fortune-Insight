@@ -1,8 +1,5 @@
 import {BaseEntity, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn, Column} from "typeorm";
 class BaseClass extends BaseEntity {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-
     @CreateDateColumn()
     createdAt: Date;
 
