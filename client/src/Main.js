@@ -4,13 +4,13 @@ import {FilterBar} from "./FilterBar.js";
 import {Display} from "./Display.js";
 import SortFilter from "./SortFilter.js";
 import {useDispatch} from "react-redux";
-import {fetchAllProducts, fetchProductsByPage} from "./actions/index.js";
 import {useSelector} from "react-redux";
+import {fetchAllProducts, fetchProductsByPage} from "./redux/features/productSlice.js";
 
 
 export const Main = () => {
     const dispatch = useDispatch()
-    const products = useSelector(state => state?.productReducer?.products)
+    const products = useSelector(state => state?.product.products)
     console.log('in main page====', products)
 
     return (

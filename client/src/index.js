@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import {Provider} from "react-redux";
+import store from "./redux/store";
 import {applyMiddleware, createStore} from "redux";
-import reducers from "./reducers/index.js";
 import {thunk} from "redux-thunk";
 
 // const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -14,9 +14,8 @@ import {thunk} from "redux-thunk";
 // );
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const reduxStore = createStore(reducers, applyMiddleware(thunk))
 root.render(
-    <Provider store={reduxStore}>
+    <Provider store={store}>
         <App/>
     </Provider>
 
