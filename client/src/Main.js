@@ -30,6 +30,7 @@ export const Main = () => {
                 {
                     [...Array(3)].map((_,i) =>
                         <button
+                            key={i}
                             onClick={() => {
                                 dispatch(fetchProductsByPage(i+1))
                             }}

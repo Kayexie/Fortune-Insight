@@ -1,10 +1,11 @@
-import {Entity as entity, Column, ManyToMany, ManyToOne, PrimaryColumn} from 'typeorm';
+import {Entity as entity, Column, ManyToMany, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn} from 'typeorm';
 import {IsDecimal, IsInt, IsPositive, Length, Min, MinLength} from "class-validator";
 import BaseClass from "./BaseClass";
 import {User} from "./User";
 @entity('product')
 class Product extends BaseClass {
     @PrimaryColumn()
+    // @PrimaryGeneratedColumn('uuid') // if seed, must use PrimaryGeneratedColumn with uuid, default id required
     @Length(1)
     id: string
 
