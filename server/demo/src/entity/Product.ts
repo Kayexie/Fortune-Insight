@@ -1,10 +1,10 @@
-import {Entity as entity, Column, ManyToMany, ManyToOne} from 'typeorm';
+import {Entity as entity, Column, ManyToMany, ManyToOne, PrimaryColumn} from 'typeorm';
 import {IsDecimal, IsInt, IsPositive, Length, Min, MinLength} from "class-validator";
 import BaseClass from "./BaseClass";
 import {User} from "./User";
 @entity('product')
 class Product extends BaseClass {
-    @Column()
+    @PrimaryColumn()
     @Length(1)
     id: string
 
