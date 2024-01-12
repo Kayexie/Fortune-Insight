@@ -1,4 +1,4 @@
-id,symbol,name,image,current_price,market_cap,market_cap_rank,total_volume
+id,symbol,name,image,currentPrice,marketCap,marketCapRank,totalVolume
 bitcoin,btc,Bitcoin,https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501400,46954,919106997316,1,42580776772
 ethereum,eth,Ethereum,https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628,2313.28,278042977812,2,24793525083
 tether,usdt,Tether,https://assets.coingecko.com/coins/images/325/large/Tether.png?1696501661,1.001,94187066775,3,57174173978
