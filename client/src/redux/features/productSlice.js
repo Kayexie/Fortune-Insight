@@ -29,6 +29,26 @@ export const fetchProductsByPage = createAsyncThunk(
     }
 )
 
+//fetch search input
+export const fetchProductsBySearch = createAsyncThunk(
+    'product/fetchProductsBySearch',
+    async (searchInput) => {
+        try{
+            const res = await axios.get(`${APIURL_ALLPRODUCTS}/search?q=${searchInput}`)
+            console.log('in new action to fetch page products====', res)
+            return res.data
+            // const res = await axios.get(`${APIURL_ALLPRODUCTS}/search?search=${searchInput}`)
+            // console.log('in new action to fetch search products====', res.data.products)
+            // return res.data
+            // console.log("this is from fetchProductsBySearch",searchInput)
+        }catch (e){
+            console.log('err',e)
+        }
+    }
+)
+
+
+
 const productSlice = createSlice({
     name: 'product',
     initialState,
@@ -42,8 +62,10 @@ const productSlice = createSlice({
         builder.addCase(fetchProductsByPage.fulfilled, (state, action)=>{
             state.products = action.payload.products
         })
+        // builder.addCase(fetchProductsBySearch.fulfilled, (state, action)=>{
+        //     state.products = action.payload.products
+        // })
     }
-
 })
 
 export default productSlice.reducer
