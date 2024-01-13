@@ -46,14 +46,11 @@ export const Main = () => {
                 <SearchBar/>
                 <div className="roductList-container">
                     <FilterBar/>
-                    <div className="display-container">
+                    <div className="sortBar-container">
                         <SortFilter/>
-                        <Display/>
                     </div>
                 </div>
-
-
-
+                <Display/>
             </div>
             <div className="main-page-footer">
                 <h5>Contact Us</h5>
