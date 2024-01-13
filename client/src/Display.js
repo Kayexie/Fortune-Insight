@@ -6,6 +6,7 @@ export const Display = () => {
 
     const products = useSelector(state => state?.product.products)
 
+
     return (
         <div className='display-container'>
             {

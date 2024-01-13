@@ -25,7 +25,7 @@ class ProductController {
             const products: Product[] = await getRepository(Product)
                 .createQueryBuilder('product')
                 .skip((page-1)*2)
-                .take(2)
+                .take(8)
                 .getMany()
 
             return res.status(200).send({
