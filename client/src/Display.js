@@ -10,7 +10,7 @@ export const Display = () => {
         <div className='display-container'>
             {
                 products?.map((p,idx)=>{
-                    console.log('single p in display====', p)
+                    // console.log('single p in display====', p)
                     return <ProductCard
                         key={idx}
                         p={p}
