@@ -1,8 +1,6 @@
 import {getRepository} from "typeorm";
 import {NextFunction, Request, Response} from "express";
-import {User} from "../entity/User";
 import Product from "../entity/Product";
-import product from "../entity/Product";
 
 class ProductController {
 
