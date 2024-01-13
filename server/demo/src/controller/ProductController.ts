@@ -1,6 +1,5 @@
 import {getRepository} from "typeorm";
 import {NextFunction, Request, Response} from "express";
-import {User} from "../entity/User";
 import Product from "../entity/Product";
 
 class ProductController {
@@ -26,14 +25,14 @@ class ProductController {
             const products: Product[] = await getRepository(Product)
                 .createQueryBuilder('product')
                 .skip((page-1)*2)
-                .take(2)
+                .take(8)
                 .getMany()
 
             return res.status(200).send({
+                page,
                 products,
                 "message": 'success fetch page products'
             })
-
 
         }catch(e){console.log(e)}
     }
@@ -68,6 +67,38 @@ class ProductController {
 
         }catch (e) {
             console.log(e)
+
+    static queryProductBySearch = async (req: Request, res: Response) => {
+
+        try{
+            const {search} = req.query
+
+            console.log(search)
+
+            //如果search query 不存在 或search query为其他不是字母的输入
+            if(!search) {
+                return res.status(404).send({
+                    message: "invalid search input"
+                })
+            }
+
+            // console.log(typeof(search))
+
+            //与数据库建立联系，搜出来可能是一个或多个结果
+            const products:Product[] = await getRepository(Product)
+                .createQueryBuilder('product')
+                .where('product.id like :search', {search:`%${search}%`})
+                .orWhere('product.symbol like :search', {search:`%${search}%`})
+                .orWhere('product.name like :search', {search:`%${search}%`})
+                .getMany()
+
+            return res.status(200).send({
+                message: 'successfully get the search products',
+                products
+            })
+
+        }catch (e){
+            return res.status(500).send('error', e)
         }
     }
 
