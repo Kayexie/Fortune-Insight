@@ -33,9 +33,7 @@ export default function UnstyledButtonCustom({searchInput}) {
 
 
    const handleClick = () => {
-        dispatch(fetchProductsBySearch({
-            searchInput
-        }))
+        dispatch(fetchProductsBySearch(searchInput))
    }
 
     //when button is clicked, send the search request.

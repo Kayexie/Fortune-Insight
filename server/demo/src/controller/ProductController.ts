@@ -42,6 +42,8 @@ class ProductController {
         try{
             const {search} = req.query
 
+            console.log(search)
+
             //如果search query 不存在 或search query为其他不是字母的输入
             if(!search) {
                 return res.status(404).send({

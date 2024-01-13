@@ -34,13 +34,10 @@ export const fetchProductsBySearch = createAsyncThunk(
     'product/fetchProductsBySearch',
     async (searchInput) => {
         try{
-            const res = await axios.get(`${APIURL_ALLPRODUCTS}/search?q=${searchInput}`)
-            console.log('in new action to fetch page products====', res)
+            console.log(searchInput)
+            const res = await axios.get(`${APIURL_ALLPRODUCTS}/search?search=${searchInput}`)
+            console.log('in new action to fetch page products====', `${APIURL_ALLPRODUCTS}/search?search=${searchInput}`, res.data.products)
             return res.data
-            // const res = await axios.get(`${APIURL_ALLPRODUCTS}/search?search=${searchInput}`)
-            // console.log('in new action to fetch search products====', res.data.products)
-            // return res.data
-            // console.log("this is from fetchProductsBySearch",searchInput)
         }catch (e){
             console.log('err',e)
         }
