@@ -2,10 +2,11 @@ import {Entity as entity, Column, ManyToMany, ManyToOne, PrimaryColumn, PrimaryG
 import {IsDecimal, IsInt, IsPositive, Length, Min, MinLength} from "class-validator";
 import BaseClass from "./BaseClass";
 import {User} from "./User";
+import Category from "./Category";
 @entity('product')
 class Product extends BaseClass {
     @PrimaryColumn()
-    // @PrimaryGeneratedColumn('uuid') // if seed, must use PrimaryGeneratedColumn with uuid, default id required
+    // @PrimaryGeneratedColumn('uuid') // if seed random, must use PrimaryGeneratedColumn with uuid, default id required
     @Length(1)
     id: string
 
@@ -42,7 +43,8 @@ class Product extends BaseClass {
     @Min(0)
     totalVolume: number
 
-    // @ManyToOne(() => User, user => user.orders)
+    @ManyToOne(() => Category, cate => cate.product)
+    category: Category
 }
 
 export default Product;

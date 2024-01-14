@@ -5,5 +5,7 @@ const productRoutes = Router()
 
 productRoutes.get('/', ProductController.queryAllProducts)
 productRoutes.get('/page', ProductController.queryProductByPage)
+productRoutes.get('/filters', ProductController.queryAllFilters)
+productRoutes.post('/', ProductController.fetchProductsByFilter)
 
 export default productRoutes
