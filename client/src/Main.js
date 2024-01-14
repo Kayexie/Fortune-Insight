@@ -5,8 +5,7 @@ import {Display} from "./Display.js";
 import SortFilter from "./SortFilter.js";
 import {useDispatch} from "react-redux";
 import {useSelector} from "react-redux";
-import {fetchAllProducts, fetchProductsByPage} from "./redux/features/productSlice.js";
-import {useEffect} from "react";
+import {fetchAllFilters, fetchAllProducts, fetchProductsByPage} from "./redux/features/productSlice.js";
 
 
 export const Main = () => {
@@ -14,10 +13,16 @@ export const Main = () => {
     const products = useSelector(state => state?.product?.products)
     console.log('in main page====', products)
 
+
+    useEffect(() => {
+        dispatch(fetchAllFilters())
+    }, []);
+
     //once page load, load the first page
     useEffect(() => {
         dispatch(fetchProductsByPage(1))
     }, [])
+
 
     return (
         <div className='main-page-container'>
