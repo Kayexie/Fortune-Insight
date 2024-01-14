@@ -3,8 +3,8 @@
    "host": "localhost",
    "port": 3306,
    "username": "root",
-   "password": "Maru0216@",
-   "database": "manycoins",
+   "password": "root0415",
+   "database": "test",
    "synchronize": false,
    "logging": false,
    "entities": [

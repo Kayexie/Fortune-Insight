@@ -94,6 +94,8 @@ const productSlice = createSlice({
             state.filters = action.payload.filters
         })
         builder.addCase(fetchProductsByFilter.fulfilled, (state, action)=>{
+            state.products = action.payload.products
+        })
 
         builder.addCase(fetchProductsBySearch.fulfilled, (state, action)=>{
 
