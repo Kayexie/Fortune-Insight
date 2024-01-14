@@ -2,6 +2,8 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Button, buttonClasses } from '@mui/base/Button';
 import { styled } from '@mui/system';
+import {useDispatch} from "react-redux";
+import {fetchProductsBySearch} from "./redux/features/productSlice";
 
 const ButtonRoot = React.forwardRef(function ButtonRoot(props, ref) {
     const { children, ...other } = props;
@@ -25,8 +27,17 @@ const SvgButton = React.forwardRef(function SvgButton(props, ref) {
     return <Button {...props} slots={{ root: CustomButtonRoot }} ref={ref} />;
 });
 
-export default function UnstyledButtonCustom() {
-    return <SvgButton>Button</SvgButton>;
+export default function UnstyledButtonCustom({searchInput}) {
+
+    const dispatch = useDispatch()
+
+
+   const handleClick = () => {
+        dispatch(fetchProductsBySearch(searchInput))
+   }
+
+    //when button is clicked, send the search request.
+    return <SvgButton onClick={() => handleClick()}>Button</SvgButton>;
 }
 
 const blue = {

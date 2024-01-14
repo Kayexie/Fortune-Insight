@@ -11,12 +11,19 @@ import {useEffect} from "react";
 
 export const Main = () => {
     const dispatch = useDispatch()
-    const products = useSelector(state => state?.product.products)
+    const products = useSelector(state => state?.product?.products)
     console.log('in main page====', products)
+
 
     useEffect(() => {
         dispatch(fetchAllFilters())
     }, []);
+
+    //once page load, load the first page
+    useEffect(() => {
+        dispatch(fetchProductsByPage(1))
+    }, [])
+
 
     return (
         <div className='main-page-container'>
@@ -25,7 +32,7 @@ export const Main = () => {
                 <h1>infinite fortune vendor</h1>
             </div>
             <div className="test">
-                <p>{JSON.stringify(products)}</p>
+                {/*<p>{JSON.stringify(products)}</p>*/}
                 <button
                     onClick={() => {
                         dispatch(fetchAllProducts())

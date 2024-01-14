@@ -3,15 +3,30 @@ import { Input as BaseInput } from '@mui/base/Input';
 import { styled } from '@mui/system';
 import ButtonIcon from './ButtonIcon';
 import './SearchBar.scss'
+import {useState} from "react";
 
 const Input = React.forwardRef(function CustomInput(props, ref) {
     return <BaseInput slots={{ input: InputElement }} {...props} ref={ref} />;
 });
 
+
+
+
 export default function UnstyledInputIntroduction() {
+
+
+//get the search input value
+    const handleChang = (e) => {
+        console.log(e.target.value)
+        setSearchInput(e.target.value)
+    }
+
+//set the search input value to useState
+    const [searchInput, setSearchInput] = useState('')
+
     return <div className='search-bar-container'>
-        <Input aria-label="Demo input" placeholder="Type something…" />
-        <ButtonIcon />
+        <Input aria-label="Demo input" placeholder="Type something…" onChange={(e) => handleChang(e)}/>
+        <ButtonIcon searchInput={searchInput}/>
     </div>
 
 }
