@@ -94,21 +94,13 @@ const productSlice = createSlice({
             state.filters = action.payload.filters
         })
         builder.addCase(fetchProductsByFilter.fulfilled, (state, action)=>{
-<<<<<<< HEAD
-=======
             state.products = action.payload.products
         })
 
         builder.addCase(fetchProductsBySearch.fulfilled, (state, action)=>{
-
->>>>>>> 3a28449 (fix some bug)
             state.products = action.payload.products
         })
 
-        builder.addCase(fetchProductsBySearch.fulfilled, (state, action)=>{
-
-            state.products = action.payload.products
-        })
     }
 })
 
