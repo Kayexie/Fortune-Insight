@@ -1,8 +1,9 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
-import {APIURL_ALLPRODUCTS} from "../../helper.js";
+import {APIURL_ALLFILTERS, APIURL_ALLPRODUCTS} from "../../helper.js";
 
 const initialState = {
+    filters: [],
     products: []
 }
 
@@ -23,6 +24,31 @@ export const fetchProductsByPage = createAsyncThunk(
         try{
             const res = await axios.get(`${APIURL_ALLPRODUCTS}/page?page=${page}`)
             console.log('in new action to fetch page products====', res)
+            return res.data
+
+        }catch{console.log('err')}
+    }
+)
+
+
+export const fetchAllFilters = createAsyncThunk(
+    'product/fetchAllFilters', // slicename+actionname
+    async (_, thunkAPI) => {
+        try{
+            const res = await axios.get(APIURL_ALLFILTERS)
+            console.log('in new action to fetch filters====', res)
+            return res.data
+
+        }catch{console.log('err')}
+    }
+)
+
+export const fetchProductsByFilter = createAsyncThunk(
+    'product/fetchProductsByFilter', // slicename+actionname
+    async (filter, thunkAPI) => {
+        try{
+            const res = await axios.post(APIURL_ALLPRODUCTS, filter)
+            console.log('in new action to fetch products by filters====', res)
             return res.data
 
         }catch{console.log('err')}
@@ -50,23 +76,36 @@ const productSlice = createSlice({
     name: 'product',
     initialState,
     reducers: {
+        // fetchAllFilters: (state, action)=>{
+        //     const filters = action.payload //todo: add more info
+        //     state.filters = filters
+        // }
 
     },
     extraReducers: (builder)=> {
         builder.addCase(fetchAllProducts.fulfilled, (state, action)=>{
-            state.products = action.payload.products
+            state.products = action.payload.products //payload in asyncThunk create function is the return value
         })
         builder.addCase(fetchProductsByPage.fulfilled, (state, action)=>{
             state.products = action.payload.products
         })
+
+        builder.addCase(fetchAllFilters.fulfilled, (state, action)=>{
+            state.filters = action.payload.filters
+        })
+        builder.addCase(fetchProductsByFilter.fulfilled, (state, action)=>{
+            state.products = action.payload.products
+        })
+
         builder.addCase(fetchProductsBySearch.fulfilled, (state, action)=>{
             state.products = action.payload.products
         })
+
     }
 })
 
 export default productSlice.reducer
 
 // export const {
-//     fetchAllProducts
-// } = pruductSlice.actions
+//     fetchAllFilters
+// } = productSlice.actions

@@ -12,7 +12,8 @@ define(Product, ()=>{
             // description: faker.commerce.productDescription(),
             marketCapRank: faker.number.int({min:1, max:100}),
             image: faker.image.url(),
-            marketCap: faker.number.int({min:1, max:1000000000})
+            marketCap: faker.number.int({min:1, max:1000000000}),
+            // category:
         }
     )
     console.log("op2", product)
