@@ -25,7 +25,7 @@ class ProductController {
             const products: Product[] = await getRepository(Product)
                 .createQueryBuilder('product')
                 .skip((page-1)*2)
-                .take(8)
+                .take(10)
                 .getMany()
 
             return res.status(200).send({
@@ -38,10 +38,10 @@ class ProductController {
     }
 
     static sortByPrice = async (req: Request, res: Response) => {
-        try{
+        try {
             const {sort} = req.query
 
-            if(sort !== 'ASC' && sort !== 'DESC') {
+            if (sort !== 'ASC' && sort !== 'DESC') {
                 return res.status(300).send({
                     message: 'invalid query'
                 })
@@ -54,7 +54,7 @@ class ProductController {
                 .orderBy('product.currentPrice', sort)
                 .getMany()
 
-            if(!products) {
+            if (!products) {
                 return res.status(404).send({
                     message: 'not found'
                 })
@@ -65,8 +65,10 @@ class ProductController {
                 message: 'successfully fetch all products by ' + sort,
             })
 
-        }catch (e) {
+        } catch (e) {
             console.log(e)
+        }
+    }
 
     static queryProductBySearch = async (req: Request, res: Response) => {
 
