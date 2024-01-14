@@ -6,6 +6,7 @@ import SortFilter from "./SortFilter.js";
 import {useDispatch} from "react-redux";
 import {useSelector} from "react-redux";
 import {fetchAllFilters, fetchAllProducts, fetchProductsByPage} from "./redux/features/productSlice.js";
+import {useEffect} from "react";
 
 
 export const Main = () => {

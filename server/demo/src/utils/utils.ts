@@ -48,8 +48,8 @@ export const insertDataIntoDB = async (data, cateList) =>{
             currentPrice: parseNumOrDefault(item.currentPrice, 1,1),
             totalVolume: parseNumOrDefault(item.totalVolume),
             marketCapRank: parseNumOrDefault(item.marketCapRank, 1,1),
-            // image: item.image,
-            image: faker.image.url(),
+            image: item.image,
+            // image: faker.image.url(),
             marketCap: parseNumOrDefault(item.marketCap),
             category: randomCate //sync db first to connect two tables, then can save the entity with Id
         })
