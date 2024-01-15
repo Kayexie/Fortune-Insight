@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import {useDispatch} from "react-redux";
-import {sortProductsByPrice} from "./redux/features/productSlice.js";
+import {sortClear, sortProductsByLetterOrRank, sortProductsByPrice} from "./redux/features/productSlice.js";
 
 export default function SelectAutoWidth() {
     const [sort, setSort] = React.useState('');
@@ -31,13 +31,13 @@ export default function SelectAutoWidth() {
                     autoWidth
                     label="Sort By"
                 >
-                    <MenuItem value="">
+                    <MenuItem value="" onClick={() => dispatch(sortClear('None'))}>
                         <em>None</em>
                     </MenuItem>
                     <MenuItem value={'DESC'} onClick={() => dispatch(sortProductsByPrice('DESC'))}>Price (High to Low)</MenuItem>
                     <MenuItem value={'ASC'} onClick={() => dispatch(sortProductsByPrice('ASC'))}>Price (Low to High)</MenuItem>
-                    <MenuItem value={'Letter'}>Initial Letter</MenuItem>
-                    <MenuItem value={'Rank'}>Market Cap Rank</MenuItem>
+                    <MenuItem value={'Letter'} onClick={() => dispatch(sortProductsByLetterOrRank('Letter'))}>Initial Letter</MenuItem>
+                    <MenuItem value={'Rank'} onClick={() => dispatch(sortProductsByLetterOrRank('Rank'))}>Market Cap Rank</MenuItem>
                 </Select>
             </FormControl>
         </div>
