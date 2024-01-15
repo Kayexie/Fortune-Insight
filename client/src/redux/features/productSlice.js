@@ -70,6 +70,19 @@ export const fetchProductsBySearch = createAsyncThunk(
     }
 )
 
+export const sortProductsByPrice = createAsyncThunk(
+    'product/sortProductsByPrice',
+    async (sortOrder) => {
+        try {
+            console.log('sort products by price order ', sortOrder)
+            const res = await axios.get(`${APIURL_ALLPRODUCTS}/sortByPrice?sort=${sortOrder}`)
+            return res.data
+        }catch (e) {
+            console.log('error ', e)
+        }
+    }
+)
+
 
 
 const productSlice = createSlice({
@@ -98,6 +111,10 @@ const productSlice = createSlice({
         })
 
         builder.addCase(fetchProductsBySearch.fulfilled, (state, action)=>{
+            state.products = action.payload.products
+        })
+
+        builder.addCase(sortProductsByPrice.fulfilled, (state, action) => {
             state.products = action.payload.products
         })
 

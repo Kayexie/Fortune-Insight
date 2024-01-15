@@ -25,7 +25,7 @@ class ProductController {
             const products: Product[] = await getRepository(Product)
                 .createQueryBuilder('product')
                 .skip((page-1)*2)
-                .take(8)
+                .take(10)
                 .getMany()
 
             return res.status(200).send({
@@ -99,6 +99,65 @@ class ProductController {
 
         }catch (e){
             return res.status(500).send('error', e)
+        }
+    }
+
+    static sortByPrice = async (req: Request, res: Response) => {
+        try {
+            const {sort, search} = req.query
+            const {id} = req.body
+
+            if (sort !== 'ASC' && sort !== 'DESC') {
+                return res.status(300).send({
+                    message: 'invalid query sss' + sort
+                })
+            }
+
+            console.log('sort order by ->', sort)
+
+            let products:Product[] = []
+
+            if(!search && !id) {
+                products = await getRepository(Product)
+                    .createQueryBuilder('product')
+                    .orderBy('product.currentPrice', sort)
+                    .getMany()
+            } else if(search && !id) {
+                products = await getRepository(Product)
+                    .createQueryBuilder('product')
+                    .where('product.id like :search', {search:`%${search}%`})
+                    .orWhere('product.symbol like :search', {search:`%${search}%`})
+                    .orWhere('product.name like :search', {search:`%${search}%`})
+                    .orderBy('product.currentPrice', sort)
+                    .getMany()
+            } else if(!search && id) {
+                products = await getRepository(Product)
+                    .createQueryBuilder('product')
+                    .where('product.categoryId = :id', {id})
+                    .orderBy('product.currentPrice', sort)
+                    .getMany()
+            } else if(search && id) {
+                products = await getRepository(Product)
+                    .createQueryBuilder('product')
+                    .where('product.categoryId = :id', {id})
+                    .andWhere('product.id like :search OR product.symbol like :search OR product.name like :search', {search:`%${search}%`})
+                    .orderBy('product.currentPrice', sort)
+                    .getMany()
+            }
+
+            if (!products) {
+                return res.status(404).send({
+                    message: 'not found'
+                })
+            }
+
+            return res.status(200).send({
+                products,
+                message: 'successfully fetch all products by ' + sort,
+            })
+
+        } catch (e) {
+            console.log(e)
         }
     }
 
