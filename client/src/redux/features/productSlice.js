@@ -83,6 +83,32 @@ export const sortProductsByPrice = createAsyncThunk(
     }
 )
 
+export const sortProductsByLetterOrRank = createAsyncThunk(
+    'product/sortProductsByLetterOrRank',
+    async (sortOrder) => {
+        try {
+            console.log('sort products by ', sortOrder)
+            const res = await axios.get(`${APIURL_ALLPRODUCTS}/sort2?sort=${sortOrder}`)
+            return res.data
+        }catch (e) {
+            console.log('error', e)
+        }
+    }
+)
+
+export const sortClear = createAsyncThunk(
+    'product/sortClear',
+    async (clear) => {
+        try{
+            console.log('sort clear')
+            const res = await axios.get(`${APIURL_ALLPRODUCTS}/sortClear?sort=${clear}`)
+            return res.data
+        }catch (e) {
+            console.log('error', e)
+        }
+    }
+)
+
 
 
 const productSlice = createSlice({
@@ -115,6 +141,14 @@ const productSlice = createSlice({
         })
 
         builder.addCase(sortProductsByPrice.fulfilled, (state, action) => {
+            state.products = action.payload.products
+        })
+
+        builder.addCase(sortProductsByLetterOrRank.fulfilled, (state, action) => {
+            state.products = action.payload.products
+        })
+
+        builder.addCase(sortClear.fulfilled, (state, action) => {
             state.products = action.payload.products
         })
 
