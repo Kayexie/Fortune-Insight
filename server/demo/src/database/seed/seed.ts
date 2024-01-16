@@ -15,7 +15,7 @@ class generateSeeds implements Seeder {
         console.log('op1')
         // seed random data
         // const products = await factory(Product)().createMany(5)
-
+        //
         // initialize categories
         // const categories = [
         //     {techType: 'Public Blockchains'},
