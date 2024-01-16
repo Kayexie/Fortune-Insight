@@ -30,7 +30,7 @@ const ExpandMore = styled((props) => {
 export default function RecipeReviewCard({index, p}) {
     const [expanded, setExpanded] = React.useState(false);
 
-    console.log('this is from productCard.js from selector ===>', p)
+    // console.log('this is from productCard.js from selector ===>', p)
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -66,8 +66,8 @@ export default function RecipeReviewCard({index, p}) {
             />
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                    <p> Market-Cap-Rank: {p?.marketCapRank}</p>
-                    <p> Market-Cap : {p?.marketCap}</p>
+                     Market-Cap-Rank: {p?.marketCapRank}
+                     Market-Cap : {p?.marketCap}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>

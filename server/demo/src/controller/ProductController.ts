@@ -2,6 +2,8 @@ import {getRepository} from "typeorm";
 import {NextFunction, Request, Response} from "express";
 import Product from "../entity/Product";
 import Category from "../entity/Category";
+import Owner from "../entity/Owner";
+import PriceLevel from "../entity/PriceLevel";
 
 class ProductController {
 
@@ -9,7 +11,6 @@ class ProductController {
         try{
             const products: Product[] = await getRepository(Product)
                 .createQueryBuilder('product')
-                .limit(10)
                 .getMany()
 
             return res.status(200).send({
@@ -37,16 +38,56 @@ class ProductController {
     }
     static queryAllFilters = async (req:Request, res:Response)=>{
         try{
-            const filters = await getRepository(Category)
-                .createQueryBuilder('cate')
-                .select(['cate.techType', 'cate.id'])
-                .orderBy('cate.techType', 'ASC')
-                .getMany()
+            // get cate filters
+            const categories = await getRepository(Category)
+                .find()
+            const cateFilters = categories.map(cate => {
+                return {
+                    id: cate.id,
+                    name: cate.techType,
+                    isChecked: false
+                }
+            })
+
+            // get owner filters
+            const owners = await getRepository(Owner)
+                .find()
+            const ownerFilters = owners.map(owner => {
+                return {
+                    id: owner.id,
+                    name: owner.name,
+                    isChecked: false
+                }
+            })
+
+            // get price level filters
+            const pls= await getRepository(PriceLevel)
+                .find()
+            const priceLevel = pls.map(pl => {
+                return {
+                    id: pl.id,
+                    name: pl.name,
+                    isChecked: false
+                }
+            })
+
+
+            // const filters = await getRepository(Category)
+            //     .createQueryBuilder('cate')
+            //     .select(['cate.techType', 'cate.id'])
+            //     .orderBy('cate.techType', 'ASC')
+            //     .getMany()
+
+            const response = {
+                categories: cateFilters,
+                owners: ownerFilters,
+                priceLevel: priceLevel
+            }
 
 
             res.status(200).send({
-                filters,
-                "message": "success fetch filters"
+                "message": "success fetch filters",
+                response
             })
 
         }catch(e){console.log(e)}
@@ -55,11 +96,46 @@ class ProductController {
   
     static fetchProductsByFilter = async (req:Request, res:Response)=>{
         try{
-            const {id} = req.body
-            const products = await getRepository(Product)
-                .createQueryBuilder('p')
-                .where('p.categoryId = :id', {id})
-                .getMany()
+            const {categories, owners, priceLevel} = req.body
+            const data = req.body
+            console.log('from back end controller fetchProductsByFilter')
+            let products = []
+
+            const selectedCateIds = categories.filter(cate=>cate.isChecked).map(cate=>cate.id)
+            const selectedOwnerIds = owners.filter(owner=>owner.isChecked).map(owner=>owner.id)
+            const selectedPlIds = priceLevel.filter(pl=>pl.isChecked).map(pl=>pl.id)
+
+            const query = getRepository(Product).createQueryBuilder('p')
+
+            let conditions = []
+            const updateConditions = (ids, fields) => {
+                if(ids.length > 0){
+                    conditions.push(`p.${fields} IN (:...${fields})`)
+                }
+            }
+
+            updateConditions(selectedCateIds, 'categoryId')
+            updateConditions(selectedOwnerIds, 'ownerId')
+            updateConditions(selectedPlIds, 'priceLevelId')
+
+            if(conditions.length > 0){
+                // console.log('conditions', conditions)
+                products = await query.where(conditions.join(' AND '), {
+                    categoryId:selectedCateIds,
+                    ownerId:selectedOwnerIds,
+                    priceLevelId:selectedPlIds
+                }).getMany()
+            }else{
+                // console.log('no conditions')
+                products = await query.getMany()
+            }
+
+            // const products = await getRepository(Product)
+            //     .createQueryBuilder('p')
+            //     .where('p.categoryId = :id', {id})
+            //     .getMany()
+
+            console.log(products)
 
             res.status(200).send({
                 products,
