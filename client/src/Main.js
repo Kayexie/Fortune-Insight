@@ -5,7 +5,8 @@ import {Display} from "./Display.js";
 import SortFilter from "./SortFilter.js";
 import {useDispatch} from "react-redux";
 import {useSelector} from "react-redux";
-import {fetchAllFilters, fetchAllProducts, fetchProductsByFilter, fetchProductsByPage} from "./redux/features/productSlice.js";
+import {fetchAllFilters, fetchAllProducts, fetchProductsByFilter} from "./redux/features/productSlice.js";
+// import {fetchAllFilters, fetchAllProducts, fetchProductsByFilter, fetchProductsByPage} from "./redux/features/productSlice.js";
 import {useEffect} from "react";
 
 
@@ -15,6 +16,7 @@ export const Main = () => {
     const filters = useSelector(state => state?.product?.filters)
     console.log('products in main page====', products)
     console.log('filters in main page====', filters)
+    const baseUrl = 'http://localhost:3000/product'
 
     useEffect(() => {
         dispatch(fetchAllFilters())
@@ -27,14 +29,14 @@ export const Main = () => {
 
     //once page load, load the first page
     useEffect(() => {
-        const url = window.location.href
-        let newUrl = url
-        if(url.indexOf('page=') === -1) {
-            newUrl = url + 'product?page=1'
-            window.history.replaceState({path: newUrl}, '', newUrl)
+        // const url = window.location.href
+        let newUrl = new URL(baseUrl)
+        if(newUrl.href.indexOf('page=') === -1) {
+            newUrl.searchParams.append('page', '1')
+            window.history.replaceState({path: newUrl.href}, '', newUrl.href)
         }
-        console.log(newUrl.substring(newUrl.indexOf('?')))
-        dispatch(fetchAllProducts('?page=1'))
+        console.log(newUrl.href)
+        dispatch(fetchAllProducts(newUrl.href.substring(newUrl.href.indexOf('?'))))
     }, [])
 
     return (
@@ -47,7 +49,7 @@ export const Main = () => {
                 {/*<p>{JSON.stringify(products)}</p>*/}
                 <button
                     onClick={() => {
-                        dispatch(fetchAllProducts())
+                        // dispatch(fetchAllProducts())
                     }}
                 >fetch all
                 </button>
@@ -56,25 +58,20 @@ export const Main = () => {
                         <button
                             key={i}
                             onClick={() => {
-                                let url = window.location.href
-                                const params = new URLSearchParams(window.location.search).get('page')
-                                let newUrl = ''
-                                if(url.indexOf('?') === -1) {
-                                    newUrl = url + `product?page=${i+1}`
-                                } else if(url.indexOf('page=') === -1) {
-                                    newUrl = url + `&page=${i+1}`
-                                }else {
-                                    let reg = new RegExp(`page=${params}`)
-                                    newUrl = url.replace(reg,`page=${i+1}`)
+                                const baseUrl = window.location.href
+                                let newUrl = new URL(baseUrl)
+                                if(newUrl.searchParams.has('page')) {
+                                    newUrl.searchParams.set('page', i + 1)
+                                } else {
+                                    newUrl.searchParams.append('page', i + 1)
                                 }
-                                dispatch(fetchProductsByPage(i+1))
+                                window.history.replaceState({path: newUrl.href}, '', newUrl.href)
+                                dispatch(fetchAllProducts(newUrl.href.substring(newUrl.href.indexOf('?'))))
                             }}
                         >{i+1}
                         </button>
                     )
                 }
-
-
 
             </div>
             <div className="main-page-content">

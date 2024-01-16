@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { Button, buttonClasses } from '@mui/base/Button';
 import { styled } from '@mui/system';
 import {useDispatch} from "react-redux";
-import {fetchProductsBySearch} from "./redux/features/productSlice";
+// import {fetchAllProducts, fetchProductsBySearch} from "./redux/features/productSlice";
+import {fetchAllProducts} from "./redux/features/productSlice";
 
 const ButtonRoot = React.forwardRef(function ButtonRoot(props, ref) {
     const { children, ...other } = props;
@@ -31,9 +32,21 @@ export default function UnstyledButtonCustom({searchInput}) {
 
     const dispatch = useDispatch()
 
+    const handleUrl = (param) => {
+        const baseUrl = window.location.href
+        let newUrl = new URL(baseUrl)
+        if(newUrl.searchParams.has('search')) {
+            newUrl.searchParams.set('search', param)
+        } else {
+            newUrl.searchParams.append('search', param)
+        }
+        window.history.replaceState({path: newUrl.href}, '', newUrl.href)
+        dispatch(fetchAllProducts(newUrl.href.substring(newUrl.href.indexOf('?'))))
+    }
+
 
    const handleClick = () => {
-        dispatch(fetchProductsBySearch(searchInput))
+        handleUrl(searchInput)
    }
 
     //when button is clicked, send the search request.

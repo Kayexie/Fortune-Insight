@@ -16,7 +16,7 @@ class generateSeeds implements Seeder {
         // seed random data
         // const products = await factory(Product)().createMany(5)
         //
-        // initialize categories
+        // // initialize categories
         // const categories = [
         //     {techType: 'Public Blockchains'},
         //     {techType: 'Private Blockchains'},
@@ -28,8 +28,8 @@ class generateSeeds implements Seeder {
         //     category.techType = cateData.techType
         //     await cateRepo.save(category)
         // }
-
-        // initialize owners
+        //
+        // // initialize owners
         // const owners = [
         //     {name: 'Hao'},
         //     {name: 'Yan'},
@@ -42,8 +42,8 @@ class generateSeeds implements Seeder {
         //     owner.name = ownerData.name
         //     await ownerRepo.save(owner)
         // }
-
-        // initialize pricelevel
+        //
+        // // initialize pricelevel
         // const pls = [
         //     {name: 'Cheap'},
         //     {name: 'Mid'},
@@ -66,8 +66,8 @@ class generateSeeds implements Seeder {
         }catch (e){
             console.log(e)
         }
-
-        // create owner list
+        //
+        // // create owner list
         let owners
         try{
             const ownerRepo = getRepository(Owner)

@@ -4,7 +4,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import {useDispatch} from "react-redux";
-import {sortClear, sortProductsByLetterOrRank, sortProductsByPrice} from "./redux/features/productSlice.js";
+import {fetchAllProducts} from "./redux/features/productSlice.js";
+// import {fetchAllProducts, sortClear, sortProductsByLetterOrRank, sortProductsByPrice} from "./redux/features/productSlice.js";
 
 export default function SelectAutoWidth() {
     const [sort, setSort] = React.useState('');
@@ -14,6 +15,18 @@ export default function SelectAutoWidth() {
         setSort(menuItem.target.value)
             console.log(`Click on`, menuItem.target.value)
     };
+
+    const handleUrl = (param) => {
+        const baseUrl = window.location.href
+        let newUrl = new URL(baseUrl)
+        if(newUrl.searchParams.has('sort')) {
+            newUrl.searchParams.set('sort', param)
+        } else {
+            newUrl.searchParams.append('sort', param)
+        }
+        window.history.replaceState({path: newUrl.href}, '', newUrl.href)
+        dispatch(fetchAllProducts(newUrl.href.substring(newUrl.href.indexOf('?'))))
+    }
 
 
     return (
@@ -29,21 +42,21 @@ export default function SelectAutoWidth() {
                     label="Sort By"
                 >
                     <MenuItem value=""
-                          onClick={() => dispatch(sortClear('None'))}
+                          onClick={() => handleUrl('None')}
                     >
                         <em>None</em>
                     </MenuItem>
                     <MenuItem value={'DESC'}
-                              onClick={() => dispatch(sortProductsByPrice('DESC'))}
+                              onClick={() => handleUrl('DESC')}
                     >Price (High to Low)</MenuItem>
                     <MenuItem value={'ASC'}
-                              onClick={() => dispatch(sortProductsByPrice('ASC'))}
+                              onClick={() => handleUrl('ASC')}
                     >Price (Low to High)</MenuItem>
                     <MenuItem value={'Letter'}
-                              onClick={() => dispatch(sortProductsByLetterOrRank('Letter'))}
+                              onClick={() => handleUrl('Letter')}
                     >Initial Letter</MenuItem>
                     <MenuItem value={'Rank'}
-                              onClick={() => dispatch(sortProductsByLetterOrRank('Rank'))}
+                              onClick={() => handleUrl('Rank')}
                     >Market Cap Rank</MenuItem>
                 </Select>
             </FormControl>

@@ -1,30 +1,77 @@
-import {getRepository} from "typeorm";
+import {getRepository, SelectQueryBuilder} from "typeorm";
 import {NextFunction, Request, Response} from "express";
 import Product from "../entity/Product";
 import Category from "../entity/Category";
 import Owner from "../entity/Owner";
 import PriceLevel from "../entity/PriceLevel";
 
+const fetchPsByFilter = (req:Request, res:Response, products: SelectQueryBuilder<Product>)=>{
+    try{
+        const {categories, owners, priceLevel} = req.body
+        const data = req.body
+        console.log('from back end controller fetchProductsByFilter')
+        // let products = []
+
+        const selectedCateIds = categories.filter(cate=>cate.isChecked).map(cate=>cate.id)
+        const selectedOwnerIds = owners.filter(owner=>owner.isChecked).map(owner=>owner.id)
+        const selectedPlIds = priceLevel.filter(pl=>pl.isChecked).map(pl=>pl.id)
+
+        // const query = getRepository(Product).createQueryBuilder('p')
+
+        let conditions = []
+        const updateConditions = (ids, fields) => {
+            if(ids.length > 0){
+                conditions.push(`p.${fields} IN (:...${fields})`)
+            }
+        }
+
+        updateConditions(selectedCateIds, 'categoryId')
+        updateConditions(selectedOwnerIds, 'ownerId')
+        updateConditions(selectedPlIds, 'priceLevelId')
+
+        if(conditions.length > 0){
+            // console.log('conditions', conditions)
+            products.where(conditions.join(' AND '), {
+                categoryId:selectedCateIds,
+                ownerId:selectedOwnerIds,
+                priceLevelId:selectedPlIds
+            })
+        }
+
+        // const products = await getRepository(Product)
+        //     .createQueryBuilder('p')
+        //     .where('p.categoryId = :id', {id})
+        //     .getMany()
+
+        // console.log(products)
+        //
+        // res.status(200).send({
+        //     products,
+        //     "message": "success fetch products by filter"
+        // })
+    }catch(e){console.log(e)}
+}
+
 class ProductController {
 
     static queryAllProducts = async (req: Request, res: Response) => {
         try{
             const {search, sort, page} = req.query
-            const {id} = req.body
+            const {filters} = req.body
 
             const products = getRepository(Product).createQueryBuilder('product')
 
-            if(search && !id) {
+            if(search && !filters) {
                 products.where('product.id like :search OR product.symbol like :search OR product.name like :search', {search:`%${search}%`})
             }
 
-            if(!search && id) {
-                products.where('product.categoryId = :id', {id})
+            if(!search && filters) {
+                fetchPsByFilter(req, res, products)
             }
 
-            if(search && id) {
-                products.where('product.categoryId = :id', {id})
-                    .andWhere('product.id like :search OR product.symbol like :search OR product.name like :search', {search:`%${search}%`})
+            if(search && filters) {
+                fetchPsByFilter(req, res, products)
+                products.andWhere('product.id like :search OR product.symbol like :search OR product.name like :search', {search:`%${search}%`})
             }
 
             if(sort) {
@@ -72,6 +119,9 @@ class ProductController {
 
             return res.status(200).send({
                 data,
+                page,
+                'total products': total,
+                'last page':totalPage,
                 "message": "success fetch all products"
             })
         }catch(e){
@@ -154,7 +204,6 @@ class ProductController {
 
         }catch(e){console.log(e)}
     }
-
 
     static fetchProductsByFilter = async (req:Request, res:Response)=>{
         try{

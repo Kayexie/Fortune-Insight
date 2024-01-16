@@ -144,9 +144,9 @@ const productSlice = createSlice({
             state.products = action.payload.products //payload in asyncThunk create function is the return value
         })
 
-        builder.addCase(fetchProductsByPage.fulfilled, (state, action)=>{
-            state.products = action.payload.products
-        })
+        // builder.addCase(fetchProductsByPage.fulfilled, (state, action)=>{
+        //     state.products = action.payload.products
+        // })
 
         builder.addCase(fetchAllFilters.fulfilled, (state, action)=>{
             state.filters = action.payload.response
@@ -155,21 +155,21 @@ const productSlice = createSlice({
             state.products = action.payload.products
         })
 
-        builder.addCase(fetchProductsBySearch.fulfilled, (state, action)=>{
-            state.products = action.payload.products
-        })
+        // builder.addCase(fetchProductsBySearch.fulfilled, (state, action)=>{
+        //     state.products = action.payload.products
+        // })
 
-        builder.addCase(sortProductsByPrice.fulfilled, (state, action) => {
-            state.products = action.payload.products
-        })
+        // builder.addCase(sortProductsByPrice.fulfilled, (state, action) => {
+        //     state.products = action.payload.products
+        // })
 
-        builder.addCase(sortProductsByLetterOrRank.fulfilled, (state, action) => {
-            state.products = action.payload.products
-        })
+        // builder.addCase(sortProductsByLetterOrRank.fulfilled, (state, action) => {
+        //     state.products = action.payload.products
+        // })
 
-        builder.addCase(sortClear.fulfilled, (state, action) => {
-            state.products = action.payload.products
-        })
+        // builder.addCase(sortClear.fulfilled, (state, action) => {
+        //     state.products = action.payload.products
+        // })
     }
 })
 
