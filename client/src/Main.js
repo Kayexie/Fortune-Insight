@@ -11,9 +11,8 @@ import {useEffect} from "react";
 
 export const Main = () => {
     const dispatch = useDispatch()
-    const products = useSelector(state => state?.product?.products)
+    const products = useSelector(state => state?.product.products)
     console.log('in main page====', products)
-
 
     useEffect(() => {
         dispatch(fetchAllFilters())
@@ -21,9 +20,15 @@ export const Main = () => {
 
     //once page load, load the first page
     useEffect(() => {
-        dispatch(fetchProductsByPage(1))
+        const url = window.location.href
+        let newUrl = url
+        if(url.indexOf('page=') === -1) {
+            newUrl = url + 'product?page=1'
+            window.history.replaceState({path: newUrl}, '', newUrl)
+        }
+        console.log(newUrl.substring(newUrl.indexOf('?')))
+        dispatch(fetchAllProducts('?page=1'))
     }, [])
-
 
     return (
         <div className='main-page-container'>
@@ -44,6 +49,17 @@ export const Main = () => {
                         <button
                             key={i}
                             onClick={() => {
+                                let url = window.location.href
+                                const params = new URLSearchParams(window.location.search).get('page')
+                                let newUrl = ''
+                                if(url.indexOf('?') === -1) {
+                                    newUrl = url + `product?page=${i+1}`
+                                } else if(url.indexOf('page=') === -1) {
+                                    newUrl = url + `&page=${i+1}`
+                                }else {
+                                    let reg = new RegExp(`page=${params}`)
+                                    newUrl = url.replace(reg,`page=${i+1}`)
+                                }
                                 dispatch(fetchProductsByPage(i+1))
                             }}
                         >{i+1}

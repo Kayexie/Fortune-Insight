@@ -9,9 +9,9 @@ const initialState = {
 
 export const fetchAllProducts = createAsyncThunk(
     'product/fetchAllProducts', // slicename+actionname
-    async (_, thunkAPI) => {
+    async (params) => {
         try{
-            const res = await axios.get(APIURL_ALLPRODUCTS)
+            const res = await axios.get('http://localhost:8000/product' + params)
             console.log('in new action to fetch all products====', res)
             return res.data
 
@@ -50,7 +50,6 @@ export const fetchProductsByFilter = createAsyncThunk(
             const res = await axios.post(APIURL_ALLPRODUCTS, filter)
             console.log('in new action to fetch products by filters====', res)
             return res.data
-
         }catch{console.log('err')}
     }
 )
@@ -125,6 +124,7 @@ const productSlice = createSlice({
         builder.addCase(fetchAllProducts.fulfilled, (state, action)=>{
             state.products = action.payload.products //payload in asyncThunk create function is the return value
         })
+
         builder.addCase(fetchProductsByPage.fulfilled, (state, action)=>{
             state.products = action.payload.products
         })
@@ -151,7 +151,6 @@ const productSlice = createSlice({
         builder.addCase(sortClear.fulfilled, (state, action) => {
             state.products = action.payload.products
         })
-
     }
 })
 

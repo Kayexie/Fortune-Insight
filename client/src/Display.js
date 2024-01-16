@@ -1,27 +1,26 @@
-import ProductCard from "./productCard.js";
-import {useSelector} from "react-redux";
+import ProductCard from "./ProductCard.js";
+import {useDispatch, useSelector} from "react-redux";
 import './Display.scss'
+import {useEffect} from "react";
+import {fetchAllProducts} from "./redux/features/productSlice.js";
 
 export const Display = () => {
 
     const products = useSelector(state => state?.product.products)
-
+    const dispatch = useDispatch()
 
     return (
         <div className='display-container'>
-            {
-                products?.map((p,idx)=>{
-                    // console.log('single p in display====', p)
-                    return <ProductCard
-                        key={idx}
-                        p={p}
-                    />
-                })
-            }
-
-            {/*<div className="display">*/}
-            {/*    <ProductCard/>*/}
-            {/*</div>*/}
+            <div className='display-product-container'>
+                {products && products?.map((p,idx)=>{
+                        // console.log('single p in display====', p)
+                        return <ProductCard
+                            key={idx}
+                            p={p}
+                        />
+                    })
+                }
+            </div>
         </div>
     )
 }

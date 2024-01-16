@@ -15,9 +15,6 @@ export default function SelectAutoWidth() {
             console.log(`Click on`, menuItem.target.value)
     };
 
-    // const sortByPrice = (menuItem) => {
-    //     dispatch(sortProductsByPrice(menuItem))
-    // }
 
     return (
         <div>
@@ -31,13 +28,23 @@ export default function SelectAutoWidth() {
                     autoWidth
                     label="Sort By"
                 >
-                    <MenuItem value="" onClick={() => dispatch(sortClear('None'))}>
+                    <MenuItem value=""
+                          onClick={() => dispatch(sortClear('None'))}
+                    >
                         <em>None</em>
                     </MenuItem>
-                    <MenuItem value={'DESC'} onClick={() => dispatch(sortProductsByPrice('DESC'))}>Price (High to Low)</MenuItem>
-                    <MenuItem value={'ASC'} onClick={() => dispatch(sortProductsByPrice('ASC'))}>Price (Low to High)</MenuItem>
-                    <MenuItem value={'Letter'} onClick={() => dispatch(sortProductsByLetterOrRank('Letter'))}>Initial Letter</MenuItem>
-                    <MenuItem value={'Rank'} onClick={() => dispatch(sortProductsByLetterOrRank('Rank'))}>Market Cap Rank</MenuItem>
+                    <MenuItem value={'DESC'}
+                              onClick={() => dispatch(sortProductsByPrice('DESC'))}
+                    >Price (High to Low)</MenuItem>
+                    <MenuItem value={'ASC'}
+                              onClick={() => dispatch(sortProductsByPrice('ASC'))}
+                    >Price (Low to High)</MenuItem>
+                    <MenuItem value={'Letter'}
+                              onClick={() => dispatch(sortProductsByLetterOrRank('Letter'))}
+                    >Initial Letter</MenuItem>
+                    <MenuItem value={'Rank'}
+                              onClick={() => dispatch(sortProductsByLetterOrRank('Rank'))}
+                    >Market Cap Rank</MenuItem>
                 </Select>
             </FormControl>
         </div>

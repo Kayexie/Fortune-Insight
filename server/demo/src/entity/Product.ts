@@ -43,6 +43,9 @@ class Product extends BaseClass {
     @Min(0)
     totalVolume: number
 
+    @Column()
+    priceChange24h: number
+
     @ManyToOne(() => Category, cate => cate.product)
     category: Category
 }
