@@ -18,7 +18,8 @@
       "mysql": "^2.14.1",
       "reflect-metadata": "^0.1.13",
       "typeorm": "0.2.45",
-      "typeorm-seeding": "^1.6.1"
+      "typeorm-seeding": "^1.6.1",
+      "@babel/plugin-proposal-private-property-in-object": "^7.16.7"
    },
    "scripts": {
       "start": "nodemon src/index.ts",

@@ -5,18 +5,25 @@ import {Display} from "./Display.js";
 import SortFilter from "./SortFilter.js";
 import {useDispatch} from "react-redux";
 import {useSelector} from "react-redux";
-import {fetchAllFilters, fetchAllProducts, fetchProductsByPage} from "./redux/features/productSlice.js";
+import {fetchAllFilters, fetchAllProducts, fetchProductsByFilter, fetchProductsByPage} from "./redux/features/productSlice.js";
 import {useEffect} from "react";
 
 
 export const Main = () => {
     const dispatch = useDispatch()
-    const products = useSelector(state => state?.product.products)
-    console.log('in main page====', products)
+    const products = useSelector(state => state?.product?.products) //selector will automatically subscribe to the store, and run whenever an action is dispatched
+    const filters = useSelector(state => state?.product?.filters)
+    console.log('products in main page====', products)
+    console.log('filters in main page====', filters)
 
     useEffect(() => {
         dispatch(fetchAllFilters())
     }, []);
+
+    useEffect(() => {
+        // console.log('use effect when filters jojo', filters)
+        dispatch(fetchProductsByFilter(filters))
+    }, [filters]);
 
     //once page load, load the first page
     useEffect(() => {
