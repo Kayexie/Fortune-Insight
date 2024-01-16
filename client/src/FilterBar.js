@@ -10,8 +10,8 @@ export const FilterBar = () => {
         <div className='filter-bar-container'>
             <div className="filter-bar">
                 {
-                    !!filters && filters.map((f,index)=>
-                    <FilterButton key={index} filter={f} />
+                    !!filters && Object.entries(filters).map(([key, value], index) =>
+                    <FilterButton key={index} title={key} filterList={value} />
                     )
                 }
             </div>

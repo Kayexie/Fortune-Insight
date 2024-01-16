@@ -3,6 +3,8 @@ import {IsDecimal, IsInt, IsPositive, Length, Min, MinLength} from "class-valida
 import BaseClass from "./BaseClass";
 import {User} from "./User";
 import Category from "./Category";
+import Owner from "./Owner";
+import PriceLevel from "./PriceLevel";
 @entity('product')
 class Product extends BaseClass {
     @PrimaryColumn()
@@ -45,6 +47,12 @@ class Product extends BaseClass {
 
     @ManyToOne(() => Category, cate => cate.product)
     category: Category
+
+    @ManyToOne(() => Owner, owner => owner.product)
+    owner: Owner
+
+    @ManyToOne(() => PriceLevel, pl => pl.product)
+    priceLevel: Category
 }
 
 export default Product;

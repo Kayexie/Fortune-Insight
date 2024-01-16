@@ -22,7 +22,7 @@ export const readCSV = async (filePath) => {
     })
 
 }
-export const insertDataIntoDB = async (data, cateList) =>{
+export const insertDataIntoDB = async (data, cateList, ownerList, plList) =>{
     const prodRepo =  getRepository(Product)
 
     for (const item of data) {
@@ -41,6 +41,18 @@ export const insertDataIntoDB = async (data, cateList) =>{
             console.log("randomCate from each", randomCate)
         }
 
+        // decide price level
+        let currentPl
+        if(plList.length){
+            if(item.currentPrice < 10 ){
+                currentPl = plList[0]
+            }else if(item.currentPrice > 1000){
+                currentPl = plList[2]
+            }else{
+                currentPl = plList[1]
+            }
+        }
+
         const product = Product.create({
             id: item.id,
             name: item.name,
@@ -51,7 +63,9 @@ export const insertDataIntoDB = async (data, cateList) =>{
             image: item.image,
             // image: faker.image.url(),
             marketCap: parseNumOrDefault(item.marketCap),
-            category: randomCate //sync db first to connect two tables, then can save the entity with Id
+            category: randomCate, //sync db first to connect two tables, then can save the entity with Id
+            owner: ownerList[Math.floor(Math.random()*ownerList.length)],
+            priceLevel: currentPl
         })
 
         await prodRepo.save(product)

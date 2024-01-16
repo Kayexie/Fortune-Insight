@@ -3,7 +3,7 @@ import axios from "axios";
 import {APIURL_ALLFILTERS, APIURL_ALLPRODUCTS} from "../../helper.js";
 
 const initialState = {
-    filters: [],
+    filters: {},
     products: []
 }
 
@@ -45,12 +45,10 @@ export const fetchAllFilters = createAsyncThunk(
 
 export const fetchProductsByFilter = createAsyncThunk(
     'product/fetchProductsByFilter', // slicename+actionname
-    async (filter, thunkAPI) => {
+    async (filters, thunkAPI) => {
         try{
-            const res = await axios.post(APIURL_ALLPRODUCTS, filter)
-            console.log('in new action to fetch products by filters====', res)
+            const res = await axios.post(APIURL_ALLPRODUCTS, filters)
             return res.data
-
         }catch{console.log('err')}
     }
 )
@@ -80,6 +78,26 @@ const productSlice = createSlice({
         //     const filters = action.payload //todo: add more info
         //     state.filters = filters
         // }
+        updateFilters: (state, action)=>{
+            let newFilters = {...state.filters} //shallow copy
+            let {title, idx} = action.payload
+            console.log('from reducer updateFilters:', title, idx)
+
+            if (!newFilters[title]) {
+                console.error(`Title ${title} not found in filters`);
+                return;
+            }
+
+            if (idx < 0 || idx >= newFilters[title].length) {
+                console.error(`Index ${idx} is out of bounds for title ${title}`);
+                return;
+            }
+
+            if(newFilters[title][idx]){
+                newFilters[title][idx].isChecked = !newFilters[title][idx].isChecked
+            }
+            state.filters = newFilters
+        }
 
     },
     extraReducers: (builder)=> {
@@ -91,7 +109,7 @@ const productSlice = createSlice({
         })
 
         builder.addCase(fetchAllFilters.fulfilled, (state, action)=>{
-            state.filters = action.payload.filters
+            state.filters = action.payload.response
         })
         builder.addCase(fetchProductsByFilter.fulfilled, (state, action)=>{
             state.products = action.payload.products
@@ -106,6 +124,6 @@ const productSlice = createSlice({
 
 export default productSlice.reducer
 
-// export const {
-//     fetchAllFilters
-// } = productSlice.actions
+export const {
+    updateFilters
+} = productSlice.actions
