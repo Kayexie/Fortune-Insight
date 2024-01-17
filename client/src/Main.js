@@ -5,14 +5,25 @@ import {Display} from "./Display.js";
 import SortFilter from "./SortFilter.js";
 import {useDispatch} from "react-redux";
 import {useSelector} from "react-redux";
-import {fetchAllFilters, fetchAllProducts, fetchProductsByFilter, fetchProductsByPage} from "./redux/features/productSlice.js";
-import {useEffect} from "react";
+import {
+    fetchAllFilters,
+    fetchAllProducts,
+    fetchProductsByAllQuery,
+    fetchProductsByFilter,
+    fetchProductsByPage
+} from "./redux/features/productSlice.js";
+import {useEffect, useState} from "react";
 
 
 export const Main = () => {
     const dispatch = useDispatch()
     const products = useSelector(state => state?.product?.products) //selector will automatically subscribe to the store, and run whenever an action is dispatched
     const filters = useSelector(state => state?.product?.filters)
+    const [sort, setSort] = useState('ASC')
+    const [search, setSearch] = useState('')
+    const [page, setPage] = useState(1)
+
+
     console.log('products in main page====', products)
     console.log('filters in main page====', filters)
 
@@ -21,15 +32,23 @@ export const Main = () => {
         dispatch(fetchAllFilters())
     }, []);
 
-    useEffect(() => {
-        // console.log('use effect when filters jojo', filters)
-        dispatch(fetchProductsByFilter(filters))
-    }, [filters]);
+    // useEffect(() => {
+    //     // console.log('use effect when filters jojo', filters)
+    //     dispatch(fetchProductsByFilter(filters))
+    // }, [filters]);
 
-    //once page load, load the first page
+    // //once page load, load the first page
+    // useEffect(() => {
+    //     dispatch(fetchProductsByPage(1))
+    // }, [])
+
+    //--------sort search page------
     useEffect(() => {
-        dispatch(fetchProductsByPage(1))
-    }, [])
+        console.log('JOJOJO',sort, search, page, filters)
+        if(search.trim() !== ''){
+            dispatch(fetchProductsByAllQuery({sort, search, page, filters}))
+        }
+    }, [sort, search, page, filters])
 
 
     return (
@@ -51,7 +70,8 @@ export const Main = () => {
                         <button
                             key={i}
                             onClick={() => {
-                                dispatch(fetchProductsByPage(i+1))
+                                // dispatch(fetchProductsByPage(i+1))
+                                setPage(i+1)
                             }}
                         >{i+1}
                         </button>
@@ -62,11 +82,13 @@ export const Main = () => {
 
             </div>
             <div className="main-page-content">
-                <SearchBar/>
+                <SearchBar
+                    setSearch={setSearch}
+                />
                 <div className="roductList-container">
                     <FilterBar/>
                     <div className="sortBar-container">
-                        <SortFilter/>
+                        <SortFilter setSort={setSort}/>
                     </div>
                 </div>
                 <Display/>

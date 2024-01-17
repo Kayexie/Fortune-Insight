@@ -12,7 +12,7 @@ const Input = React.forwardRef(function CustomInput(props, ref) {
 
 
 
-export default function UnstyledInputIntroduction() {
+export default function UnstyledInputIntroduction({setSearch}) {
 
 
 //get the search input value
@@ -26,7 +26,10 @@ export default function UnstyledInputIntroduction() {
 
     return <div className='search-bar-container'>
         <Input aria-label="Demo input" placeholder="Type something…" onChange={(e) => handleChang(e)}/>
-        <ButtonIcon searchInput={searchInput}/>
+        <ButtonIcon
+            setSearch={setSearch}
+            searchInput={searchInput}
+        />
     </div>
 
 }

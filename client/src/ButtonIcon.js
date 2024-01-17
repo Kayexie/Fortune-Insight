@@ -27,13 +27,14 @@ const SvgButton = React.forwardRef(function SvgButton(props, ref) {
     return <Button {...props} slots={{ root: CustomButtonRoot }} ref={ref} />;
 });
 
-export default function UnstyledButtonCustom({searchInput}) {
+export default function UnstyledButtonCustom({setSearch, searchInput}) {
 
     const dispatch = useDispatch()
 
 
    const handleClick = () => {
-        dispatch(fetchProductsBySearch(searchInput))
+        // dispatch(fetchProductsBySearch(searchInput))
+       setSearch(searchInput)
    }
 
     //when button is clicked, send the search request.

@@ -11,7 +11,7 @@ export const FilterBar = () => {
             <div className="filter-bar">
                 {
                     !!filters && Object.entries(filters).map(([key, value], index) =>
-                    <FilterButton key={index} title={key} filterList={value} />
+                        <FilterButton key={index} title={key} filterList={value} />
                     )
                 }
             </div>

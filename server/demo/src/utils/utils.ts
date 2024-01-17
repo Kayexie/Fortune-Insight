@@ -29,7 +29,7 @@ export const insertDataIntoDB = async (data, cateList, ownerList, plList) =>{
         // verify NaN value
         const parseNumOrDefault = (value, defaultValue=1, scale=10000) =>{
             const number = parseFloat(value)
-            console.log(number)
+            console.log('parseNumOrDefault',value , number)
             return isNaN(number) ? defaultValue
                 : number/scale
         }
@@ -38,18 +38,18 @@ export const insertDataIntoDB = async (data, cateList, ownerList, plList) =>{
         let randomCate
         if(cateList.length){
             randomCate = cateList[Math.floor(Math.random()*cateList.length)]
-            console.log("randomCate from each", randomCate)
+            // console.log("randomCate from each", randomCate)
         }
 
         // decide price level
         let currentPl
         if(plList.length){
             if(item.currentPrice < 10 ){
-                currentPl = plList[0]
-            }else if(item.currentPrice > 1000){
-                currentPl = plList[2]
-            }else{
                 currentPl = plList[1]
+            }else if(item.currentPrice > 1000){
+                currentPl = plList[0]
+            }else{
+                currentPl = plList[2]
             }
         }
 
@@ -65,7 +65,8 @@ export const insertDataIntoDB = async (data, cateList, ownerList, plList) =>{
             marketCap: parseNumOrDefault(item.marketCap),
             category: randomCate, //sync db first to connect two tables, then can save the entity with Id
             owner: ownerList[Math.floor(Math.random()*ownerList.length)],
-            priceLevel: currentPl
+            priceLevel: currentPl,
+            priceChange24h: parseNumOrDefault(item.priceChangePercentage24h, 1, 1)
         })
 
         await prodRepo.save(product)

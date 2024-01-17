@@ -107,6 +107,21 @@ export const sortClear = createAsyncThunk(
     }
 )
 
+// =========sort search page========
+export const fetchProductsByAllQuery = createAsyncThunk(
+    'product/fetchProductsByAllQuery',
+    async (params) => {
+        try{
+            const {sort, search, page, filters} = params
+            console.log("from Slice sort, search, page:",sort, search, page, filters)
+            const res = await axios.post(`${APIURL_ALLPRODUCTS}search?search=${search}&sort=${sort}&page=${page}`, filters)
+            console.log('in new action to fetch search products with sort, search, page ====>', res.data)
+            return res.data
+        }catch (e){
+            console.log('err',e)
+        }
+    }
+)
 
 
 const productSlice = createSlice({
@@ -167,6 +182,10 @@ const productSlice = createSlice({
         })
 
         builder.addCase(sortClear.fulfilled, (state, action) => {
+            state.products = action.payload.products
+        })
+
+        builder.addCase(fetchProductsByAllQuery.fulfilled, (state, action) => {
             state.products = action.payload.products
         })
 

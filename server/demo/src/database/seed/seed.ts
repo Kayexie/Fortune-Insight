@@ -85,7 +85,7 @@ class generateSeeds implements Seeder {
             console.log(e)
         }
 
-        const filePath = 'src/data/coin.csv' //regarding current working directory 'demo'
+        const filePath = 'src/data/coin-all-data.csv' //regarding current working directory 'demo'
         try{
             const data = await readCSV(filePath)
             await insertDataIntoDB(data, categories, owners, pls)
