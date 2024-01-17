@@ -7,12 +7,12 @@ import {useDispatch} from "react-redux";
 import {fetchAllProducts} from "./redux/features/productSlice.js";
 // import {fetchAllProducts, sortClear, sortProductsByLetterOrRank, sortProductsByPrice} from "./redux/features/productSlice.js";
 
-export default function SelectAutoWidth() {
-    const [sort, setSort] = React.useState('');
+export default function SelectAutoWidth({setSort}) {
+    const [sortShow, setSortShow] = React.useState('');
     const dispatch = useDispatch()
 
     const createHandleMenuClick = (menuItem) => {
-        setSort(menuItem.target.value)
+        setSortShow(menuItem.target.value)
             console.log(`Click on`, menuItem.target.value)
     };
 
@@ -36,28 +36,19 @@ export default function SelectAutoWidth() {
                 <Select
                     labelId="demo-simple-select-autowidth-label"
                     id="demo-simple-select-autowidth"
-                    value={sort}
+                    value={sortShow}
                     onChange={createHandleMenuClick}
                     autoWidth
                     label="Sort By"
                 >
-                    <MenuItem value=""
-                          onClick={() => handleUrl('None')}
-                    >
-                        <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={'DESC'}
-                              onClick={() => handleUrl('DESC')}
-                    >Price (High to Low)</MenuItem>
-                    <MenuItem value={'ASC'}
-                              onClick={() => handleUrl('ASC')}
-                    >Price (Low to High)</MenuItem>
-                    <MenuItem value={'Letter'}
-                              onClick={() => handleUrl('Letter')}
-                    >Initial Letter</MenuItem>
-                    <MenuItem value={'Rank'}
-                              onClick={() => handleUrl('Rank')}
-                    >Market Cap Rank</MenuItem>
+                    {/*<MenuItem value="" onClick={() => dispatch(sortClear('None'))}>*/}
+                    {/*    <em>None</em>*/}
+                    {/*</MenuItem>*/}
+                    <MenuItem value={'DESC'} onClick={() => setSort('DESC')}>Price (High to Low)</MenuItem>
+                    <MenuItem value={'ASC'} onClick={() => setSort('ASC')}>Price (Low to High)</MenuItem>
+                    <MenuItem value={'Letter'} onClick={() => setSort('Letter')}>Initial Letter</MenuItem>
+                    <MenuItem value={'Rank'} onClick={() => setSort('Rank')}>Market Cap Rank</MenuItem>
+                    <MenuItem value={'None'} onClick={() => setSort('ASC')}>None</MenuItem>
                 </Select>
             </FormControl>
         </div>

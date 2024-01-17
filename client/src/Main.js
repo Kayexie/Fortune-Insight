@@ -5,15 +5,25 @@ import {Display} from "./Display.js";
 import SortFilter from "./SortFilter.js";
 import {useDispatch} from "react-redux";
 import {useSelector} from "react-redux";
-import {fetchAllFilters, fetchAllProducts, fetchProductsByFilter} from "./redux/features/productSlice.js";
-// import {fetchAllFilters, fetchAllProducts, fetchProductsByFilter, fetchProductsByPage} from "./redux/features/productSlice.js";
-import {useEffect} from "react";
+import {
+    fetchAllFilters,
+    fetchAllProducts,
+    fetchProductsByAllQuery,
+    fetchProductsByFilter,
+    fetchProductsByPage
+} from "./redux/features/productSlice.js";
+import {useEffect, useState} from "react";
 
 
 export const Main = () => {
     const dispatch = useDispatch()
     const products = useSelector(state => state?.product?.products) //selector will automatically subscribe to the store, and run whenever an action is dispatched
     const filters = useSelector(state => state?.product?.filters)
+    const [sort, setSort] = useState('ASC')
+    const [search, setSearch] = useState('')
+    const [page, setPage] = useState(1)
+
+
     console.log('products in main page====', products)
     console.log('filters in main page====', filters)
     const baseUrl = 'http://localhost:3000/product'
@@ -22,22 +32,24 @@ export const Main = () => {
         dispatch(fetchAllFilters())
     }, []);
 
-    useEffect(() => {
-        // console.log('use effect when filters jojo', filters)
-        dispatch(fetchProductsByFilter(filters))
-    }, [filters]);
+    // useEffect(() => {
+    //     // console.log('use effect when filters jojo', filters)
+    //     dispatch(fetchProductsByFilter(filters))
+    // }, [filters]);
 
-    //once page load, load the first page
+    // //once page load, load the first page
+    // useEffect(() => {
+    //     dispatch(fetchProductsByPage(1))
+    // }, [])
+
+    //--------sort search page------
     useEffect(() => {
-        // const url = window.location.href
-        let newUrl = new URL(baseUrl)
-        if(newUrl.href.indexOf('page=') === -1) {
-            newUrl.searchParams.append('page', '1')
-            window.history.replaceState({path: newUrl.href}, '', newUrl.href)
+        console.log('changed:',sort, search, page, filters)
+        if(sort && page && filters){
+            dispatch(fetchProductsByAllQuery({sort, search, page, filters}))
         }
-        console.log(newUrl.href)
-        dispatch(fetchAllProducts(newUrl.href.substring(newUrl.href.indexOf('?'))))
-    }, [])
+
+    }, [sort, search, page, filters])
 
     return (
         <div className='main-page-container'>
@@ -58,15 +70,8 @@ export const Main = () => {
                         <button
                             key={i}
                             onClick={() => {
-                                const baseUrl = window.location.href
-                                let newUrl = new URL(baseUrl)
-                                if(newUrl.searchParams.has('page')) {
-                                    newUrl.searchParams.set('page', i + 1)
-                                } else {
-                                    newUrl.searchParams.append('page', i + 1)
-                                }
-                                window.history.replaceState({path: newUrl.href}, '', newUrl.href)
-                                dispatch(fetchAllProducts(newUrl.href.substring(newUrl.href.indexOf('?'))))
+                                // dispatch(fetchProductsByPage(i+1))
+                                setPage(i+1)
                             }}
                         >{i+1}
                         </button>
@@ -75,14 +80,21 @@ export const Main = () => {
 
             </div>
             <div className="main-page-content">
-                <SearchBar/>
+                <SearchBar
+                    setSearch={setSearch}
+                />
                 <div className="roductList-container">
                     <FilterBar/>
                     <div className="sortBar-container">
-                        <SortFilter/>
+                        <SortFilter setSort={setSort}/>
                     </div>
                 </div>
-                <Display/>
+                {
+                    products && products.length > 0
+                        ? <Display/>
+                        : <h4>Nothing</h4>
+                }
+
             </div>
             <div className="main-page-footer">
                 <h5>Contact Us</h5>

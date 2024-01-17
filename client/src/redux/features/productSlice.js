@@ -9,9 +9,9 @@ const initialState = {
 
 export const fetchAllProducts = createAsyncThunk(
     'product/fetchAllProducts', // slicename+actionname
-    async (params) => {
+    async (_, thunkAPI) => {
         try{
-            const res = await axios.get('http://localhost:8000/product' + params)
+            const res = await axios.get(APIURL_ALLPRODUCTS)
             console.log('in new action to fetch all products====', res)
             return res.data
 
@@ -107,6 +107,21 @@ export const sortClear = createAsyncThunk(
     }
 )
 
+// =========sort search page========
+export const fetchProductsByAllQuery = createAsyncThunk(
+    'product/fetchProductsByAllQuery',
+    async (params) => {
+        try{
+            const {sort, search, page, filters} = params
+            console.log("from Slice sort, search, page:",sort, search, page, filters)
+            const res = await axios.post(`${APIURL_ALLPRODUCTS}search?search=${search}&sort=${sort}&page=${page}`, filters)
+            console.log('in new action to fetch search products with sort, search, page ====>', res.data)
+            return res.data
+        }catch (e){
+            console.log('err',e)
+        }
+    }
+)
 
 
 const productSlice = createSlice({
@@ -143,10 +158,9 @@ const productSlice = createSlice({
         builder.addCase(fetchAllProducts.fulfilled, (state, action)=>{
             state.products = action.payload.products //payload in asyncThunk create function is the return value
         })
-
-        // builder.addCase(fetchProductsByPage.fulfilled, (state, action)=>{
-        //     state.products = action.payload.products
-        // })
+        builder.addCase(fetchProductsByPage.fulfilled, (state, action)=>{
+            state.products = action.payload.products
+        })
 
         builder.addCase(fetchAllFilters.fulfilled, (state, action)=>{
             state.filters = action.payload.response
@@ -155,21 +169,26 @@ const productSlice = createSlice({
             state.products = action.payload.products
         })
 
-        // builder.addCase(fetchProductsBySearch.fulfilled, (state, action)=>{
-        //     state.products = action.payload.products
-        // })
+        builder.addCase(fetchProductsBySearch.fulfilled, (state, action)=>{
+            state.products = action.payload.products
+        })
 
-        // builder.addCase(sortProductsByPrice.fulfilled, (state, action) => {
-        //     state.products = action.payload.products
-        // })
+        builder.addCase(sortProductsByPrice.fulfilled, (state, action) => {
+            state.products = action.payload.products
+        })
 
-        // builder.addCase(sortProductsByLetterOrRank.fulfilled, (state, action) => {
-        //     state.products = action.payload.products
-        // })
+        builder.addCase(sortProductsByLetterOrRank.fulfilled, (state, action) => {
+            state.products = action.payload.products
+        })
 
-        // builder.addCase(sortClear.fulfilled, (state, action) => {
-        //     state.products = action.payload.products
-        // })
+        builder.addCase(sortClear.fulfilled, (state, action) => {
+            state.products = action.payload.products
+        })
+
+        builder.addCase(fetchProductsByAllQuery.fulfilled, (state, action) => {
+            state.products = action.payload.products
+        })
+
     }
 })
 

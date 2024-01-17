@@ -10,7 +10,9 @@ productRoutes.get('/sort2', ProductController.sort2)
 productRoutes.get('/sortClear', ProductController.sortClear)
 productRoutes.get('/filters', ProductController.queryAllFilters)
 productRoutes.post('/', ProductController.fetchProductsByFilter)
-productRoutes.get('/search', ProductController.queryProductBySearch)
+// productRoutes.get('/search', ProductController.queryProductBySearch)
+
+productRoutes.post('/search', ProductController.queryProductBySearch)
 
 
 export default productRoutes
