@@ -187,15 +187,16 @@ class ProductController {
             }else{
                 // console.log('no conditions')
                 // products = await query.getMany()
+                console.log('no conditions')
             }
             // ==================== filter ====================
 
 
-            if(!sort || !page) {
-                return res.status(404).send({
-                    message: "invalid search/sort/page input"
-                })
-            }
+            // if(!sort || !page) {
+            //     return res.status(404).send({
+            //         message: "invalid search/sort/page input"
+            //     })
+            // }
 
             if(search){
                 productsQuery.andWhere(new Brackets(qb => {
@@ -208,7 +209,8 @@ class ProductController {
 
             const searchCount = await productsQuery.getCount()
             if(searchCount === 0){
-                res.status(404).send({
+                res.status(200).send({
+                    products: [],
                     message: 'no search result'
                 })
                 return // not execute the following code

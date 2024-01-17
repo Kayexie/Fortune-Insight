@@ -19,8 +19,8 @@ export const Main = () => {
     const dispatch = useDispatch()
     const products = useSelector(state => state?.product?.products) //selector will automatically subscribe to the store, and run whenever an action is dispatched
     const filters = useSelector(state => state?.product?.filters)
-    const [sort, setSort] = useState('ASC')
-    const [search, setSearch] = useState('')
+    const [sort, setSort] = useState('')
+    const [search, setSearch] = useState('ASC')
     const [page, setPage] = useState(1)
 
 
@@ -44,10 +44,9 @@ export const Main = () => {
 
     //--------sort search page------
     useEffect(() => {
-        console.log('JOJOJO',sort, search, page, filters)
-        if(search.trim() !== ''){
-            dispatch(fetchProductsByAllQuery({sort, search, page, filters}))
-        }
+        console.log('changed:',sort, search, page, filters)
+        dispatch(fetchProductsByAllQuery({sort, search, page, filters}))
+
     }, [sort, search, page, filters])
 
 
@@ -91,7 +90,12 @@ export const Main = () => {
                         <SortFilter setSort={setSort}/>
                     </div>
                 </div>
-                <Display/>
+                {
+                    products && products.length > 0
+                        ? <Display/>
+                        : <h4>Nothing</h4>
+                }
+
             </div>
             <div className="main-page-footer">
                 <h5>Contact Us</h5>
