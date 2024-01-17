@@ -55,7 +55,7 @@ class Product extends BaseClass {
     owner: Owner
 
     @ManyToOne(() => PriceLevel, pl => pl.product)
-    priceLevel: Category
+    priceLevel: PriceLevel
 }
 
 export default Product;
