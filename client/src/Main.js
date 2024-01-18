@@ -33,21 +33,24 @@ export const Main = () => {
     }, []);
 
     // useEffect(() => {
+    //     dispatch(fetchProductsByAllQuery({sort, search, page, filters}))
+    // }, [filters]);
+
+    // useEffect(() => {
     //     // console.log('use effect when filters jojo', filters)
     //     dispatch(fetchProductsByFilter(filters))
     // }, [filters]);
 
-    // //once page load, load the first page
+    //once page load, load the first page
     // useEffect(() => {
     //     dispatch(fetchProductsByPage(1))
     // }, [])
 
-    //--------sort search page------
+    // --------sort search page------
     useEffect(() => {
         console.log('changed:',sort, search, page, filters)
-        if(sort && page && filters){
-            dispatch(fetchProductsByAllQuery({sort, search, page, filters}))
-        }
+
+        dispatch(fetchProductsByAllQuery({sort, search, page, filters}))
 
     }, [sort, search, page, filters])
 

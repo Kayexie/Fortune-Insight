@@ -144,7 +144,7 @@ class ProductController {
         }catch(e){console.log(e)}
     }
 
-    static queryProductBySearch = async (req: Request, res: Response) => {
+    static queryProductBySearchQ = async (req: Request, res: Response) => {
 
         try{
             const {search, sort, page} = req.query
@@ -153,11 +153,12 @@ class ProductController {
             // let products = []
 
             console.log(search, sort, page)
-            console.log('from back end controller fetchProductsByFilter', categories, owners, priceLevel)
+            console.log('from back end controller queryProductBySearchQ')
 
             const productsQuery = getRepository(Product).createQueryBuilder('product')
 
             // ==================== filter ====================
+
 
 
             const selectedCateIds = categories.filter(cate=>cate.isChecked).map(cate=>cate.id)
