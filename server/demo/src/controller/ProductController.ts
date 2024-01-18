@@ -92,8 +92,8 @@ class ProductController {
 
         }catch(e){console.log(e)}
     }
-  
-  
+
+
     static fetchProductsByFilter = async (req:Request, res:Response)=>{
         try{
             const {categories, owners, priceLevel} = req.body
@@ -154,37 +154,39 @@ class ProductController {
 
             console.log(search, sort, page)
             console.log('from back end controller fetchProductsByFilter', categories, owners, priceLevel)
+            console.log(typeof data)
 
             const productsQuery = getRepository(Product).createQueryBuilder('product')
 
             // ==================== filter ====================
 
+            if(categories !== undefined || owners !== undefined || priceLevel !== undefined) {
+                const selectedCateIds = categories.filter(cate=>cate.isChecked).map(cate=>cate.id)
+                const selectedOwnerIds = owners.filter(owner=>owner.isChecked).map(owner=>owner.id)
+                const selectedPlIds = priceLevel.filter(pl=>pl.isChecked).map(pl=>pl.id)
 
-            const selectedCateIds = categories.filter(cate=>cate.isChecked).map(cate=>cate.id)
-            const selectedOwnerIds = owners.filter(owner=>owner.isChecked).map(owner=>owner.id)
-            const selectedPlIds = priceLevel.filter(pl=>pl.isChecked).map(pl=>pl.id)
+                // const query = getRepository(Product).createQueryBuilder('p')
 
-            // const query = getRepository(Product).createQueryBuilder('p')
-
-            let conditions = []
-            const updateConditions = (ids, fields) => {
-                if(ids.length > 0){
-                    conditions.push(`product.${fields} IN (:...${fields})`)
+                let conditions = []
+                const updateConditions = (ids, fields) => {
+                    if(ids.length > 0){
+                        conditions.push(`product.${fields} IN (:...${fields})`)
+                    }
                 }
+
+                updateConditions(selectedCateIds, 'categoryId')
+                updateConditions(selectedOwnerIds, 'ownerId')
+                updateConditions(selectedPlIds, 'priceLevelId')
+
+                if(conditions.length > 0){
+                    // console.log('conditions', conditions)
+                    productsQuery.where(conditions.join(' AND '), {
+                        categoryId:selectedCateIds,
+                        ownerId:selectedOwnerIds,
+                        priceLevelId:selectedPlIds
+                    })
             }
-
-            updateConditions(selectedCateIds, 'categoryId')
-            updateConditions(selectedOwnerIds, 'ownerId')
-            updateConditions(selectedPlIds, 'priceLevelId')
-
-            if(conditions.length > 0){
-                // console.log('conditions', conditions)
-                productsQuery.where(conditions.join(' AND '), {
-                    categoryId:selectedCateIds,
-                    ownerId:selectedOwnerIds,
-                    priceLevelId:selectedPlIds
-                })
-            }else{
+            }else {
                 // console.log('no conditions')
                 // products = await query.getMany()
                 console.log('no conditions')
@@ -200,7 +202,7 @@ class ProductController {
 
             if(search){
                 productsQuery.andWhere(new Brackets(qb => {
-                qb.where('product.id like :search', {search:`%${search}%`})
+                    qb.where('product.id like :search', {search:`%${search}%`})
                         .orWhere('product.symbol like :search', {search:`%${search}%`})
                         .orWhere('product.name like :search', {search:`%${search}%`})
                 }))

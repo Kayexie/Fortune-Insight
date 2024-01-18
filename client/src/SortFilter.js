@@ -4,7 +4,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import {useDispatch} from "react-redux";
-import {sortClear, sortProductsByLetterOrRank, sortProductsByPrice} from "./redux/features/productSlice.js";
+import {fetchAllProducts} from "./redux/features/productSlice.js";
+// import {fetchAllProducts, sortClear, sortProductsByLetterOrRank, sortProductsByPrice} from "./redux/features/productSlice.js";
 
 export default function SelectAutoWidth({setSort}) {
     const [sortShow, setSortShow] = React.useState('');
@@ -15,9 +16,18 @@ export default function SelectAutoWidth({setSort}) {
             console.log(`Click on`, menuItem.target.value)
     };
 
-    // const sortByPrice = (menuItem) => {
-    //     dispatch(sortProductsByPrice(menuItem))
-    // }
+    const handleUrl = (param) => {
+        const baseUrl = window.location.href
+        let newUrl = new URL(baseUrl)
+        if(newUrl.searchParams.has('sort')) {
+            newUrl.searchParams.set('sort', param)
+        } else {
+            newUrl.searchParams.append('sort', param)
+        }
+        window.history.replaceState({path: newUrl.href}, '', newUrl.href)
+        dispatch(fetchAllProducts(newUrl.href.substring(newUrl.href.indexOf('?'))))
+    }
+
 
     return (
         <div>
