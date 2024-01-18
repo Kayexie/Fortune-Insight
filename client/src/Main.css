@@ -7,7 +7,6 @@
 .main-page-container {
   width: 100%;
   height: 100%;
-  bcakground-color: #ffffff;
 }
 .main-page-container .main-page-header {
   padding: 20px;
@@ -30,7 +29,6 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 800px;
   color: #000000;
 }
 .main-page-container .main-page-content .roductList-container {

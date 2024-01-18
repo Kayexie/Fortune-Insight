@@ -110,16 +110,17 @@ export const sortClear = createAsyncThunk(
 // =========sort search page========
 export const fetchProductsByAllQuery = createAsyncThunk(
     'product/fetchProductsByAllQuery',
-    async (params, thunkAPI) => {
-        try{
-            const {sort, search, page, filters} = params
-            console.log("from Slice sort, search, page:",sort, search, page, filters)
-            const res = await axios.post(`${APIURL_ALLQUERIES}?search=${search}&sort=${sort}&page=${page}`, filters)
-            // const res = await axios.post(`${APIURL_ALLQUERIES}`, filters)
-            // const res = await axios.post(`${APIURL_ALLPRODUCTS}pf`, filters)
-            console.log('in new action to fetch search products with sort, search, page ====>', res.data)
-            return res.data
-        }catch (e){
+        async (params, thunkAPI) => {
+            try{
+                const {sort, search, page, filters} = params
+                console.log("from Slice sort, search, page:",sort, search, page, filters)
+                // const res = await axios.post(`${APIURL_ALLPRODUCTS}search?search=${search}&sort=${sort}&page=${page}`, filters)
+                const res = await axios.post(`${APIURL_ALLQUERIES}?search=${search}&sort=${sort}&page=${page}`, filters)
+                // const res = await axios.post(`${APIURL_ALLQUERIES}`, filters)
+                // const res = await axios.post(`${APIURL_ALLPRODUCTS}pf`, filters)
+                console.log('in new action to fetch search products with sort, search, page ====>', res.data)
+                return res.data
+            }catch (e){
             console.log('err',e)
         }
     }

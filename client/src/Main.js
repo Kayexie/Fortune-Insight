@@ -26,7 +26,7 @@ export const Main = () => {
 
     console.log('products in main page====', products)
     console.log('filters in main page====', filters)
-
+    const baseUrl = 'http://localhost:3000/product'
 
     useEffect(() => {
         dispatch(fetchAllFilters())
@@ -54,7 +54,6 @@ export const Main = () => {
 
     }, [sort, search, page, filters])
 
-
     return (
         <div className='main-page-container'>
             <div className="main-page-header">
@@ -65,7 +64,7 @@ export const Main = () => {
                 {/*<p>{JSON.stringify(products)}</p>*/}
                 <button
                     onClick={() => {
-                        dispatch(fetchAllProducts())
+                        // dispatch(fetchAllProducts())
                     }}
                 >fetch all
                 </button>
@@ -81,8 +80,6 @@ export const Main = () => {
                         </button>
                     )
                 }
-
-
 
             </div>
             <div className="main-page-content">
