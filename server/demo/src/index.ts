@@ -15,7 +15,12 @@ const startServer = async () => {
         const app: Application = express()
 
         const cors = require('cors')
-        app.use(cors())
+        app.use(cors({
+            origin: 'http://localhost:3000', // 或者您前端应用的实际域名
+            methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+            preflightContinue: false,
+            optionsSuccessStatus: 204
+        }))
 
         app.use(bodyParser.json())
 

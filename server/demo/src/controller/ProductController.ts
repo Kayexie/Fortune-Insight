@@ -144,7 +144,7 @@ class ProductController {
         }catch(e){console.log(e)}
     }
 
-    static queryProductBySearch = async (req: Request, res: Response) => {
+    static queryProductBySearchQ = async (req: Request, res: Response) => {
 
         try{
             const {search, sort, page} = req.query
@@ -153,8 +153,8 @@ class ProductController {
             // let products = []
 
             console.log(search, sort, page)
-            console.log('from back end controller fetchProductsByFilter', categories, owners, priceLevel)
-            console.log(typeof data)
+            console.log('from back end controller queryProductBySearchQ')
+
 
             const productsQuery = getRepository(Product).createQueryBuilder('product')
 
@@ -165,7 +165,7 @@ class ProductController {
                 const selectedOwnerIds = owners.filter(owner=>owner.isChecked).map(owner=>owner.id)
                 const selectedPlIds = priceLevel.filter(pl=>pl.isChecked).map(pl=>pl.id)
 
-                // const query = getRepository(Product).createQueryBuilder('p')
+
 
                 let conditions = []
                 const updateConditions = (ids, fields) => {
