@@ -9,4 +9,5 @@ Steps to run this project:
 
 jojo:
 1. cmd + c
-2. 
+2. + = parseInt
+3. WebSockets
