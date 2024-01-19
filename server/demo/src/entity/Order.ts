@@ -1,26 +1,22 @@
-import {Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import BaseClass from "./BaseClass";
-import {Min} from "class-validator";
 import Product from "./Product";
-import {User} from "./User";
+import {Min} from "class-validator";
+import {OrderLine} from "./OrderLine";
 
 @Entity()
 export class Order extends BaseClass {
+
     @PrimaryGeneratedColumn('uuid')
     id: string
 
-    @Column()
-    @Min(1)
-    items: number
-
-    @Column()
-    @Min(0)
-    total: number
-
     // @ManyToOne(() => User, user => user.orders)
     // user: User
-    //
-    // @ManyToMany(() => Product)
-    // @JoinTable()
-    // products: Product[]
+
+    @OneToMany( ()=> OrderLine, orderLine => orderLine.order)
+    orderLines: OrderLine[]
+
+    @ManyToMany(() => Product)
+    @JoinTable()
+    products: Product[]
 }
