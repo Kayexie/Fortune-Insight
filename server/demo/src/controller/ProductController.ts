@@ -6,36 +6,6 @@ import Owner from "../entity/Owner";
 import PriceLevel from "../entity/PriceLevel";
 
 class ProductController {
-
-    static queryAllProducts = async (req: Request, res: Response) => {
-        try{
-            const products: Product[] = await getRepository(Product)
-                .createQueryBuilder('product')
-                .getMany()
-
-            return res.status(200).send({
-                products,
-                "message": "success fetch all products"
-            })
-        }catch(e){console.log(e)}
-    }
-
-    static queryProductByPage = async (req: Request, res: Response) => {
-        try{
-            const {page} = req.query
-            const products: Product[] = await getRepository(Product)
-                .createQueryBuilder('product')
-                .skip((page-1)*2)
-                .take(10)
-                .getMany()
-
-            return res.status(200).send({
-                page,
-                products,
-                "message": 'success fetch page products'
-            })
-        }catch(e){console.log(e)}
-    }
     static queryAllFilters = async (req:Request, res:Response)=>{
         try{
             // get cate filters
@@ -71,7 +41,6 @@ class ProductController {
                 }
             })
 
-
             // const filters = await getRepository(Category)
             //     .createQueryBuilder('cate')
             //     .select(['cate.techType', 'cate.id'])
@@ -84,12 +53,10 @@ class ProductController {
                 priceLevel: priceLevel
             }
 
-
             res.status(200).send({
                 "message": "success fetch filters",
                 response
             })
-
         }catch(e){console.log(e)}
     }
 
@@ -130,11 +97,6 @@ class ProductController {
                 products = await query.getMany()
             }
 
-            // const products = await getRepository(Product)
-            //     .createQueryBuilder('p')
-            //     .where('p.categoryId = :id', {id})
-            //     .getMany()
-
             console.log(products)
 
             res.status(200).send({
@@ -150,11 +112,9 @@ class ProductController {
             const {search, sort, page} = req.query
             const {categories, owners, priceLevel} = req.body
             const data = req.body
-            // let products = []
 
             console.log(search, sort, page)
             console.log('from back end controller queryProductBySearchQ')
-
 
             const productsQuery = getRepository(Product).createQueryBuilder('product')
 
@@ -164,8 +124,6 @@ class ProductController {
                 const selectedCateIds = categories.filter(cate=>cate.isChecked).map(cate=>cate.id)
                 const selectedOwnerIds = owners.filter(owner=>owner.isChecked).map(owner=>owner.id)
                 const selectedPlIds = priceLevel.filter(pl=>pl.isChecked).map(pl=>pl.id)
-
-
 
                 let conditions = []
                 const updateConditions = (ids, fields) => {
@@ -187,19 +145,9 @@ class ProductController {
                     })
             }
             }else {
-                // console.log('no conditions')
-                // products = await query.getMany()
                 console.log('no conditions')
             }
             // ==================== filter ====================
-
-
-            // if(!sort || !page) {
-            //     return res.status(404).send({
-            //         message: "invalid search/sort/page input"
-            //     })
-            // }
-
             if(search){
                 productsQuery.andWhere(new Brackets(qb => {
                     qb.where('product.id like :search', {search:`%${search}%`})
@@ -207,7 +155,6 @@ class ProductController {
                         .orWhere('product.name like :search', {search:`%${search}%`})
                 }))
             }
-
 
             const searchCount = await productsQuery.getCount()
             if(searchCount === 0){
@@ -253,7 +200,6 @@ class ProductController {
 
             productsQuery.offset((newPage - 1) * perPage).limit(perPage)
 
-
             const products:Product[] = await productsQuery.getMany()
 
             if(!products) {
@@ -280,65 +226,23 @@ class ProductController {
         }
     }
 
-    static sortByPrice = async (req: Request, res: Response) => {
-        try {
-            const {sort, search} = req.query
-            const {id} = req.body
-
-            if (sort !== 'ASC' && sort !== 'DESC') {
-                return res.status(300).send({
-                    message: 'invalid query sss' + sort
-                })
+    static createProduct = async (req: Request, res: Response) => {
+        try{
+            for(const key in req.body) {
+                if(!req.body[key]) {
+                    return res.status(300).send({
+                        message: key + 'is not allowed to be empty, invalid body'
+                    })
+                }
             }
 
-            console.log('sort order by ->', sort)
+            const {name, symbol, id, image, marketCap, totalVolume, categories, owners, priceLevel} =req.body
 
-            let products:Product[] = []
+        }catch (e) {
 
-            if(!search && !id) {
-                products = await getRepository(Product)
-                    .createQueryBuilder('product')
-                    .orderBy('product.currentPrice', sort)
-                    .getMany()
-            } else if(search && !id) {
-                products = await getRepository(Product)
-                    .createQueryBuilder('product')
-                    .where('product.id like :search', {search:`%${search}%`})
-                    .orWhere('product.symbol like :search', {search:`%${search}%`})
-                    .orWhere('product.name like :search', {search:`%${search}%`})
-                    .orderBy('product.currentPrice', sort)
-                    .getMany()
-            } else if(!search && id) {
-                products = await getRepository(Product)
-                    .createQueryBuilder('product')
-                    .where('product.categoryId = :id', {id})
-                    .orderBy('product.currentPrice', sort)
-                    .getMany()
-            } else if(search && id) {
-                products = await getRepository(Product)
-                    .createQueryBuilder('product')
-                    .where('product.categoryId = :id', {id})
-                    .andWhere('product.id like :search OR product.symbol like :search OR product.name like :search', {search:`%${search}%`})
-                    .orderBy('product.currentPrice', sort)
-                    .getMany()
-            }
-
-            if (!products) {
-                return res.status(404).send({
-                    message: 'not found'
-                })
-            }
-
-            return res.status(200).send({
-                products,
-                message: 'successfully fetch all products by ' + sort,
-            })
-
-        } catch (e) {
-            console.log(e)
         }
-    }
 
+    }
 }
 
 export default ProductController;

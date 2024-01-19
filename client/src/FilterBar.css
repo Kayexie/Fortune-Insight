@@ -1,7 +1,13 @@
 .filter-bar-container {
-  background-color: #f3b8c6;
-  width: 400px;
+  width: 260px;
   height: auto;
+  margin: 25px 10px;
+  display: flex;
+  flex-direction: column;
+}
+.filter-bar-container .filter-title {
+  font: 700 1.5rem/normal Roboto, sans-serif;
+  margin: 0 0 13px 15px;
 }
 
 /*# sourceMappingURL=FilterBar.css.map */
