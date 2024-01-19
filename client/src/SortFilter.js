@@ -3,35 +3,24 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import {useDispatch} from "react-redux";
-import {fetchAllProducts} from "./redux/features/productSlice.js";
-// import {fetchAllProducts, sortClear, sortProductsByLetterOrRank, sortProductsByPrice} from "./redux/features/productSlice.js";
+import {useDispatch, useSelector} from "react-redux";
 
 export default function SelectAutoWidth({setSort}) {
     const [sortShow, setSortShow] = React.useState('');
-    const dispatch = useDispatch()
+    const params = useSelector(state => state?.product?.params)
 
     const createHandleMenuClick = (menuItem) => {
         setSortShow(menuItem.target.value)
             console.log(`Click on`, menuItem.target.value)
     };
 
-    const handleUrl = (param) => {
-        const baseUrl = window.location.href
-        let newUrl = new URL(baseUrl)
-        if(newUrl.searchParams.has('sort')) {
-            newUrl.searchParams.set('sort', param)
-        } else {
-            newUrl.searchParams.append('sort', param)
-        }
-        window.history.replaceState({path: newUrl.href}, '', newUrl.href)
-        dispatch(fetchAllProducts(newUrl.href.substring(newUrl.href.indexOf('?'))))
-    }
-
-
     return (
-        <div>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
+        <div style={{display: 'flex', alignItems: 'center'}}>
+            <div style={{font: '600 .95rem/1.6 Roboto Condensed,sans-serif', color: '#666', marginRight: '30px'}}>
+                {params['total products counts']}
+                {params['total products counts'] > 1 ? '   products' : '   product'}
+            </div>
+            <FormControl sx={{ m: 1, minWidth: 120 }} size='small'>
                 <InputLabel id="demo-simple-select-autowidth-label">Sort By</InputLabel>
                 <Select
                     labelId="demo-simple-select-autowidth-label"

@@ -1,8 +1,6 @@
 import ProductCard from "./ProductCard.js";
 import {useDispatch, useSelector} from "react-redux";
 import './Display.scss'
-import {useEffect} from "react";
-import {fetchAllProducts} from "./redux/features/productSlice.js";
 
 export const Display = () => {
 

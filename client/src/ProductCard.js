@@ -12,7 +12,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 export default function ProductCard({index, p}) {
     return (
-        <Card sx={{ width: 280, margin: '20px', background: 'white' }}>
+        <Card sx={{ width: 290, margin: '12px', background: 'white' }}>
             <div>
                 <Typography level="title-lg">{p?.name}</Typography>
                 <Typography level="body-sm"><span style={{fontWeight: '700', marginRight: '10px'}}>{p?.id}</span>{p?.symbol}</Typography>

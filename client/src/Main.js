@@ -7,12 +7,10 @@ import {useDispatch} from "react-redux";
 import {useSelector} from "react-redux";
 import {
     fetchAllFilters,
-    fetchAllProducts,
     fetchProductsByAllQuery,
-    fetchProductsByFilter,
-    fetchProductsByPage
 } from "./redux/features/productSlice.js";
 import {useEffect, useState} from "react";
+import Page from './Page.js'
 
 
 export const Main = () => {
@@ -26,25 +24,11 @@ export const Main = () => {
 
     console.log('products in main page====', products)
     console.log('filters in main page====', filters)
-    const baseUrl = 'http://localhost:3000/product'
+    const baseUrl = 'http://localhost:3000/product/abc'
 
     useEffect(() => {
         dispatch(fetchAllFilters())
     }, []);
-
-    // useEffect(() => {
-    //     dispatch(fetchProductsByAllQuery({sort, search, page, filters}))
-    // }, [filters]);
-
-    // useEffect(() => {
-    //     // console.log('use effect when filters jojo', filters)
-    //     dispatch(fetchProductsByFilter(filters))
-    // }, [filters]);
-
-    //once page load, load the first page
-    // useEffect(() => {
-    //     dispatch(fetchProductsByPage(1))
-    // }, [])
 
     // --------sort search page------
     useEffect(() => {
@@ -52,52 +36,51 @@ export const Main = () => {
 
         dispatch(fetchProductsByAllQuery({sort, search, page, filters}))
 
+        // --------change url------
+        const params = {sort, search, page}
+        let newUrl = new URL(baseUrl)
+
+        for(const key in params) {
+            if(params[key].length !== 0) {
+                newUrl.searchParams.append(key, params[key])
+            }
+        }
+
+        for(const key in filters) {
+            const check = filters[key].filter(item => item.isChecked).map(cate => cate.name)
+            for(const item in check) {
+                newUrl.searchParams.append(key, check[item])
+            }
+        }
+        console.log('url = ',newUrl.href)
+        window.history.replaceState({path: newUrl.href}, '', newUrl.href)
+
     }, [sort, search, page, filters])
 
     return (
         <div className='main-page-container'>
             <div className="main-page-header">
-                <img src="logo.png" alt=""/>
+                <img src="/logo.png" alt=""/>
                 <h1>infinite fortune vendor</h1>
             </div>
-            <div className="test">
-                {/*<p>{JSON.stringify(products)}</p>*/}
-                <button
-                    onClick={() => {
-                        // dispatch(fetchAllProducts())
-                    }}
-                >fetch all
-                </button>
-                {
-                    [...Array(3)].map((_,i) =>
-                        <button
-                            key={i}
-                            onClick={() => {
-                                // dispatch(fetchProductsByPage(i+1))
-                                setPage(i+1)
-                            }}
-                        >{i+1}
-                        </button>
-                    )
-                }
-
-            </div>
+            <SearchBar setSearch={setSearch}/>
             <div className="main-page-content">
-                <SearchBar
-                    setSearch={setSearch}
-                />
-                <div className="roductList-container">
+                <div className="page-left">
                     <FilterBar/>
+                </div>
+                <div className="page-right">
                     <div className="sortBar-container">
                         <SortFilter setSort={setSort}/>
                     </div>
+                    {
+                        products && products.length > 0
+                            ? <Display/>
+                            : <h4>Nothing</h4>
+                    }
                 </div>
-                {
-                    products && products.length > 0
-                        ? <Display/>
-                        : <h4>Nothing</h4>
-                }
-
+            </div>
+            <div className="page-content">
+                <Page setPage={setPage}/>
             </div>
             <div className="main-page-footer">
                 <h5>Contact Us</h5>
