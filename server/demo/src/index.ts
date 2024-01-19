@@ -3,7 +3,8 @@ import {createConnection} from "typeorm";
 import * as express from "express";
 import {Application} from "express";
 import * as bodyParser from "body-parser";
-import productRoutes from "./routes/productRoutes";
+import product from "./routes/product";
+import routes from "./routes";
 
 
 const SERVER_PORT = 8000
@@ -24,7 +25,8 @@ const startServer = async () => {
 
         app.use(bodyParser.json())
 
-        app.use('/product', productRoutes)
+        // app.use('/product', product)
+        app.use('/', routes)
 
         app.listen(SERVER_PORT, ()=>{
             console.log(`Express server has started on port ${SERVER_PORT}`)
