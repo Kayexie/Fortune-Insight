@@ -1,10 +1,19 @@
-import {Entity as entity, Column, ManyToMany, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn} from 'typeorm';
-import {IsDecimal, IsInt, IsPositive, Length, Min, MinLength} from "class-validator";
+import {
+    Entity as entity,
+    Column,
+    ManyToOne,
+    PrimaryColumn,
+    OneToOne, OneToMany
+} from 'typeorm';
+import {IsInt, Length, Min, MinLength} from "class-validator";
 import BaseClass from "./BaseClass";
-import {User} from "./User";
 import Category from "./Category";
 import Owner from "./Owner";
 import PriceLevel from "./PriceLevel";
+import {OrderLine} from "./OrderLine";
+import {Order} from "./Order";
+// import {OrderDetail} from "./OrderDetail";
+
 @entity('product')
 class Product extends BaseClass {
     @PrimaryColumn()
@@ -56,6 +65,9 @@ class Product extends BaseClass {
 
     @ManyToOne(() => PriceLevel, pl => pl.product)
     priceLevel: PriceLevel
+
+    @OneToMany( ()=> OrderLine, orderLine => orderLine.product)
+    orderLines: OrderLine[]
 }
 
 export default Product;
