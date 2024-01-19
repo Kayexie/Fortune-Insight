@@ -39,7 +39,7 @@ class OrderController {
                 .createQueryBuilder('order')
                 .leftJoinAndSelect('order.orderLines', 'orderLines')
                 .select([
-                    'order.id',
+                    // 'order.id',
                     'orderLines.productId',
                     'orderLines.unitPrice',
                     'orderLines.quantity'
@@ -53,7 +53,8 @@ class OrderController {
 
 
             return res.status(200).send(({
-                singleOrder,
+                orderId,
+                singleOrder
             }))
 
         } catch (e) {
