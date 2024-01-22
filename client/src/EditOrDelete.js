@@ -28,7 +28,7 @@ export default function BasicSpeedDial() {
                     key='Edit'
                     icon={<EditNoteIcon />}
                     tooltipTitle='Edit'
-                    tooltipPlacement='right-start'
+                    tooltipPlacement='right'
                     sx={{transform: 'scale(1.2)'}}
                 />
                 <SpeedDialAction
