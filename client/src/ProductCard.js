@@ -10,8 +10,31 @@ import './ProductCard.scss'
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import EditOrDelete from './EditOrDelete.js'
+import {useDispatch} from "react-redux";
+import {addToBag} from "./redux/features/productSlice";
 
 export default function ProductCard({index, p}) {
+
+    const dispatch = useDispatch()
+    // console.log('this is from ============productCart product', p)
+
+
+    // ----------this is for add to bag function start---------
+
+    const addToBagHandler = () => {
+        console.log(p.id, p.name, p.image, p.currentPrice)
+        const id = p.id
+        const name = p.name
+        const image = p.image
+        const currentPrice = p.currentPrice
+        const quantity = 1
+
+        dispatch(addToBag({id, name, image, currentPrice, quantity }))
+    }
+
+    // ----------this is for add to bag function end---------
+
+
     return (
         <Card sx={{ width: 290, margin: '12px', background: 'white' }}>
             <div>
@@ -62,6 +85,7 @@ export default function ProductCard({index, p}) {
                     color="primary"
                     aria-label="Explore Bahamas Islands"
                     sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
+                    onClick={() => addToBagHandler()}
                 >
                     Add to Bag
                 </Button>

@@ -11,19 +11,31 @@
 }
 .main-page-container .main-page-header {
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   height: auto;
   background-color: #000000;
   color: #ffffff;
   text-transform: uppercase;
 }
-.main-page-container .main-page-header img {
+.main-page-container .main-page-header .main-page-logo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.main-page-container .main-page-header .main-page-logo img {
   width: 200px;
   height: 200px;
+}
+.main-page-container .main-page-header .main-page-shopping {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: right;
+}
+.main-page-container .main-page-header .main-page-shopping p:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
 .main-page-container .main-page-content {
   display: flex;

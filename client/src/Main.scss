@@ -11,18 +11,30 @@
   //bcakground-color: #ffffff;
   .main-page-header{
     padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     width: 100%;
     height: auto;
     background-color: #000000;
     color: #ffffff;
     text-transform: uppercase;
-    img {
-      width: 200px;
-      height: 200px;
+    .main-page-logo{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 200px;
+        height: 200px;
+      }
+    }
+    .main-page-shopping{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: right;
+      p:hover{
+        cursor: pointer;
+        text-decoration: underline;
+      }
     }
   }
   .main-page-content{

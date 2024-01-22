@@ -4,7 +4,7 @@
    "port": 3306,
    "username": "root",
    "password": "yhiffy@163",
-   "database": "coin",
+   "database": "tut",
    "synchronize": false,
    "logging": false,
    "entities": [

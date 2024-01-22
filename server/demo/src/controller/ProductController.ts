@@ -255,7 +255,7 @@ class ProductController {
                 }
             }
 
-            const {name, symbol, id, image, currentPrice, priceChange24h, marketCap, totalVolume, categoryId, ownerId} = req.body
+            const {name, symbol, id, image, currentPrice, priceChange24h, marketCap, totalVolume, category, owner} = req.body
 
             const builder = getRepository(Product).createQueryBuilder('product')
 
@@ -277,7 +277,9 @@ class ProductController {
                 currentPrice,
                 priceChange24h,
                 marketCap,
-                totalVolume
+                totalVolume,
+                category,
+                owner
             })
 
             const errors = await validate(updateP)
@@ -288,20 +290,10 @@ class ProductController {
                 })
             }
 
-            //consider whether product params need to be modified
-            let updateProduct = false
-            for(const key in updateP) {
-                if(product[key] !== updateP[key]) {
-                    updateProduct = true
-                }
-            }
-
-            if(updateProduct) {
-                await builder.update(Product)
-                    .set(updateP)
-                    .where('product.id = :id', {id})
-                    .execute()
-            }
+            await builder.update(Product)
+                .set(updateP)
+                .where('product.id = :id', {id})
+                .execute()
 
             // if update product market cap, market cap rank column needs to be updated as well.
             if(product.marketCap !== updateP.marketCap) {
@@ -317,7 +309,6 @@ class ProductController {
             }
 
             return res.status(200).send({
-                updateP,
                 message: 'successfully update ' + name
             })
 

@@ -1,0 +1,39 @@
+.pop-up-model {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  z-index: 20;
+  width: 50%;
+  height: 95%;
+  box-sizing: border-box;
+  padding: 1rem;
+}
+.pop-up-model .pop-up-title {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  background-color: #efefef;
+  text-align: center;
+}
+.pop-up-model .pop-up-container {
+  margin: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  height: 60%;
+  overflow: auto;
+  padding: 1rem;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 19;
+}
+
+/*# sourceMappingURL=Popup.css.map */
