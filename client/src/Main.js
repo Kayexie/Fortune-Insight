@@ -10,7 +10,9 @@ import {
     fetchProductsByAllQuery,
 } from "./redux/features/productSlice.js";
 import {useEffect, useState} from "react";
-import Page from './Page.js'
+import Page from './Page.js';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import Popup from "./Popup/Popup";
 
 
 export const Main = () => {
@@ -20,6 +22,7 @@ export const Main = () => {
     const [sort, setSort] = useState('ASC')
     const [search, setSearch] = useState('')
     const [page, setPage] = useState(1)
+    const [showPop, setShowPop] = useState(false)
 
 
     console.log('products in main page====', products)
@@ -32,7 +35,7 @@ export const Main = () => {
 
     // --------sort search page------
     useEffect(() => {
-        console.log('changed:',sort, search, page, filters)
+        console.log('changed:', sort, search, page, filters)
 
         dispatch(fetchProductsByAllQuery({sort, search, page, filters}))
 
@@ -40,29 +43,41 @@ export const Main = () => {
         const params = {sort, search, page}
         let newUrl = new URL(baseUrl)
 
-        for(const key in params) {
-            if(params[key].length !== 0) {
+        for (const key in params) {
+            if (params[key].length !== 0) {
                 newUrl.searchParams.append(key, params[key])
             }
         }
 
-        for(const key in filters) {
+        for (const key in filters) {
             const check = filters[key].filter(item => item.isChecked).map(cate => cate.name)
-            for(const item in check) {
+            for (const item in check) {
                 newUrl.searchParams.append(key, check[item])
             }
         }
-        console.log('url = ',newUrl.href)
+        console.log('url = ', newUrl.href)
         window.history.replaceState({path: newUrl.href}, '', newUrl.href)
 
     }, [sort, search, page, filters])
 
+    // --------handling shopping cart click------
+    const openPop = () => {
+        setShowPop(!showPop)
+    }
+
     return (
         <div className='main-page-container'>
             <div className="main-page-header">
-                <img src="/logo.png" alt=""/>
-                <h1>infinite fortune vendor</h1>
+                <div className='main-page-logo'>
+                    <img src="/logo.png" alt=""/>
+                    <h1>infinite fortune vendor</h1>
+                </div>
+                <div className='main-page-shopping' onClick={ () => openPop()}>
+                    <ShoppingCartOutlinedIcon />
+                    <p>Shopping Cart</p>
+                </div>
             </div>
+            {showPop && <Popup openPop={openPop}/> }
             <SearchBar setSearch={setSearch}/>
             <div className="main-page-content">
                 <div className="page-left">

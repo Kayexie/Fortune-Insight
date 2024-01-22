@@ -1,0 +1,33 @@
+.pop-up-model {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  z-index: 20;
+  width: 50%;
+  height: 95%;
+  box-sizing: border-box;
+
+  .pop-up-container {
+    margin: 2rem;
+    display: flex;
+    flex-direction: row;
+    .pop-up-wrap{
+      width: 60%;
+    }
+    .pop-up-order-summary{
+
+    }
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 19;
+}

@@ -1,0 +1,20 @@
+.pop-up-products {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+  border: 1px solid black;
+}
+.pop-up-products .product-info {
+  margin: 0 1rem;
+  line-height: 2rem;
+}
+.pop-up-products .product-quantity {
+  margin: 0 1rem;
+  line-height: 2rem;
+}
+.pop-up-products img {
+  width: 6rem;
+  height: 6rem;
+}
+
+/*# sourceMappingURL=PopProductList.css.map */
