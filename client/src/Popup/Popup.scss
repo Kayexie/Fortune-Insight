@@ -8,17 +8,23 @@
   width: 50%;
   height: 95%;
   box-sizing: border-box;
+  padding:1rem;
+
+  .pop-up-title{
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    background-color: #efefef;
+    text-align: center;
+  }
 
   .pop-up-container {
-    margin: 2rem;
+    margin: 0 2rem;
     display: flex;
-    flex-direction: row;
-    .pop-up-wrap{
-      width: 60%;
-    }
-    .pop-up-order-summary{
-
-    }
+    flex-direction: column;
+    width: 90%;
+    height: 60%;
+    overflow: auto;
+    padding: 1rem;
   }
 }
 

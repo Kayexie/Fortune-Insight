@@ -2,11 +2,13 @@ import {createAsyncThunk, createSlice, current} from "@reduxjs/toolkit";
 import axios from "axios";
 import {APIURL_ALLFILTERS, APIURL_ALLPRODUCTS, APIURL_ALLQUERIES} from "../../helper.js";
 
+const items = localStorage.getItem('cartItems') !== null ? JSON.parse(localStorage.getItem('cartItems')) : []
+
 const initialState = {
     filters: {},
     products: [],
     params: {},
-    cart: []
+    cart: items,
 }
 
 export const fetchAllFilters = createAsyncThunk(
@@ -69,36 +71,69 @@ const productSlice = createSlice({
             state.filters = newFilters
         },
 
-        //add to bag
+        //----------------------------- add to bag ------------------------------------
+
         addToBag: (state, action) => {
 
             let newCart = [...state.cart]
             let {id, name, image, currentPrice, quantity} = action.payload
             // console.log("from addToBag reducer ====== id, name, image, price", id, name, image, currentPrice)
 
-            //create a new Product
-            const newProduct = {
-                id: id,
-                name: name,
-                image: image,
-                price: currentPrice,
-                quantity: quantity
+            //check if the product exist in shopping cart already
+            const existingItem  = newCart.find( item => item.id === id)
+
+            //create a new product
+            if(!existingItem) {
+                const newProduct = {
+                    id: id,
+                    name: name,
+                    image: image,
+                    price: currentPrice,
+                    quantity: quantity
+                }
+                // console.log(newProduct)
+                //push the product into the newCart
+                newCart.push(newProduct)
+            }else {
+                existingItem.quantity++;
             }
-            // console.log(newProduct)
-            //push the product into the newCart
-            newCart.push(newProduct)
+
             state.cart = newCart
-            console.log(state.cart)
+            // console.log(state.cart)
+            localStorage.setItem('cartItems', JSON.stringify(state.cart.map(item => item)))
         },
 
         deleteProduct:(state, action) => {
 
             let {id} = action.payload
-            //add the current in order to get the state
-            let newCart = [...current(state.cart)]
+            //add the current in order to get the state???
+            let newCart = [...state.cart]
+            console.log(newCart)
            state.cart = newCart.filter( c => c.id !== id )
+            localStorage.setItem('cartItems', JSON.stringify(state.cart.map(item => item)))
+        },
+
+        decreaseQuantity:(state, action) => {
+
+
+            let newCart = [...current(state.cart)]
+            let {id} = action.payload
+
+
+            //check if the product exist in shopping cart already
+            // console.log((newCart.find( item => item.id === id)).quantity = newQty)
+
+
+
+
+
+
+            // state.cart = newCart
+            // localStorage.setItem('cartItems', JSON.stringify(state.cart.map(item => item)))
 
         }
+
+        //----------------------------- add to bag ------------------------------------
 
 
     },
@@ -119,5 +154,6 @@ export default productSlice.reducer
 export const {
     updateFilters,
     addToBag,
-    deleteProduct
+    deleteProduct,
+    decreaseQuantity
 } = productSlice.actions
