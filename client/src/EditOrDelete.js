@@ -20,7 +20,7 @@ export default function BasicSpeedDial() {
         <div>
             <SpeedDial
                 ariaLabel="SpeedDial basic example"
-                sx={{ position: 'absolute', top: '-1.2rem', right: '0.5rem', transform: 'scale(0.6)', '& .MuiFab-primary': { backgroundColor: '#E3FBE3', color: 'black'}}}
+                sx={{ zIndex: 2, position: 'absolute', top: '-1.2rem', right: '0.5rem', transform: 'scale(0.6)', '& .MuiFab-primary': { backgroundColor: '#E3FBE3', color: 'black'}}}
                 icon={<SpeedDialIcon sx={{transform: 'scale(1.4)'}}/>}
                 direction='down'
             >

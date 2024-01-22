@@ -129,22 +129,22 @@ const productSlice = createSlice({
 
         decreaseQuantity:(state, action) => {
 
-
-            let newCart = [...current(state.cart)]
+            let newCart = [...state.cart]
             let {id} = action.payload
 
-
             //check if the product exist in shopping cart already
-            // console.log((newCart.find( item => item.id === id)).quantity = newQty)
+            const target = newCart.find( item => item.id === id)
+            console.log('decreasing quantity -> ', target.quantity)
 
+            if(target) {
+                target.quantity--
+            } else {
+                console.log('the product has been removed')
+            }
+            console.log('decreasing -> ',newCart)
 
-
-
-
-
-            // state.cart = newCart
-            // localStorage.setItem('cartItems', JSON.stringify(state.cart.map(item => item)))
-
+            state.cart = newCart
+            localStorage.setItem('cartItems', JSON.stringify(state.cart.map(item => item)))
         }
 
         //----------------------------- add to bag ------------------------------------
