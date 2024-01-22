@@ -3,6 +3,7 @@ import SearchBar from "./SearchBar.js";
 import {FilterBar} from "./FilterBar.js";
 import {Display} from "./Display.js";
 import SortFilter from "./SortFilter.js";
+import NewProduct from './NewProduct.js'
 import {useDispatch} from "react-redux";
 import {useSelector} from "react-redux";
 import {
@@ -54,7 +55,6 @@ export const Main = () => {
         }
         console.log('url = ',newUrl.href)
         window.history.replaceState({path: newUrl.href}, '', newUrl.href)
-
     }, [sort, search, page, filters])
 
     return (
@@ -81,6 +81,9 @@ export const Main = () => {
             </div>
             <div className="page-content">
                 <Page setPage={setPage}/>
+            </div>
+            <div className="main-page-createProduct">
+                <NewProduct/>
             </div>
             <div className="main-page-footer">
                 <h5>Contact Us</h5>

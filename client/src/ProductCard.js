@@ -9,6 +9,7 @@ import BookmarkAdd from '@mui/icons-material/BookmarkAddOutlined';
 import './ProductCard.scss'
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import EditOrDelete from './EditOrDelete.js'
 
 export default function ProductCard({index, p}) {
     return (
@@ -16,15 +17,16 @@ export default function ProductCard({index, p}) {
             <div>
                 <Typography level="title-lg">{p?.name}</Typography>
                 <Typography level="body-sm"><span style={{fontWeight: '700', marginRight: '10px'}}>{p?.id}</span>{p?.symbol}</Typography>
-                <IconButton
-                    aria-label="bookmark Bahamas Islands"
-                    variant="plain"
-                    color="neutral"
-                    size="sm"
-                    sx={{ position: 'absolute', top: '0.875rem', right: '0.5rem' }}
-                >
-                    <BookmarkAdd />
-                </IconButton>
+                {/*<IconButton*/}
+                {/*    aria-label="bookmark Bahamas Islands"*/}
+                {/*    variant="plain"*/}
+                {/*    color="neutral"*/}
+                {/*    size="sm"*/}
+                {/*    sx={{ position: 'absolute', top: '0.875rem', right: '0.5rem' }}*/}
+                {/*>*/}
+                {/*    <BookmarkAdd />*/}
+                {/*</IconButton>*/}
+                <EditOrDelete/>
             </div>
             <AspectRatio minHeight="120px" maxHeight="200px">
                 <div style={{display: "flex", justifyContent: 'space-between'}}>

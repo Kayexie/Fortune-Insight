@@ -1,9 +1,10 @@
-import {Brackets, getRepository} from "typeorm";
+import {Brackets, createQueryBuilder, getRepository} from "typeorm";
 import {NextFunction, Request, Response} from "express";
 import Product from "../entity/Product";
 import Category from "../entity/Category";
 import Owner from "../entity/Owner";
 import PriceLevel from "../entity/PriceLevel";
+import {validate} from "class-validator";
 
 class ProductController {
     static queryAllFilters = async (req:Request, res:Response)=>{
@@ -116,7 +117,7 @@ class ProductController {
             console.log(search, sort, page)
             console.log('from back end controller queryProductBySearchQ')
 
-            const productsQuery = getRepository(Product).createQueryBuilder('product')
+            const productsQuery = getRepository(Product).createQueryBuilder('product').where('product.isDelete = false')
 
             // ==================== filter ====================
 
@@ -213,7 +214,6 @@ class ProductController {
                 params: {
                     'search': search,
                     'sort': sort,
-                    'page': page,
                     'total products counts': total,
                     'total pages':totalPage,
                     'current page': newPage,
@@ -239,9 +239,131 @@ class ProductController {
             const {name, symbol, id, image, marketCap, totalVolume, categories, owners, priceLevel} =req.body
 
         }catch (e) {
-
+            return res.status(404).send({
+                message: e
+            })
         }
+    }
 
+    static updateProduct = async (req: Request, res: Response) => {
+        try{
+            for(const item in req.body) {
+                if(!req.body[item]) {
+                    return res.status(300).send({
+                        message: item + 'is not allowed to be empty'
+                    })
+                }
+            }
+
+            const {name, symbol, id, image, currentPrice, priceChange24h, marketCap, totalVolume, categoryId, ownerId} = req.body
+
+            const builder = getRepository(Product).createQueryBuilder('product')
+
+            const product: Product = await builder
+                .where('product.id = :id', {id})
+                .getOne()
+
+            if(!product) {
+                return res.status(404).send({
+                    message: 'not found'
+                })
+            }
+
+            const updateP = Product.create({
+                name,
+                id,
+                symbol,
+                image,
+                currentPrice,
+                priceChange24h,
+                marketCap,
+                totalVolume
+            })
+
+            const errors = await validate(updateP)
+
+            if(errors.length > 0) {
+                return res.status(300).send({
+                    message: errors
+                })
+            }
+
+            //consider whether product params need to be modified
+            let updateProduct = false
+            for(const key in updateP) {
+                if(product[key] !== updateP[key]) {
+                    updateProduct = true
+                }
+            }
+
+            if(updateProduct) {
+                await builder.update(Product)
+                    .set(updateP)
+                    .where('product.id = :id', {id})
+                    .execute()
+            }
+
+            // if update product market cap, market cap rank column needs to be updated as well.
+            if(product.marketCap !== updateP.marketCap) {
+                const products: Product[] = await builder
+                    .orderBy('product.marketCap', 'DESC').
+                    getMany()
+                for (let i = 0; i < products.length; i++) {
+                    await builder.update(Product)
+                        .where('product.id = :id', {id: products[i].id})
+                        .setParameter('marketCapRank', i + 1)
+                        .execute()
+                }
+            }
+
+            return res.status(200).send({
+                updateP,
+                message: 'successfully update ' + name
+            })
+
+        }catch (e) {
+            return res.status(404).send({
+                message: e
+            })
+        }
+    }
+
+    static deleteProduct = async (req: Request, res: Response) => {
+       try{
+           const {id} = req.query
+
+           if(!id) {
+               return res.status(300).send({
+                    message: 'invalid query of deleting product'
+               })
+           }
+
+           const deleteQuery = getRepository(Product).createQueryBuilder('product')
+
+           const deleteProduct = await deleteQuery
+               .where('product.id = :id', {id})
+               .getOne()
+
+           if(!deleteProduct) {
+               return res.status(404).send({
+                   message: 'not found'
+               })
+           }
+
+           await deleteQuery
+               .where('product.id = :id', {id})
+               .setParameter('isDelete', true)
+               .execute()
+
+           return res.status(200).send({
+               message: 'successfully delete ' + deleteProduct.name
+           })
+
+       }catch (e) {
+           return res.status(404).send({
+               message: e
+           })
+       }
     }
 }
 
