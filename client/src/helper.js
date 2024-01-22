@@ -5,6 +5,8 @@ export const APIURL_ALLPRODUCTS = 'http://localhost:8000/product/'
 export const APIURL_ALLFILTERS = 'http://localhost:8000/product/filters'
 export const APIURL_ALLQUERIES = 'http://localhost:8000/product/abc'
 
+export const APIURL_DELETEPRODUCT = 'http://localhost:8000/product/delete'
+
 export const actionType = {
     'FETCH_ALL_PRODUCTS': 'FETCH_ALL_PRODUCTS',
     'FETCH_PAGE_PRODUCTS': 'FETCH_PAGE_PRODUCTS',

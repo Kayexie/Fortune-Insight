@@ -10,6 +10,8 @@ productRoutes.post('/abc', ProductController.queryProductBySearchQ)
 productRoutes.post('/pf', ProductController.fetchProductsByFilter)
 // productRoutes.get('/search', ProductController.queryProductBySearch)
 
+productRoutes.delete('/delete', ProductController.deleteProduct)
+
 
 
 

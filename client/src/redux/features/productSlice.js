@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
-import {APIURL_ALLFILTERS, APIURL_ALLPRODUCTS, APIURL_ALLQUERIES} from "../../helper.js";
+import {APIURL_ALLFILTERS, APIURL_ALLPRODUCTS, APIURL_ALLQUERIES, APIURL_DELETEPRODUCT} from "../../helper.js";
 
 const initialState = {
     filters: {},
@@ -32,6 +32,20 @@ export const fetchProductsByAllQuery = createAsyncThunk(
                 return res.data
             }catch (e){
             console.log('err',e)
+        }
+    }
+)
+
+export const deleteProductById = createAsyncThunk(
+    'product/deleteProductById',
+    async (param) => {
+        try{
+            const {id} = param
+            console.log(`The product ${id} is going to be deleted`)
+            const res = await axios(`${APIURL_DELETEPRODUCT}?id=${id}`)
+            console.log('this action is going to delete the product ', res.data)
+        }catch (e) {
+            console.log('err: ', e)
         }
     }
 )
