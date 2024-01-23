@@ -67,7 +67,10 @@ export const Main = () => {
     }
 
     //calculate the ttl Qty in shopping cart
-    const ttlQty = carts.map(item => item.quantity).reduce((a, c) => a + c)
+    const QtyArr = carts.map(item => item.quantity)
+    const ttlQty = QtyArr.length !==0 ? QtyArr.reduce((a,c) => a + c) : 0
+
+
     document.querySelector('body').style.overflow = 'auto'
 
     return (

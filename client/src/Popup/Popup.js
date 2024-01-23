@@ -13,12 +13,15 @@ const Popup = ({openPop}) => {
 
     //calculate single product ttl $
     const singleTtlArr = carts.map(item => item.quantity * item.price)
-    const subtotal = singleTtlArr.reduce((a, c) => a + c)
+    const subtotal = singleTtlArr.length !== 0? singleTtlArr.reduce((a, c) => a + c) : 0
 
     //all product ttl $ and qty
     const tax = 0
     const estimateTtl = subtotal + tax
-    const ttlQty = carts.map(item => item.quantity).reduce((a,c) => a + c)
+
+    const QtyArr = carts.map(item => item.quantity)
+    // console.log(QtyArr)
+    const ttlQty = QtyArr.length !==0 ? QtyArr.reduce((a,c) => a + c) : 0
 
     // console.log(subtotal)
 
