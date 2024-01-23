@@ -11,6 +11,17 @@ const Popup = ({openPop}) => {
 
     console.log("this is form popup window for shopping cart", carts)
 
+    //calculate single product ttl $
+    const singleTtlArr = carts.map(item => item.quantity * item.price)
+    const subtotal = singleTtlArr.reduce((a, c) => a + c)
+
+    //all product ttl $ and qty
+    const tax = 0
+    const estimateTtl = subtotal + tax
+    const ttlQty = carts.map(item => item.quantity).reduce((a,c) => a + c)
+
+    // console.log(subtotal)
+
     document.querySelector('body').style.overflow = 'hidden'
 
 
@@ -19,7 +30,7 @@ const Popup = ({openPop}) => {
             <div className='pop-up-model'>
                 <CloseSharpIcon onClick={() => openPop()}/>
                 <div className='pop-up-title'>
-                    <h2>My Shopping Bag</h2>
+                    <h2>My Shopping Bag ({ttlQty})</h2>
                 </div>
                 <div className='pop-up-container'>
                     <div className='pop-up-wrap'>
@@ -28,7 +39,24 @@ const Popup = ({openPop}) => {
                     </div>
                 </div>
                 <div className='pop-up-order-summary'>
-                    {/*<div>Order Summary</div>*/}
+                    <div className='pop-up-title'>
+                        <h2>Order Summery</h2>
+                    </div>
+                    <div className='pop-up-order'>
+                        <div className='subtotal'>
+                            <h4>SUBTOTAL</h4>
+                            <p>$ {subtotal}.00</p>
+                        </div>
+                        <div className='tax'>
+                            <h4>ESTIMATED TAX</h4>
+                            <p>$ {tax}.00</p>
+                        </div>
+                        <div className='total'>
+                            <h4>ESTIMATED TOTAL</h4>
+                            <p>$ {estimateTtl}.00</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div className='overlay'></div>
