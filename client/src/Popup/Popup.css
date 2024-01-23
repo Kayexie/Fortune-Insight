@@ -15,12 +15,14 @@
   cursor: pointer;
 }
 .pop-up-model .pop-up-title {
+  margin-top: 1rem;
   font-size: 0.9rem;
   text-align: center;
 }
 .pop-up-model .pop-up-title h2 {
   color: black;
   padding-bottom: 0.8rem;
+  font-weight: bolder;
 }
 .pop-up-model .pop-up-container {
   display: flex;
