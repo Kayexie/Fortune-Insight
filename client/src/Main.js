@@ -14,6 +14,7 @@ import {useEffect, useState} from "react";
 import Page from './Page.js';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Popup from "./Popup/Popup";
+import FacebookSharpIcon from '@mui/icons-material/FacebookSharp';
 
 
 export const Main = () => {
@@ -111,7 +112,15 @@ export const Main = () => {
                 <NewProduct/>
             </div>
             <div className="main-page-footer">
-                <h5>Contact Us</h5>
+                {/*<div className='social-media'>*/}
+                {/*    <FacebookSharpIcon/>*/}
+                {/*</div>*/}
+                <div className='h5'>
+                    <h4>Contact Us</h4>
+                    <h4>Private Policy</h4>
+                    <h4>Terms of Use</h4>
+                </div>
+                <p>Copyright © 2024 infinite fortune vendor Since 2023.</p>
             </div>
         </div>
     )

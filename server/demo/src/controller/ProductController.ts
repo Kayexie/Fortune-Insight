@@ -185,7 +185,7 @@ class ProductController {
             }
 
             const total = await productsQuery.getCount()
-            const perPage = 10
+            const perPage = 9
             //round up
             const totalPage = Math.ceil(total / perPage)
             let newPage = 1

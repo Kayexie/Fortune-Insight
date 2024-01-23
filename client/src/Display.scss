@@ -7,8 +7,9 @@
   justify-content: center;
 
   .display-product-container {
-    width: 1600px;
+    width: 95%;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
   }
 }
