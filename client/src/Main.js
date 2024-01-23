@@ -67,7 +67,8 @@ export const Main = () => {
     }
 
     //calculate the ttl Qty in shopping cart
-    const ttlQty = carts.map(item => item.quantity).reduce((a,c) => a + c)
+    const ttlQty = carts.map(item => item.quantity).reduce((a, c) => a + c)
+    document.querySelector('body').style.overflow = 'auto'
 
     return (
         <div className='main-page-container'>
@@ -76,12 +77,12 @@ export const Main = () => {
                     <img src="/logo.png" alt=""/>
                     <h1>infinite fortune vendor</h1>
                 </div>
-                <div className='main-page-shopping' onClick={ () => openPop()}>
-                    <ShoppingCartOutlinedIcon />
+                <div className='main-page-shopping' onClick={() => openPop()}>
+                    <ShoppingCartOutlinedIcon/>
                     <p>Shopping Cart ({ttlQty})</p>
                 </div>
             </div>
-            {showPop && <Popup openPop={openPop}/> }
+            {showPop && <Popup openPop={openPop}/>}
             <SearchBar setSearch={setSearch}/>
             <div className="main-page-content">
                 <div className="page-left">

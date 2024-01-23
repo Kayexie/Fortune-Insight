@@ -28,7 +28,7 @@ const Popup = ({openPop}) => {
     return (
         <div className='pop-up'>
             <div className='pop-up-model'>
-                <CloseSharpIcon onClick={() => openPop()}/>
+                <CloseSharpIcon onClick={() => openPop()} className='close-icon'/>
                 <div className='pop-up-title'>
                     <h2>My Shopping Bag ({ttlQty})</h2>
                 </div>
@@ -48,7 +48,7 @@ const Popup = ({openPop}) => {
                             <p>$ {subtotal}.00</p>
                         </div>
                         <div className='tax'>
-                            <h4>ESTIMATED TAX</h4>
+                            <h4>TAX</h4>
                             <p>$ {tax}.00</p>
                         </div>
                         <div className='total'>
@@ -57,6 +57,10 @@ const Popup = ({openPop}) => {
                         </div>
                     </div>
 
+                </div>
+                <div className='pop-up-checkout'>
+                    <div className='continue' onClick={() => openPop()}>CONTINUE SHOPPING</div>
+                    <div className='checkout'>CHECK OUT</div>
                 </div>
             </div>
             <div className='overlay'></div>
