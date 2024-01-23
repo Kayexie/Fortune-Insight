@@ -25,14 +25,15 @@ export default function ProductCard({index, p}) {
     // ----------this is for add to bag function start---------
 
     const addToBagHandler = () => {
-        console.log(p.id, p.name, p.image, p.currentPrice)
+        // console.log(p.id, p.name, p.image, p.currentPrice, p.totalVolume)
         const id = p.id
         const name = p.name
         const image = p.image
         const currentPrice = p.currentPrice
         const quantity = 1
+        const totalVolume = p.totalVolume
 
-        dispatch(addToBag({id, name, image, currentPrice, quantity }))
+        dispatch(addToBag({id, name, image, currentPrice, quantity, totalVolume }))
     }
 
     // ----------this is for add to bag function end---------

@@ -4,7 +4,7 @@ import {FilterButton} from "./FilterButton.js";
 import * as React from "react";
 export const FilterBar = () => {
     const filters = useSelector(state => state?.product.filters)
-    console.log('in filter bar====', filters)
+    // console.log('in filter bar====', filters)
 
     return (
         <div className='filter-bar-container'>

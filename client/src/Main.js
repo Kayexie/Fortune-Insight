@@ -24,10 +24,11 @@ export const Main = () => {
     const [search, setSearch] = useState('')
     const [page, setPage] = useState(1)
     const [showPop, setShowPop] = useState(false)
+    const carts = useSelector(state => state?.product.cart)
 
 
-    console.log('products in main page====', products)
-    console.log('filters in main page====', filters)
+    // console.log('products in main page====', products)
+    // console.log('filters in main page====', filters)
     const baseUrl = 'http://localhost:3000/product/abc'
 
     useEffect(() => {
@@ -36,7 +37,7 @@ export const Main = () => {
 
     // --------sort search page------
     useEffect(() => {
-        console.log('changed:', sort, search, page, filters)
+        // console.log('changed:', sort, search, page, filters)
 
         dispatch(fetchProductsByAllQuery({sort, search, page, filters}))
 
@@ -58,7 +59,7 @@ export const Main = () => {
                 newUrl.searchParams.append(key, check[item])
             }
         }
-        console.log('url = ', newUrl.href)
+        // console.log('url = ', newUrl.href)
         window.history.replaceState({path: newUrl.href}, '', newUrl.href)
     }, [sort, search, page, filters])
 
@@ -67,6 +68,13 @@ export const Main = () => {
         setShowPop(!showPop)
     }
 
+    //calculate the ttl Qty in shopping cart
+    const QtyArr = carts.map(item => item.quantity)
+    const ttlQty = QtyArr.length !==0 ? QtyArr.reduce((a,c) => a + c) : 0
+
+
+    document.querySelector('body').style.overflow = 'auto'
+
     return (
         <div className='main-page-container'>
             <div className="main-page-header">
@@ -74,12 +82,12 @@ export const Main = () => {
                     <img src="/logo.png" alt=""/>
                     <h1>infinite fortune vendor</h1>
                 </div>
-                <div className='main-page-shopping' onClick={ () => openPop()}>
-                    <ShoppingCartOutlinedIcon />
-                    <p>Shopping Cart</p>
+                <div className='main-page-shopping' onClick={() => openPop()}>
+                    <ShoppingCartOutlinedIcon/>
+                    <p>Shopping Cart ({ttlQty})</p>
                 </div>
             </div>
-            {showPop && <Popup openPop={openPop}/> }
+            {showPop && <Popup openPop={openPop}/>}
             <SearchBar setSearch={setSearch}/>
             <div className="main-page-content">
                 <div className="page-left">

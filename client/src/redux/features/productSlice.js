@@ -16,7 +16,7 @@ export const fetchAllFilters = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
             const res = await axios.get(APIURL_ALLFILTERS)
-            console.log('in new action to fetch filters====', res)
+            // console.log('in new action to fetch filters====', res)
             return res.data
 
         } catch {
@@ -31,9 +31,9 @@ export const fetchProductsByAllQuery = createAsyncThunk(
     async (params, thunkAPI) => {
         try {
             const {sort, search, page, filters} = params
-            console.log("from Slice sort, search, page:", sort, search, page, filters)
+            // console.log("from Slice sort, search, page:", sort, search, page, filters)
             const res = await axios.post(`${APIURL_ALLQUERIES}?search=${search}&sort=${sort}&page=${page}`, filters)
-            console.log('in new action to fetch search products with sort, search, page ====>', res.data)
+            // console.log('in new action to fetch search products with sort, search, page ====>', res.data)
             return res.data
         } catch (e) {
             console.log('err', e)
@@ -91,8 +91,8 @@ const productSlice = createSlice({
         addToBag: (state, action) => {
 
             let newCart = [...state.cart]
-            let {id, name, image, currentPrice, quantity} = action.payload
-            // console.log("from addToBag reducer ====== id, name, image, price", id, name, image, currentPrice)
+            let {id, name, image, currentPrice, quantity, totalVolume} = action.payload
+            // console.log("from addToBag reducer ====== id, name, image, price", id, name, image, quantity, currentPrice)
 
             //check if the product exist in shopping cart already
             const existingItem  = newCart.find( item => item.id === id)
@@ -104,7 +104,8 @@ const productSlice = createSlice({
                     name: name,
                     image: image,
                     price: currentPrice,
-                    quantity: quantity
+                    quantity: quantity,
+                    totalVolume: totalVolume
                 }
                 // console.log(newProduct)
                 //push the product into the newCart
@@ -123,7 +124,7 @@ const productSlice = createSlice({
             let {id} = action.payload
             //add the current in order to get the state???
             let newCart = [...state.cart]
-            console.log(newCart)
+            // console.log(newCart)
            state.cart = newCart.filter( c => c.id !== id )
             localStorage.setItem('cartItems', JSON.stringify(state.cart.map(item => item)))
         },
@@ -142,7 +143,25 @@ const productSlice = createSlice({
             } else {
                 console.log('the product has been removed')
             }
-            console.log('decreasing -> ',newCart)
+
+            state.cart = newCart
+            localStorage.setItem('cartItems', JSON.stringify(state.cart.map(item => item)))
+        },
+
+        increaseQuantity:(state, action) => {
+
+            let newCart = [...state.cart]
+            let {id} = action.payload
+
+            //check if the product exist in shopping cart already
+            const target = newCart.find( item => item.id === id)
+
+
+            if(target) {
+                target.quantity++
+            }
+            console.log('increasing -> ',newCart)
+
 
             state.cart = newCart
             localStorage.setItem('cartItems', JSON.stringify(state.cart.map(item => item)))
@@ -170,5 +189,6 @@ export const {
     updateFilters,
     addToBag,
     deleteProduct,
-    decreaseQuantity
+    decreaseQuantity,
+    increaseQuantity
 } = productSlice.actions
