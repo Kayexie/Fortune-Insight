@@ -40,7 +40,7 @@ export default function ProductCard({index, p}) {
 
 
     return (
-        <Card sx={{ width: 290, margin: '12px', background: 'white' }}>
+        <Card sx={{ width: 290, margin: '20px', background: 'white' }}>
             <div>
                 <Typography level="title-lg" sx={{position: 'relative'}}>
                     {p?.name}
