@@ -228,15 +228,71 @@ class ProductController {
 
     static createProduct = async (req: Request, res: Response) => {
         try{
-            for(const key in req.body) {
-                if(!req.body[key]) {
-                    return res.status(300).send({
-                        message: key + 'is not allowed to be empty, invalid body'
-                    })
+            const {name, symbol, id, image, currentPrice, priceChange24h, marketCap, totalVolume, category, owner} =req.body
+            let marketCapRank = 1
+
+            const createP = Product.create({
+                name,
+                symbol,
+                id,
+                image,
+                currentPrice,
+                priceChange24h,
+                marketCap,
+                marketCapRank,
+                totalVolume,
+                category,
+                owner,
+                isDelete: false
+            })
+
+            const error = await validate(createP)
+
+            if(error.length > 0) {
+                return res.status(300).send({
+                    message: error
+                })
+            }
+
+            //determine the priceLevel of the new product
+            const prList = await getRepository(PriceLevel).find()
+            let priceLevel = new PriceLevel()
+
+            if(currentPrice < 10) {
+                priceLevel = prList[0]
+            } else if(currentPrice > 1000) {
+                priceLevel = prList[1]
+            } else {
+                priceLevel = prList[2]
+            }
+            createP.priceLevel = priceLevel
+
+            //count the marketCapRank
+            const products = await getRepository(Product).createQueryBuilder('product')
+                .where('product.marketCap < :marketCap', {marketCap})
+                .orderBy('product.marketCap', 'DESC')
+                .getMany()
+
+            if(!products.length) {
+                createP.marketCapRank = await getRepository(Product)
+                    .createQueryBuilder('product')
+                    .where('product.isDelete = false')
+                    .getCount() + 1
+            } else {
+                createP.marketCapRank = products[0].marketCapRank
+                for (let i = 0; i < products.length; i++) {
+                    await createQueryBuilder('product').update(Product)
+                        .where('product.id = :id', {id: products[i].id})
+                        .set({marketCapRank: products[i].marketCapRank + 1})
+                        .execute()
                 }
             }
 
-            const {name, symbol, id, image, marketCap, totalVolume, categories, owners, priceLevel} =req.body
+            await createP.save()
+
+            return res.status(200).send({
+                message: 'successfully add new product'
+            })
 
         }catch (e) {
             return res.status(404).send({
@@ -247,14 +303,6 @@ class ProductController {
 
     static updateProduct = async (req: Request, res: Response) => {
         try{
-            for(const item in req.body) {
-                if(!req.body[item]) {
-                    return res.status(300).send({
-                        message: item + 'is not allowed to be empty'
-                    })
-                }
-            }
-
             const {name, symbol, id, image, currentPrice, priceChange24h, marketCap, totalVolume, category, owner} = req.body
 
             const builder = getRepository(Product).createQueryBuilder('product')
@@ -275,6 +323,7 @@ class ProductController {
                 symbol,
                 image,
                 currentPrice,
+                marketCapRank: product.marketCapRank,
                 priceChange24h,
                 marketCap,
                 totalVolume,
@@ -290,26 +339,41 @@ class ProductController {
                 })
             }
 
-            await builder.update(Product)
+            if(updateP.currentPrice !== product.currentPrice) {
+                const prList = await getRepository(PriceLevel).find()
+                let priceLevel = new PriceLevel()
+
+                if(currentPrice < 10) {
+                    priceLevel = prList[0]
+                } else if(currentPrice > 1000) {
+                    priceLevel = prList[1]
+                } else {
+                    priceLevel = prList[2]
+                }
+                updateP.priceLevel = priceLevel
+            }
+
+            await createQueryBuilder('product').update(Product)
                 .set(updateP)
                 .where('product.id = :id', {id})
                 .execute()
 
             // if update product market cap, market cap rank column needs to be updated as well.
-            if(product.marketCap !== updateP.marketCap) {
-                const products: Product[] = await builder
-                    .orderBy('product.marketCap', 'DESC').
-                    getMany()
+            if(updateP.marketCap !== product.marketCap) {
+                const products: Product[] = await getRepository(Product)
+                    .createQueryBuilder('product')
+                    .orderBy('product.marketCap', 'DESC')
+                    .getMany()
                 for (let i = 0; i < products.length; i++) {
-                    await builder.update(Product)
+                    await createQueryBuilder('product').update(Product)
                         .where('product.id = :id', {id: products[i].id})
-                        .setParameter('marketCapRank', i + 1)
+                        .set({marketCapRank: i + 1})
                         .execute()
                 }
             }
 
             return res.status(200).send({
-                message: 'successfully update ' + name
+                message: 'successfully update ' + name,
             })
 
         }catch (e) {
@@ -341,10 +405,30 @@ class ProductController {
                })
            }
 
-           await deleteQuery
+           await createQueryBuilder('product')
+               .update(Product)
                .where('product.id = :id', {id})
-               .setParameter('isDelete', true)
+               .set({isDelete: true})
                .execute()
+
+           //change marketCapRank after this product
+           const products: Product[] = await getRepository(Product)
+               .createQueryBuilder('product')
+               .where('product.marketCap < :marketCap', {marketCap: deleteProduct.marketCap})
+               .andWhere('product.isDelete = false')
+               .orderBy('product.marketCap', 'DESC')
+               .getMany()
+
+           if(products.length > 0) {
+               let rank = deleteProduct.marketCapRank
+               for (let i = 0; i < products.length; i++) {
+                   await createQueryBuilder('product')
+                       .update(Product)
+                       .where('product.id = :id', {id: products[i].id})
+                       .set({marketCapRank: rank++})
+                       .execute()
+               }
+           }
 
            return res.status(200).send({
                message: 'successfully delete ' + deleteProduct.name

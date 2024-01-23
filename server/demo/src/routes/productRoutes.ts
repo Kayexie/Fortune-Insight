@@ -12,6 +12,10 @@ productRoutes.post('/pf', ProductController.fetchProductsByFilter)
 
 productRoutes.delete('/delete', ProductController.deleteProduct)
 
+productRoutes.post('/add', ProductController.createProduct)
+
+productRoutes.put('/update', ProductController.updateProduct)
+
 
 
 

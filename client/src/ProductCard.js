@@ -12,11 +12,14 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import EditOrDelete from './EditOrDelete.js'
 import {useDispatch} from "react-redux";
 import {addToBag} from "./redux/features/productSlice";
+import FiberNewOutlinedIcon from '@mui/icons-material/FiberNewOutlined';
 
 export default function ProductCard({index, p}) {
 
     const dispatch = useDispatch()
     // console.log('this is from ============productCart product', p)
+    const nowDate = new Date()
+    const productDate = new Date(p?.createdAt).getDate()
 
 
     // ----------this is for add to bag function start---------
@@ -38,18 +41,12 @@ export default function ProductCard({index, p}) {
     return (
         <Card sx={{ width: 290, margin: '12px', background: 'white' }}>
             <div>
-                <Typography level="title-lg">{p?.name}</Typography>
+                <Typography level="title-lg" sx={{position: 'relative'}}>
+                    {p?.name}
+                    {nowDate.getDate() === productDate && <FiberNewOutlinedIcon sx={{fontSize: 40, position: 'absolute', margin: '-14px 0 0 10px', transform: 'rotate(-20deg)', color: 'var(--joy-palette-danger-500, #C41C1C)'}}/>}
+                </Typography>
                 <Typography level="body-sm"><span style={{fontWeight: '700', marginRight: '10px'}}>{p?.id}</span>{p?.symbol}</Typography>
-                {/*<IconButton*/}
-                {/*    aria-label="bookmark Bahamas Islands"*/}
-                {/*    variant="plain"*/}
-                {/*    color="neutral"*/}
-                {/*    size="sm"*/}
-                {/*    sx={{ position: 'absolute', top: '0.875rem', right: '0.5rem' }}*/}
-                {/*>*/}
-                {/*    <BookmarkAdd />*/}
-                {/*</IconButton>*/}
-                <EditOrDelete/>
+                <EditOrDelete p={p}/>
             </div>
             <AspectRatio minHeight="120px" maxHeight="200px">
                 <div style={{display: "flex", justifyContent: 'space-between'}}>
