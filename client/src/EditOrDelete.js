@@ -12,15 +12,25 @@ import DialogContent from '@mui/joy/DialogContent';
 import DialogActions from '@mui/joy/DialogActions';
 import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
+import {useDispatch} from "react-redux";
+import {deleteProductById, fetchProductsByAllQuery} from "./redux/features/productSlice.js";
 
-export default function BasicSpeedDial() {
+export default function BasicSpeedDial({p}) {
     const [open, setOpen] = React.useState(false);
+    const dispatch = useDispatch()
+
+    const deleteHandler = () => {
+        const id = p.id
+        dispatch(deleteProductById({id}))
+        const conditions = JSON.parse(localStorage.getItem('conditions'))
+        dispatch(fetchProductsByAllQuery(conditions))
+    }
 
     return (
         <div>
             <SpeedDial
                 ariaLabel="SpeedDial basic example"
-                sx={{ zIndex: 2, position: 'absolute', top: '-1.2rem', right: '0.5rem', transform: 'scale(0.6)', '& .MuiFab-primary': { backgroundColor: '#E3FBE3', color: 'black'}}}
+                sx={{ zIndex: 2, position: 'absolute', top: '-1.2rem', right: '0.5rem', transform: 'scale(0.6)', '& .MuiFab-primary': { backgroundColor: '#E3FBE3', color: 'black', '&:hover': {backgroundColor: '#C7F7C7'}}}}
                 icon={<SpeedDialIcon sx={{transform: 'scale(1.4)'}}/>}
                 direction='down'
             >
@@ -52,7 +62,11 @@ export default function BasicSpeedDial() {
                             Are you sure you want to delete this product?
                         </DialogContent>
                         <DialogActions>
-                            <Button variant="solid" color="danger" onClick={() => setOpen(false)}>
+                            <Button variant="solid" color="danger"
+                                    onClick={() => {
+                                        setOpen(false)
+                                        deleteHandler()
+                                    }}>
                                 Delete the product
                             </Button>
                             <Button variant="plain" color="neutral" onClick={() => setOpen(false)}>

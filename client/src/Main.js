@@ -40,6 +40,8 @@ export const Main = () => {
 
         dispatch(fetchProductsByAllQuery({sort, search, page, filters}))
 
+        localStorage.setItem('conditions', JSON.stringify({sort, search, page, filters}))
+
         // --------change url------
         const params = {sort, search, page}
         let newUrl = new URL(baseUrl)
