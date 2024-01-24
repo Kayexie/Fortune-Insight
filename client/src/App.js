@@ -1,6 +1,7 @@
 import {Main} from "./Main.js";
 import './App.scss';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import CheckoutPage from "./CheckoutPage";
 
 const App = () => {
   return (
@@ -8,6 +9,7 @@ const App = () => {
         <BrowserRouter>
             <Routes>
                 <Route path='*' element={<Main/>}/>
+                <Route path='/checkout' element={<CheckoutPage/>}></Route>
             </Routes>
         </BrowserRouter>
         {/*<Main/>*/}

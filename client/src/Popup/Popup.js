@@ -27,6 +27,10 @@ const Popup = ({openPop}) => {
 
     document.querySelector('body').style.overflow = 'hidden'
 
+    // const handleNavigation = () => {
+    //     window.location.replace('/checkout')
+    // }
+
 
     return (
         <div className='pop-up'>
@@ -63,7 +67,7 @@ const Popup = ({openPop}) => {
                 </div>
                 <div className='pop-up-checkout'>
                     <div className='continue' onClick={() => openPop()}>CONTINUE SHOPPING</div>
-                    <div className='checkout'>CHECK OUT</div>
+                    <div className='checkout' onClick={() => window.location.replace('/checkout')} >CHECK OUT</div>
                 </div>
             </div>
             <div className='overlay'></div>
