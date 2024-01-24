@@ -9,7 +9,6 @@ import {
 } from 'typeorm';
 import {IsDecimal, IsInt, IsPositive, Length, Min, MinLength} from "class-validator";
 import BaseClass from "./BaseClass";
-import {User} from "./User";
 import Product from "./Product";
 @entity('category')
 class Category extends BaseClass {

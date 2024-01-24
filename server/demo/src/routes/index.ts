@@ -1,14 +1,13 @@
 import {Router} from "express";
-import order from "./order";
-import product from "./product";
-// import user from "./user";
+import productRoutes from "./productRoutes";
+import userRoutes from "./userRoutes";
 
 
 const routes = Router()
 
-routes.use('/product', product)
-routes.use('/order', order)
-// routes.use('/user', user)
+routes.use('/product', productRoutes)
+routes.use('/order', productRoutes)
+routes.use('/user', userRoutes)
 
 export default routes
 

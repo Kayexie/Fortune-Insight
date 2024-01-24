@@ -7,97 +7,101 @@ import {useDispatch} from "react-redux";
 import {useSelector} from "react-redux";
 import {
     fetchAllFilters,
-    fetchAllProducts,
     fetchProductsByAllQuery,
-    fetchProductsByFilter,
-    fetchProductsByPage
 } from "./redux/features/productSlice.js";
 import {useEffect, useState} from "react";
+import Page from './Page.js'
+import Login from "./Login.js";
 
 
 export const Main = () => {
     const dispatch = useDispatch()
     const products = useSelector(state => state?.product?.products) //selector will automatically subscribe to the store, and run whenever an action is dispatched
     const filters = useSelector(state => state?.product?.filters)
+    const token = useSelector(state => state?.user?.token)
+    const logInMsg = useSelector(state => state?.user?.message)
+    const userInfo = useSelector(state => state?.user?.userInfo)
+
+
     const [sort, setSort] = useState('ASC')
     const [search, setSearch] = useState('')
     const [page, setPage] = useState(1)
+    const [isLogin, setIsLogin] = useState(false)
+
+
 
 
     console.log('products in main page====', products)
     console.log('filters in main page====', filters)
-    const baseUrl = 'http://localhost:3000/product'
+
+    const baseUrl = 'http://localhost:3000/product/'
 
     useEffect(() => {
         dispatch(fetchAllFilters())
     }, []);
 
-    // useEffect(() => {
-    //     dispatch(fetchProductsByAllQuery({sort, search, page, filters}))
-    // }, [filters]);
-
-    // useEffect(() => {
-    //     // console.log('use effect when filters jojo', filters)
-    //     dispatch(fetchProductsByFilter(filters))
-    // }, [filters]);
-
-    //once page load, load the first page
-    // useEffect(() => {
-    //     dispatch(fetchProductsByPage(1))
-    // }, [])
-
-    // --------sort search page------
+    // --------sort search page filters------
     useEffect(() => {
         console.log('changed:',sort, search, page, filters)
 
         dispatch(fetchProductsByAllQuery({sort, search, page, filters}))
 
+        // --------change url------
+        const params = {sort, search, page}
+        let newUrl = new URL(baseUrl)
+
+        for(const key in params) {
+            if(params[key].length !== 0) {
+                newUrl.searchParams.append(key, params[key])
+            }
+        }
+
+        for(const key in filters) {
+            const check = filters[key].filter(item => item.isChecked).map(cate => cate.name)
+            for(const item in check) {
+                newUrl.searchParams.append(key, check[item])
+            }
+        }
+        console.log('update url = ',newUrl.href)
+        window.history.replaceState({path: newUrl.href}, '', newUrl.href)
+
     }, [sort, search, page, filters])
+
+    useEffect(() => {
+        //todo: set token to cookie
+        token && setIsLogin(true)
+    }, [token])
 
     return (
         <div className='main-page-container'>
             <div className="main-page-header">
-                <img src="logo.png" alt=""/>
+                <img src="/logo.png" alt=""/>
                 <h1>infinite fortune vendor</h1>
             </div>
-            <div className="test">
-                {/*<p>{JSON.stringify(products)}</p>*/}
-                <button
-                    onClick={() => {
-                        // dispatch(fetchAllProducts())
-                    }}
-                >fetch all
-                </button>
-                {
-                    [...Array(3)].map((_,i) =>
-                        <button
-                            key={i}
-                            onClick={() => {
-                                // dispatch(fetchProductsByPage(i+1))
-                                setPage(i+1)
-                            }}
-                        >{i+1}
-                        </button>
-                    )
-                }
-
+            <div className="login-row-container">
+                {isLogin?
+                    <h4>{logInMsg}, Hi, {userInfo.name}, your role: {userInfo.roles}</h4>
+                    :<div><Login/><h4>{logInMsg}</h4></div>}
             </div>
+
+            <SearchBar setSearch={setSearch}/>
             <div className="main-page-content">
-                <SearchBar
-                    setSearch={setSearch}
-                />
-                <div className="roductList-container">
+                <div className="page-left">
                     <FilterBar/>
+                </div>
+                <div className="page-right">
                     <div className="sortBar-container">
                         <SortFilter setSort={setSort}/>
                     </div>
+                    {
+                        products && products.length > 0
+                            ? <Display/>
+                            : <h4>Nothing To Show HAHAHAHAHA</h4>
+                    }
                 </div>
-                {
-                    products && products.length > 0
-                        ? <Display/>
-                        : <h4>Nothing</h4>
-                }
-
+            </div>
+            <div className="page-content">
+                <Page setPage={setPage}/>
             </div>
             <div className="main-page-footer">
                 <h5>Contact Us</h5>

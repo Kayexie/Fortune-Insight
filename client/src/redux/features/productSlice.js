@@ -4,35 +4,12 @@ import {APIURL_ALLFILTERS, APIURL_ALLPRODUCTS, APIURL_ALLQUERIES} from "../../he
 
 const initialState = {
     filters: {},
-    products: []
+    products: [],
+    params: {}
 }
 
-export const fetchAllProducts = createAsyncThunk(
-    'product/fetchAllProducts', // slicename+actionname
-    async (_, thunkAPI) => {
-        try{
-            const res = await axios.get(APIURL_ALLPRODUCTS)
-            console.log('in new action to fetch all products====', res)
-            return res.data
-
-        }catch{console.log('err')}
-    }
-)
-export const fetchProductsByPage = createAsyncThunk(
-    'product/fetchProductsByPage', // slicename+actionname
-    async (page, thunkAPI) => {
-        try{
-            const res = await axios.get(`${APIURL_ALLPRODUCTS}/page?page=${page}`)
-            console.log('in new action to fetch page products====', res)
-            return res.data
-
-        }catch{console.log('err')}
-    }
-)
-
-
 export const fetchAllFilters = createAsyncThunk(
-    'product/fetchAllFilters', // slicename+actionname
+    'productRoutes/fetchAllFilters', // slice name+action name
     async (_, thunkAPI) => {
         try{
             const res = await axios.get(APIURL_ALLFILTERS)
@@ -43,81 +20,14 @@ export const fetchAllFilters = createAsyncThunk(
     }
 )
 
-export const fetchProductsByFilter = createAsyncThunk(
-    'product/fetchProductsByFilter', // slicename+actionname
-    async (filters, thunkAPI) => {
-        try{
-            const res = await axios.post(APIURL_ALLPRODUCTS, filters)
-            return res.data
-        }catch{console.log('err')}
-    }
-)
-
-//fetch search input
-export const fetchProductsBySearch = createAsyncThunk(
-    'product/fetchProductsBySearch',
-    async (searchInput) => {
-        try{
-            console.log(searchInput)
-            const res = await axios.get(`${APIURL_ALLPRODUCTS}/search?search=${searchInput}`)
-            console.log('in new action to fetch search products====', `${APIURL_ALLPRODUCTS}/search?search=${searchInput}`, res.data.products)
-            return res.data
-        }catch (e){
-            console.log('err',e)
-        }
-    }
-)
-
-export const sortProductsByPrice = createAsyncThunk(
-    'product/sortProductsByPrice',
-    async (sortOrder) => {
-        try {
-            console.log('sort products by price order ', sortOrder)
-            const res = await axios.get(`${APIURL_ALLPRODUCTS}/sortByPrice?sort=${sortOrder}`)
-            return res.data
-        }catch (e) {
-            console.log('error ', e)
-        }
-    }
-)
-
-export const sortProductsByLetterOrRank = createAsyncThunk(
-    'product/sortProductsByLetterOrRank',
-    async (sortOrder) => {
-        try {
-            console.log('sort products by ', sortOrder)
-            const res = await axios.get(`${APIURL_ALLPRODUCTS}/sort2?sort=${sortOrder}`)
-            return res.data
-        }catch (e) {
-            console.log('error', e)
-        }
-    }
-)
-
-export const sortClear = createAsyncThunk(
-    'product/sortClear',
-    async (clear) => {
-        try{
-            console.log('sort clear')
-            const res = await axios.get(`${APIURL_ALLPRODUCTS}/sortClear?sort=${clear}`)
-            return res.data
-        }catch (e) {
-            console.log('error', e)
-        }
-    }
-)
-
-// =========sort search page========
+// =========sort search page filter========
 export const fetchProductsByAllQuery = createAsyncThunk(
-    'product/fetchProductsByAllQuery',
+    'productRoutes/fetchProductsByAllQuery',
         async (params, thunkAPI) => {
             try{
                 const {sort, search, page, filters} = params
                 console.log("from Slice sort, search, page:",sort, search, page, filters)
-                // const res = await axios.post(`${APIURL_ALLPRODUCTS}search?search=${search}&sort=${sort}&page=${page}`, filters)
                 const res = await axios.post(`${APIURL_ALLQUERIES}?search=${search}&sort=${sort}&page=${page}`, filters)
-                // const res = await axios.post(`${APIURL_ALLQUERIES}`, filters)
-                // const res = await axios.post(`${APIURL_ALLPRODUCTS}pf`, filters)
                 console.log('in new action to fetch search products with sort, search, page ====>', res.data)
                 return res.data
             }catch (e){
@@ -131,10 +41,6 @@ const productSlice = createSlice({
     name: 'product',
     initialState,
     reducers: {
-        // fetchAllFilters: (state, action)=>{
-        //     const filters = action.payload //todo: add more info
-        //     state.filters = filters
-        // }
         updateFilters: (state, action)=>{
             let newFilters = {...state.filters} //shallow copy
             let {title, idx} = action.payload
@@ -158,40 +64,14 @@ const productSlice = createSlice({
 
     },
     extraReducers: (builder)=> {
-        builder.addCase(fetchAllProducts.fulfilled, (state, action)=>{
-            state.products = action.payload.products //payload in asyncThunk create function is the return value
-        })
-        builder.addCase(fetchProductsByPage.fulfilled, (state, action)=>{
-            state.products = action.payload.products
-        })
-
         builder.addCase(fetchAllFilters.fulfilled, (state, action)=>{
-            state.filters = action.payload.response
-        })
-        builder.addCase(fetchProductsByFilter.fulfilled, (state, action)=>{
-            state.products = action.payload.products
-        })
-
-        builder.addCase(fetchProductsBySearch.fulfilled, (state, action)=>{
-            state.products = action.payload.products
-        })
-
-        builder.addCase(sortProductsByPrice.fulfilled, (state, action) => {
-            state.products = action.payload.products
-        })
-
-        builder.addCase(sortProductsByLetterOrRank.fulfilled, (state, action) => {
-            state.products = action.payload.products
-        })
-
-        builder.addCase(sortClear.fulfilled, (state, action) => {
-            state.products = action.payload.products
+            state.filters = action.payload.response //payload in asyncThunk create function is the return value
         })
 
         builder.addCase(fetchProductsByAllQuery.fulfilled, (state, action) => {
             state.products = action.payload.products
+            state.params = action.payload.params
         })
-
     }
 })
 
