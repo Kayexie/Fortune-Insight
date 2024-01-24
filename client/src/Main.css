@@ -37,6 +37,12 @@
   cursor: pointer;
   text-decoration: underline;
 }
+.main-page-container .login-row-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
 .main-page-container .main-page-content {
   display: flex;
   width: 98%;

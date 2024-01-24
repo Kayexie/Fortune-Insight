@@ -47,7 +47,7 @@ class generateSeeds implements Seeder {
         // }
         //
         // // initialize pricelevel
-        // const pls = [
+        // let pls = [
         //     {name: 'Cheap'},
         //     {name: 'Mid'},
         //     {name: 'Expensive'},
@@ -60,7 +60,7 @@ class generateSeeds implements Seeder {
         // }
 
         // // initialize roles
-        // const roles = [
+        // let roles = [
         //     {roleName: 'Admin', permission: 'all_access'},
         //     {roleName: 'Customer', permission: 'view_products'},
         //     {roleName: 'Vendor', permission: 'Edit_products'}
@@ -133,7 +133,7 @@ class generateSeeds implements Seeder {
         // }catch (e){
         //     console.log("init Owner table failure",e)
         // }
-
+        //
         // //generate random customer data
         // let customerRole
         // try{
@@ -141,12 +141,12 @@ class generateSeeds implements Seeder {
         //        .findOne({where: {roleName: 'Customer'}})
         //     console.log('customerRole is found')
         // }catch (e){console.log(e)}
-
+        //
         // const owners = await factory(Owner)(customerRole).createMany(5)
 
         // ============ for init owner table END ===========
 
-        // ============ for init product table START ===========
+        // // ============ for init product table START ===========
         // // filter vendor owners
         // let vendors
         // try{
