@@ -9,9 +9,6 @@ const Input = React.forwardRef(function CustomInput(props, ref) {
     return <BaseInput slots={{ input: InputElement }} {...props} ref={ref} />;
 });
 
-
-
-
 export default function UnstyledInputIntroduction({setSearch}) {
 
 
@@ -29,6 +26,7 @@ export default function UnstyledInputIntroduction({setSearch}) {
         <ButtonIcon
             setSearch={setSearch}
             searchInput={searchInput}
+            showTxt={'Search'}
         />
     </div>
 

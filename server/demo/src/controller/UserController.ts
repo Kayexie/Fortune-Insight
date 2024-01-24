@@ -1,26 +1,76 @@
 import {getRepository} from "typeorm";
 import {NextFunction, Request, Response} from "express";
-import {User} from "../entity/User";
+import ProductController from "./ProductController";
+import Owner from "../entity/Owner";
+import {validateLoginInput} from "../utils/userService";
+import * as jwt from 'jsonwebtoken';
 
-export class UserController {
+class UserController {
 
-    private userRepository = getRepository(User);
+    static loginAuth = async (req: Request, res: Response, next: NextFunction)=> {
+        try{
+            const {email, password} = req.body
 
-    async all(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.find();
-    }
+            // validate email and password
+            const validateError = validateLoginInput(email, password)
+            if(validateError){
+                return res.status(400).send({
+                    message:'invalid login email or password',
+                    validateError
+            })
+            }
 
-    async one(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.findOne(request.params.id);
-    }
+            // authenticate user
+                try{
+                    const user = await getRepository(Owner)
+                        .createQueryBuilder('owner')
+                        .leftJoinAndSelect('owner.roles', 'role')
+                        .where('owner.email = :email', {email})
+                        .getOne()
+                    if(!user){
+                        return res.status(400).send({
+                            message:'user does not exist'
+                        })
+                    }
 
-    async save(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.save(request.body);
-    }
+                    //todo: hash password
+                    if(user.password !== password){
+                        return res.status(400).send({
+                            message:'incorrect password'
+                        })
+                    }
 
-    async remove(request: Request, response: Response, next: NextFunction) {
-        let userToRemove = await this.userRepository.findOne(request.params.id);
-        await this.userRepository.remove(userToRemove);
+                    //generate token JWT
+                    if(user && user.password === password) {
+                        const payload = {
+                            userId: user.id,
+                            email: user.email,
+                            name: user.name,
+                            age: user.age,
+                            roles: user.roles.map(role=>role.roleName)
+                        }
+                        console.log('payload', payload)
+
+                        const token = jwt.sign(
+                            payload,
+                            process.env.JWT_SECRET,
+                            {expiresIn: '1h'}
+                        )
+
+                        return res.status(200).send({
+                            token,
+                            userInfo: {
+                                ...payload,
+                            },
+                            message: 'login success'
+                        })
+                    }
+
+                    } catch(e){console.log(e)}
+
+            }catch(e){console.log(e)}
     }
 
 }
+
+export default UserController;

@@ -62,10 +62,12 @@ class Product extends BaseClass {
     @Column()
     priceChange24h: number
 
+    //relations:
+
     @ManyToOne(() => Category, cate => cate.product)
     category: Category
 
-    @ManyToOne(() => Owner, owner => owner.product)
+    @ManyToOne(() => Owner, owner => owner.products)
     owner: Owner
 
     @ManyToOne(() => PriceLevel, pl => pl.product)

@@ -17,6 +17,7 @@ export class OrderLine extends BaseClass{
     @Min(1)
     quantity: number
 
+    //relations:
     @ManyToOne( () => Order, order => order.orderLines )
     order: Order
 

@@ -5,12 +5,13 @@ import {
     ManyToOne,
     PrimaryColumn,
     PrimaryGeneratedColumn,
-    OneToMany
+    OneToMany, JoinTable
 } from 'typeorm';
-import {IsDecimal, IsInt, IsPositive, Length, Min, MinLength} from "class-validator";
+import {IsDecimal, IsEmail, IsInt, IsPositive, Length, Max, Min, MinLength} from "class-validator";
 import BaseClass from "./BaseClass";
-import {User} from "./User";
 import Product from "./Product";
+import Role from "./Role";
+import {Order} from "./Order";
 @entity('owner')
 class Owner extends BaseClass {
     // @PrimaryColumn()
@@ -22,8 +23,30 @@ class Owner extends BaseClass {
     @MinLength(1)
     name: string;
 
+    @Column({nullable: true})
+    @Min(1)
+    @Max(120)
+    age: number;
+
+    @Column()
+    @IsEmail()
+    @Length(5, 100)
+    email: string
+
+    @Column()
+    @Length(6, 50)
+    password: string
+
+    // relation
     @OneToMany(() => Product, p => p.owner)
-    product: Product[]
+    products: Product[]
+
+    @OneToMany(() => Order, o => o.customer)
+    orders: Order[]
+
+    @ManyToMany(() => Role)
+    @JoinTable()
+    roles: Role[]
 }
 
 export default Owner;

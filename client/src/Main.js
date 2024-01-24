@@ -11,32 +11,48 @@ import {
     fetchProductsByAllQuery,
 } from "./redux/features/productSlice.js";
 import {useEffect, useState} from "react";
+
+import Login from "./Login.js";
+
 import Page from './Page.js';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Popup from "./Popup/Popup";
 import FacebookSharpIcon from '@mui/icons-material/FacebookSharp';
 
 
+
 export const Main = () => {
     const dispatch = useDispatch()
     const products = useSelector(state => state?.product?.products) //selector will automatically subscribe to the store, and run whenever an action is dispatched
     const filters = useSelector(state => state?.product?.filters)
+    const token = useSelector(state => state?.user?.token)
+    const logInMsg = useSelector(state => state?.user?.message)
+    const userInfo = useSelector(state => state?.user?.userInfo)
+
+
     const [sort, setSort] = useState('ASC')
     const [search, setSearch] = useState('')
     const [page, setPage] = useState(1)
+
+    const [isLogin, setIsLogin] = useState(false)
+    
     const [showPop, setShowPop] = useState(false)
     const carts = useSelector(state => state?.product.cart)
 
 
-    // console.log('products in main page====', products)
-    // console.log('filters in main page====', filters)
-    const baseUrl = 'http://localhost:3000/product/abc'
+    console.log('products in main page====', products)
+    console.log('filters in main page====', filters)
+
+    const baseUrl = 'http://localhost:3000/product/'
+
+    
+
 
     useEffect(() => {
         dispatch(fetchAllFilters())
     }, []);
 
-    // --------sort search page------
+    // --------sort search page filters------
     useEffect(() => {
         // console.log('changed:', sort, search, page, filters)
 
@@ -60,10 +76,17 @@ export const Main = () => {
                 newUrl.searchParams.append(key, check[item])
             }
         }
-        // console.log('url = ', newUrl.href)
+
         window.history.replaceState({path: newUrl.href}, '', newUrl.href)
     }, [sort, search, page, filters])
 
+    // --------handling token------
+    useEffect(() => {
+        //todo: set token to cookie
+        token && setIsLogin(true)
+    }, [token])
+
+ 
     // --------handling shopping cart click------
     const openPop = () => {
         setShowPop(!showPop)
@@ -73,8 +96,8 @@ export const Main = () => {
     const QtyArr = carts.map(item => item.quantity)
     const ttlQty = QtyArr.length !==0 ? QtyArr.reduce((a,c) => a + c) : 0
 
-
     document.querySelector('body').style.overflow = 'auto'
+
 
     return (
         <div className='main-page-container'>
@@ -88,7 +111,16 @@ export const Main = () => {
                     <p>Shopping Cart ({ttlQty})</p>
                 </div>
             </div>
+
+            <div className="login-row-container">
+                {isLogin?
+                    <h4>{logInMsg}, Hi, {userInfo.name}, your role: {userInfo.roles}</h4>
+                    :<div><Login/><h4>{logInMsg}</h4></div>}
+            </div>
+
+
             {showPop && <Popup openPop={openPop}/>}
+
             <SearchBar setSearch={setSearch}/>
             <div className="main-page-content">
                 <div className="page-left">
@@ -101,7 +133,7 @@ export const Main = () => {
                     {
                         products && products.length > 0
                             ? <Display/>
-                            : <h4>Nothing</h4>
+                            : <h4>Nothing To Show HAHAHAHAHA</h4>
                     }
                 </div>
             </div>

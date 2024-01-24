@@ -3,6 +3,7 @@ import BaseClass from "./BaseClass";
 import Product from "./Product";
 import {Min} from "class-validator";
 import {OrderLine} from "./OrderLine";
+import Owner from "./Owner";
 
 @Entity()
 export class Order extends BaseClass {
@@ -10,13 +11,12 @@ export class Order extends BaseClass {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
-    // @ManyToOne(() => User, user => user.orders)
-    // user: User
+    //relations:
+
+    @ManyToOne(() => Owner, o => o.orders)
+    customer: Owner
 
     @OneToMany( ()=> OrderLine, orderLine => orderLine.order)
     orderLines: OrderLine[]
 
-    @ManyToMany(() => Product)
-    @JoinTable()
-    products: Product[]
 }
