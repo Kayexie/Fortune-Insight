@@ -177,6 +177,8 @@ class ProductController {
                         sequence = 'product.marketCapRank'
                     }
                     productsQuery.orderBy(`${sequence}`, 'ASC')
+                } else if(sort === 'CreateTime') {
+                    productsQuery.orderBy('product.createdAt', 'DESC')
                 } else if(sort !== 'None') {
                     return res.status(404).send({
                         message: 'invalid sort query'
@@ -201,7 +203,10 @@ class ProductController {
 
             productsQuery.offset((newPage - 1) * perPage).limit(perPage)
 
-            const products:Product[] = await productsQuery.getMany()
+            const products:Product[] = await productsQuery
+                .leftJoinAndSelect('product.category', 'category')
+                .leftJoinAndSelect('product.owner', 'owner')
+                .getMany()
 
             if(!products) {
                 return res.status(404).send({
@@ -228,19 +233,40 @@ class ProductController {
 
     static createProduct = async (req: Request, res: Response) => {
         try{
-            const {name, symbol, id, image, currentPrice, priceChange24h, marketCap, totalVolume, category, owner} =req.body
+            const {name, symbol, id, image, currentPrice, priceChange24h, marketCap, totalVolume, categoryName, ownerName} =req.body
+
             let marketCapRank = 1
+
+            const category = await getRepository(Category).createQueryBuilder('category')
+                .where('category.techType = :name', {name: categoryName})
+                .getOne()
+
+            if(!category) {
+                return res.status(404).send({
+                    message: 'cannot find the category: ' + categoryName
+                })
+            }
+
+            const owner = await getRepository(Owner).createQueryBuilder('owner')
+                .where('owner.name = :name', {name: ownerName})
+                .getOne()
+
+            if(!owner) {
+                return res.status(404).send({
+                    message: 'cannot find the owner: ' + ownerName
+                })
+            }
 
             const createP = Product.create({
                 name,
                 symbol,
                 id,
                 image,
-                currentPrice,
-                priceChange24h,
-                marketCap,
+                currentPrice: Number(currentPrice),
+                priceChange24h: Number(priceChange24h),
+                marketCap: Number(marketCap),
                 marketCapRank,
-                totalVolume,
+                totalVolume: Number(totalVolume),
                 category,
                 owner,
                 isDelete: false
@@ -303,18 +329,44 @@ class ProductController {
 
     static updateProduct = async (req: Request, res: Response) => {
         try{
-            const {name, symbol, id, image, currentPrice, priceChange24h, marketCap, totalVolume, category, owner} = req.body
+            const {name, symbol, id, image, currentPrice, priceChange24h, marketCap, totalVolume, categoryName, ownerName} = req.body
 
-            const builder = getRepository(Product).createQueryBuilder('product')
-
-            const product: Product = await builder
+            const product: Product = await getRepository(Product).createQueryBuilder('product')
                 .where('product.id = :id', {id})
+                .andWhere('product.isDelete = false')
+                .leftJoinAndSelect('product.category', 'category')
+                .leftJoinAndSelect('product.owner', 'owner')
                 .getOne()
 
             if(!product) {
                 return res.status(404).send({
-                    message: 'not found'
+                    message: 'not found the product: ' + id
                 })
+            }
+
+            let category = product.category
+            let owner = product.owner
+
+            if(category.techType !== categoryName) {
+                category = await getRepository(Category).createQueryBuilder('category')
+                    .where('category.techType = :name', {name: categoryName})
+                    .getOne()
+                if(!category) {
+                    return res.status(404).send({
+                        message: 'cannot find the category ', categoryName
+                    })
+                }
+            }
+
+            if(owner.name !== ownerName) {
+                owner = await  getRepository(Owner).createQueryBuilder('owner')
+                    .where('owner.name = :name', {name: ownerName})
+                    .getOne()
+                if(!owner) {
+                    return res.status(404).send({
+                        message: 'cannot find the owner ', ownerName
+                    })
+                }
             }
 
             const updateP = Product.create({
@@ -322,11 +374,11 @@ class ProductController {
                 id,
                 symbol,
                 image,
-                currentPrice,
+                currentPrice: Number(currentPrice),
                 marketCapRank: product.marketCapRank,
-                priceChange24h,
-                marketCap,
-                totalVolume,
+                priceChange24h: Number(priceChange24h),
+                marketCap: Number(marketCap),
+                totalVolume: Number(totalVolume),
                 category,
                 owner
             })
@@ -343,9 +395,9 @@ class ProductController {
                 const prList = await getRepository(PriceLevel).find()
                 let priceLevel = new PriceLevel()
 
-                if(currentPrice < 10) {
+                if(updateP.currentPrice < 10) {
                     priceLevel = prList[0]
-                } else if(currentPrice > 1000) {
+                } else if(updateP.currentPrice > 1000) {
                     priceLevel = prList[1]
                 } else {
                     priceLevel = prList[2]
@@ -362,6 +414,7 @@ class ProductController {
             if(updateP.marketCap !== product.marketCap) {
                 const products: Product[] = await getRepository(Product)
                     .createQueryBuilder('product')
+                    .where('product.isDelete = false')
                     .orderBy('product.marketCap', 'DESC')
                     .getMany()
                 for (let i = 0; i < products.length; i++) {
@@ -373,7 +426,7 @@ class ProductController {
             }
 
             return res.status(200).send({
-                message: 'successfully update ' + name,
+                message: 'successfully update ' + id,
             })
 
         }catch (e) {

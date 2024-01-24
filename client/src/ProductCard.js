@@ -59,7 +59,7 @@ export default function ProductCard({index, p}) {
                         <Typography level="body-sm"><span style={{fontWeight: '700'}}>Price 24h</span></Typography>
                         {p?.priceChange24h >= 0 ?
                             <Typography level="body-sm"><ArrowDropUpIcon style={{fontSize: '28px', color: 'green', margin: '0 -5px -10px -7px'}}/><span style={{color: 'green', fontWeight: '600'}}>{p?.priceChange24h.toFixed(1)}%</span></Typography>
-                            : <Typography level="body-sm"><ArrowDropDownIcon style={{fontSize: '28px', color: 'red', margin: '0 -15px -10px 0'}}/><span style={{marginLeft: '10px', color: 'red', fontWeight: '600'}}>{p?.priceChange24h.toFixed(1)}%</span></Typography>
+                            : <Typography level="body-sm"><ArrowDropDownIcon style={{fontSize: '28px', color: 'red', margin: '0 -15px -10px -7px'}}/><span style={{marginLeft: '10px', color: 'red', fontWeight: '600'}}>{Math.abs(p?.priceChange24h.toFixed(1))}%</span></Typography>
                         }
                     </div>
                     <img

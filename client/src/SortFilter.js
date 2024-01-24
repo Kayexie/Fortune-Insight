@@ -37,6 +37,7 @@ export default function SelectAutoWidth({setSort}) {
                     <MenuItem value={'ASC'} onClick={() => setSort('ASC')}>Price (Low to High)</MenuItem>
                     <MenuItem value={'Letter'} onClick={() => setSort('Letter')}>Initial Letter</MenuItem>
                     <MenuItem value={'Rank'} onClick={() => setSort('Rank')}>Market Cap Rank</MenuItem>
+                    <MenuItem value={'CreateTime'} onClick={() => setSort('CreateTime')}>Create Time</MenuItem>
                     <MenuItem value={'None'} onClick={() => setSort('None')}>None</MenuItem>
                 </Select>
             </FormControl>
