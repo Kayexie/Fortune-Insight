@@ -4,8 +4,8 @@
    "port": 3306,
    "username": "root",
 
-   "password": "root0415",
-   "database": "test",
+   "password": "yhiffy@163",
+   "database": "tut",
 
    "synchronize": false,
    "logging": false,
