@@ -8,6 +8,12 @@ export const emailRegex = /\S+@\S+\.\S+/;
 export const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
 
 
+export const APIURL_DELETEPRODUCT = 'http://localhost:8000/product/delete'
+
+export const APIURL_CREATEPRODUCT = 'http://localhost:8000/product/create'
+
+export const APIURL_UPDATEPRODUCT = 'http://localhost:8000/product/update'
+
 export const actionType = {
     'FETCH_ALL_PRODUCTS': 'FETCH_ALL_PRODUCTS',
     'FETCH_PAGE_PRODUCTS': 'FETCH_PAGE_PRODUCTS',

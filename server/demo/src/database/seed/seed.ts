@@ -14,10 +14,15 @@ class generateSeeds implements Seeder {
 
 
     run = async (factory: Factory, connection: Connection): Promise<void> => {
+<<<<<<< HEAD
         console.log('op1: seed init')
 
         // seed random data
         // const products = await factory(Product)().createMany(5)
+=======
+        console.log('op1')
+
+>>>>>>> 70dc66dfe3109b4676894715010594e7cfce0a46
         //
         // // initialize categories
         // const categories = [

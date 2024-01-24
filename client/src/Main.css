@@ -11,19 +11,31 @@
 }
 .main-page-container .main-page-header {
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   height: auto;
   background-color: #000000;
   color: #ffffff;
   text-transform: uppercase;
 }
-.main-page-container .main-page-header img {
+.main-page-container .main-page-header .main-page-logo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.main-page-container .main-page-header .main-page-logo img {
   width: 200px;
   height: 200px;
+}
+.main-page-container .main-page-header .main-page-shopping {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: right;
+}
+.main-page-container .main-page-header .main-page-shopping p:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
 .main-page-container .main-page-content {
   display: flex;
@@ -44,12 +56,29 @@
   width: 100%;
   margin: 20px auto;
 }
+.main-page-container .main-page-createProduct {
+  position: fixed;
+  right: 50px;
+  bottom: 50px;
+}
 .main-page-container .main-page-footer {
+  line-height: 2rem;
   padding: 20px;
   width: 100%;
-  height: 500px;
   background-color: #000000;
   color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.main-page-container .main-page-footer .h5 {
+  display: flex;
+  flex-direction: row;
+  margin-right: 1rem;
+}
+.main-page-container .main-page-footer .h5 h4 {
+  padding-left: 1rem;
+  text-decoration: underline;
 }
 
 /*# sourceMappingURL=Main.css.map */
