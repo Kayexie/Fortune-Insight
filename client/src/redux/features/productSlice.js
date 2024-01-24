@@ -1,6 +1,12 @@
 import {createAsyncThunk, createSlice, current} from "@reduxjs/toolkit";
 import axios from "axios";
-import {APIURL_ALLFILTERS, APIURL_ALLPRODUCTS, APIURL_ALLQUERIES, APIURL_DELETEPRODUCT} from "../../helper.js";
+import {
+    APIURL_ALLFILTERS,
+    APIURL_ALLPRODUCTS,
+    APIURL_ALLQUERIES,
+    APIURL_CREATEPRODUCT,
+    APIURL_DELETEPRODUCT, APIURL_UPDATEPRODUCT
+} from "../../helper.js";
 
 const items = localStorage.getItem('cartItems') !== null ? JSON.parse(localStorage.getItem('cartItems')) : []
 
@@ -49,6 +55,32 @@ export const deleteProductById = createAsyncThunk(
             console.log(`The product ${id} is going to be deleted`)
             const res = await axios.delete(`${APIURL_DELETEPRODUCT}?id=${id}`)
             console.log('this action is going to delete the product ', res.data)
+            return res.data
+        }catch (e) {
+            console.log('err: ', e)
+        }
+    }
+)
+
+export const createProduct = createAsyncThunk(
+    'product/createProduct',
+    async (params) => {
+        try {
+            const res = await axios.post(APIURL_CREATEPRODUCT, params)
+            console.log('this action is going to create a new product ', res.data)
+            return res.data
+        }catch (e) {
+            console.log('err: ', e)
+        }
+    }
+)
+
+export const updateProduct = createAsyncThunk(
+    'product/updateProduct',
+    async (params) => {
+        try {
+            const res = await axios.put(APIURL_UPDATEPRODUCT, params)
+            console.log('this action is going to update the product', res.data)
             return res.data
         }catch (e) {
             console.log('err: ', e)
