@@ -1,7 +1,7 @@
 import {Main} from "./Main.js";
 import './App.scss';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import CheckoutPage from "./CheckoutPage";
+import CheckoutPage from "./Checkout/CheckoutPage";
 
 const App = () => {
   return (
