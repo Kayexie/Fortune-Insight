@@ -2,13 +2,15 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  //background-color: #000011;
+  //color: #ffffff;
+
 }
 .main-page-container {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
 
-  //bcakground-color: #ffffff;
   .main-page-header{
     padding: 20px;
     width: 100%;
@@ -36,6 +38,12 @@
         text-decoration: underline;
       }
     }
+  }
+  .login-row-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   }
   .main-page-content{
     display: flex;

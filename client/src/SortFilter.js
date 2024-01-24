@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 export default function SelectAutoWidth({setSort}) {
     const [sortShow, setSortShow] = React.useState('');
     const params = useSelector(state => state?.product?.params)
+    console.log('params in sort filter ====', params)
 
     const createHandleMenuClick = (menuItem) => {
         setSortShow(menuItem.target.value)
@@ -18,7 +19,7 @@ export default function SelectAutoWidth({setSort}) {
         <div style={{display: 'flex', alignItems: 'center'}}>
             <div style={{font: '600 .95rem/1.6 Roboto Condensed,sans-serif', color: '#666', marginRight: '30px'}}>
                 {params['total products counts']}
-                {params['total products counts'] > 1 ? '   products' : '   product'}
+                {params['total products counts'] > 1 ? '   products' : '   productRoutes'}
             </div>
             <FormControl sx={{ m: 1, minWidth: 120 }} size='small'>
                 <InputLabel id="demo-simple-select-autowidth-label">Sort By</InputLabel>
@@ -30,9 +31,7 @@ export default function SelectAutoWidth({setSort}) {
                     autoWidth
                     label="Sort By"
                 >
-                    {/*<MenuItem value="" onClick={() => dispatch(sortClear('None'))}>*/}
-                    {/*    <em>None</em>*/}
-                    {/*</MenuItem>*/}
+
                     <MenuItem value={'DESC'} onClick={() => setSort('DESC')}>Price (High to Low)</MenuItem>
                     <MenuItem value={'ASC'} onClick={() => setSort('ASC')}>Price (Low to High)</MenuItem>
                     <MenuItem value={'Letter'} onClick={() => setSort('Letter')}>Initial Letter</MenuItem>

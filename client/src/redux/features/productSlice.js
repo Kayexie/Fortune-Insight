@@ -18,7 +18,7 @@ const initialState = {
 }
 
 export const fetchAllFilters = createAsyncThunk(
-    'product/fetchAllFilters', // slicename+actionname
+    'productRoutes/fetchAllFilters', // slice name+action name
     async (_, thunkAPI) => {
         try {
             const res = await axios.get(APIURL_ALLFILTERS)
@@ -33,6 +33,7 @@ export const fetchAllFilters = createAsyncThunk(
 
 // =========sort search page filter========
 export const fetchProductsByAllQuery = createAsyncThunk(
+
     'product/fetchProductsByAllQuery',
     async (params, thunkAPI) => {
         try {
@@ -93,6 +94,7 @@ const productSlice = createSlice({
     name: 'product',
     initialState,
     reducers: {
+
         // fetchAllFilters: (state, action)=>{
         //     const filters = action.payload //todo: add more info
         //     state.filters = filters

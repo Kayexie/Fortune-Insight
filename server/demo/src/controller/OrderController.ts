@@ -73,7 +73,7 @@ class OrderController {
             const orderId: string = newOrder.id
             console.log(orderId)
 
-            //obtain the product info from req.body, which should contain productId, price & quantity
+            //obtain the productRoutes info from req.body, which should contain productId, price & quantity
             //todo: add userId here also
             const productList = req.body
             // console.log(productList)
@@ -87,7 +87,7 @@ class OrderController {
 
             //todo:check if productId valid
 
-            // create newOrderLine with orderLine, one product at a time
+            // create newOrderLine with orderLine, one productRoutes at a time
             const newOrderLine = productList.map(p => OrderLine.create({
                 unitPrice: p.currentPrice,
                 quantity: p.quantity,

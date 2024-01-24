@@ -112,7 +112,7 @@ class ProductController {
         try{
             const {search, sort, page} = req.query
             const {categories, owners, priceLevel} = req.body
-            const data = req.body
+            // const data = req.body
 
             console.log(search, sort, page)
             console.log('from back end controller queryProductBySearchQ')
@@ -161,7 +161,16 @@ class ProductController {
             if(searchCount === 0){
                 res.status(200).send({
                     products: [],
-                    message: 'no search result'
+                    message: 'no search result',
+                    params: {
+                        'search': search,
+                        'sort': sort,
+                        'page': page,
+                        'total products counts': 0,
+                        'total pages': 0,
+                        'current page': 0,
+                        "message": "successfully get the search/sort/page products",
+                    }
                 })
                 return // not execute the following code
             }
