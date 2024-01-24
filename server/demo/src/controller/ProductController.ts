@@ -1,9 +1,10 @@
-import {Brackets, getRepository} from "typeorm";
+import {Brackets, createQueryBuilder, getRepository} from "typeorm";
 import {NextFunction, Request, Response} from "express";
 import Product from "../entity/Product";
 import Category from "../entity/Category";
 import Owner from "../entity/Owner";
 import PriceLevel from "../entity/PriceLevel";
+import {validate} from "class-validator";
 
 class ProductController {
     static queryAllFilters = async (req:Request, res:Response)=>{
@@ -116,7 +117,7 @@ class ProductController {
             console.log(search, sort, page)
             console.log('from back end controller queryProductBySearchQ')
 
-            const productsQuery = getRepository(Product).createQueryBuilder('product')
+            const productsQuery = getRepository(Product).createQueryBuilder('product').where('product.isDelete = false')
 
             // ==================== filter ====================
 
@@ -185,6 +186,8 @@ class ProductController {
                         sequence = 'product.marketCapRank'
                     }
                     productsQuery.orderBy(`${sequence}`, 'ASC')
+                } else if(sort === 'CreateTime') {
+                    productsQuery.orderBy('product.createdAt', 'DESC')
                 } else if(sort !== 'None') {
                     return res.status(404).send({
                         message: 'invalid sort query'
@@ -193,7 +196,7 @@ class ProductController {
             }
 
             const total = await productsQuery.getCount()
-            const perPage = 10
+            const perPage = 9
             //round up
             const totalPage = Math.ceil(total / perPage)
             let newPage = 1
@@ -209,7 +212,10 @@ class ProductController {
 
             productsQuery.offset((newPage - 1) * perPage).limit(perPage)
 
-            const products:Product[] = await productsQuery.getMany()
+            const products:Product[] = await productsQuery
+                .leftJoinAndSelect('product.category', 'category')
+                .leftJoinAndSelect('product.owner', 'owner')
+                .getMany()
 
             if(!products) {
                 return res.status(404).send({
@@ -222,7 +228,6 @@ class ProductController {
                 params: {
                     'search': search,
                     'sort': sort,
-                    'page': page,
                     'total products counts': total,
                     'total pages':totalPage,
                     'current page': newPage,
@@ -237,20 +242,265 @@ class ProductController {
 
     static createProduct = async (req: Request, res: Response) => {
         try{
-            for(const key in req.body) {
-                if(!req.body[key]) {
-                    return res.status(300).send({
-                        message: key + 'is not allowed to be empty, invalid body'
+            const {name, symbol, id, image, currentPrice, priceChange24h, marketCap, totalVolume, categoryName, ownerName} =req.body
+
+            let marketCapRank = 1
+
+            const category = await getRepository(Category).createQueryBuilder('category')
+                .where('category.techType = :name', {name: categoryName})
+                .getOne()
+
+            if(!category) {
+                return res.status(404).send({
+                    message: 'cannot find the category: ' + categoryName
+                })
+            }
+
+            const owner = await getRepository(Owner).createQueryBuilder('owner')
+                .where('owner.name = :name', {name: ownerName})
+                .getOne()
+
+            if(!owner) {
+                return res.status(404).send({
+                    message: 'cannot find the owner: ' + ownerName
+                })
+            }
+
+            const createP = Product.create({
+                name,
+                symbol,
+                id,
+                image,
+                currentPrice: Number(currentPrice),
+                priceChange24h: Number(priceChange24h),
+                marketCap: Number(marketCap),
+                marketCapRank,
+                totalVolume: Number(totalVolume),
+                category,
+                owner,
+                isDelete: false
+            })
+
+            const error = await validate(createP)
+
+            if(error.length > 0) {
+                return res.status(300).send({
+                    message: error
+                })
+            }
+
+            //determine the priceLevel of the new product
+            const prList = await getRepository(PriceLevel).find()
+            let priceLevel = new PriceLevel()
+
+            if(currentPrice < 10) {
+                priceLevel = prList[0]
+            } else if(currentPrice > 1000) {
+                priceLevel = prList[1]
+            } else {
+                priceLevel = prList[2]
+            }
+            createP.priceLevel = priceLevel
+
+            //count the marketCapRank
+            const products = await getRepository(Product).createQueryBuilder('product')
+                .where('product.marketCap < :marketCap', {marketCap})
+                .orderBy('product.marketCap', 'DESC')
+                .getMany()
+
+            if(!products.length) {
+                createP.marketCapRank = await getRepository(Product)
+                    .createQueryBuilder('product')
+                    .where('product.isDelete = false')
+                    .getCount() + 1
+            } else {
+                createP.marketCapRank = products[0].marketCapRank
+                for (let i = 0; i < products.length; i++) {
+                    await createQueryBuilder('product').update(Product)
+                        .where('product.id = :id', {id: products[i].id})
+                        .set({marketCapRank: products[i].marketCapRank + 1})
+                        .execute()
+                }
+            }
+
+            await createP.save()
+
+            return res.status(200).send({
+                message: 'successfully add new product'
+            })
+
+        }catch (e) {
+            return res.status(404).send({
+                message: e
+            })
+        }
+    }
+
+    static updateProduct = async (req: Request, res: Response) => {
+        try{
+            const {name, symbol, id, image, currentPrice, priceChange24h, marketCap, totalVolume, categoryName, ownerName} = req.body
+
+            const product: Product = await getRepository(Product).createQueryBuilder('product')
+                .where('product.id = :id', {id})
+                .andWhere('product.isDelete = false')
+                .leftJoinAndSelect('product.category', 'category')
+                .leftJoinAndSelect('product.owner', 'owner')
+                .getOne()
+
+            if(!product) {
+                return res.status(404).send({
+                    message: 'not found the product: ' + id
+                })
+            }
+
+            let category = product.category
+            let owner = product.owner
+
+            if(category.techType !== categoryName) {
+                category = await getRepository(Category).createQueryBuilder('category')
+                    .where('category.techType = :name', {name: categoryName})
+                    .getOne()
+                if(!category) {
+                    return res.status(404).send({
+                        message: 'cannot find the category ', categoryName
                     })
                 }
             }
 
-            const {name, symbol, id, image, marketCap, totalVolume, categories, owners, priceLevel} =req.body
+            if(owner.name !== ownerName) {
+                owner = await  getRepository(Owner).createQueryBuilder('owner')
+                    .where('owner.name = :name', {name: ownerName})
+                    .getOne()
+                if(!owner) {
+                    return res.status(404).send({
+                        message: 'cannot find the owner ', ownerName
+                    })
+                }
+            }
+
+            const updateP = Product.create({
+                name,
+                id,
+                symbol,
+                image,
+                currentPrice: Number(currentPrice),
+                marketCapRank: product.marketCapRank,
+                priceChange24h: Number(priceChange24h),
+                marketCap: Number(marketCap),
+                totalVolume: Number(totalVolume),
+                category,
+                owner
+            })
+
+            const errors = await validate(updateP)
+
+            if(errors.length > 0) {
+                return res.status(300).send({
+                    message: errors
+                })
+            }
+
+            if(updateP.currentPrice !== product.currentPrice) {
+                const prList = await getRepository(PriceLevel).find()
+                let priceLevel = new PriceLevel()
+
+                if(updateP.currentPrice < 10) {
+                    priceLevel = prList[0]
+                } else if(updateP.currentPrice > 1000) {
+                    priceLevel = prList[1]
+                } else {
+                    priceLevel = prList[2]
+                }
+                updateP.priceLevel = priceLevel
+            }
+
+            await createQueryBuilder('product').update(Product)
+                .set(updateP)
+                .where('product.id = :id', {id})
+                .execute()
+
+            // if update product market cap, market cap rank column needs to be updated as well.
+            if(updateP.marketCap !== product.marketCap) {
+                const products: Product[] = await getRepository(Product)
+                    .createQueryBuilder('product')
+                    .where('product.isDelete = false')
+                    .orderBy('product.marketCap', 'DESC')
+                    .getMany()
+                for (let i = 0; i < products.length; i++) {
+                    await createQueryBuilder('product').update(Product)
+                        .where('product.id = :id', {id: products[i].id})
+                        .set({marketCapRank: i + 1})
+                        .execute()
+                }
+            }
+
+            return res.status(200).send({
+                message: 'successfully update ' + id,
+            })
 
         }catch (e) {
-
+            return res.status(404).send({
+                message: e
+            })
         }
+    }
 
+    static deleteProduct = async (req: Request, res: Response) => {
+       try{
+           const {id} = req.query
+
+           if(!id) {
+               return res.status(300).send({
+                    message: 'invalid query of deleting product'
+               })
+           }
+
+           const deleteQuery = getRepository(Product).createQueryBuilder('product')
+
+           const deleteProduct = await deleteQuery
+               .where('product.id = :id', {id})
+               .getOne()
+
+           if(!deleteProduct) {
+               return res.status(404).send({
+                   message: 'not found'
+               })
+           }
+
+           await createQueryBuilder('product')
+               .update(Product)
+               .where('product.id = :id', {id})
+               .set({isDelete: true})
+               .execute()
+
+           //change marketCapRank after this product
+           const products: Product[] = await getRepository(Product)
+               .createQueryBuilder('product')
+               .where('product.marketCap < :marketCap', {marketCap: deleteProduct.marketCap})
+               .andWhere('product.isDelete = false')
+               .orderBy('product.marketCap', 'DESC')
+               .getMany()
+
+           if(products.length > 0) {
+               let rank = deleteProduct.marketCapRank
+               for (let i = 0; i < products.length; i++) {
+                   await createQueryBuilder('product')
+                       .update(Product)
+                       .where('product.id = :id', {id: products[i].id})
+                       .set({marketCapRank: rank++})
+                       .execute()
+               }
+           }
+
+           return res.status(200).send({
+               message: 'successfully delete ' + deleteProduct.name
+           })
+
+       }catch (e) {
+           return res.status(404).send({
+               message: e
+           })
+       }
     }
 }
 

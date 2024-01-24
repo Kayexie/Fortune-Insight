@@ -13,18 +13,30 @@
 
   .main-page-header{
     padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     width: 100%;
     height: auto;
     background-color: #000000;
     color: #ffffff;
     text-transform: uppercase;
-    img {
-      width: 200px;
-      height: 200px;
+    .main-page-logo{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 200px;
+        height: 200px;
+      }
+    }
+    .main-page-shopping{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: right;
+      p:hover{
+        cursor: pointer;
+        text-decoration: underline;
+      }
     }
   }
   .login-row-container{
@@ -56,11 +68,31 @@
     margin: 20px auto;
   }
 
+  .main-page-createProduct {
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+  }
+
   .main-page-footer{
+    line-height: 2rem;
     padding: 20px;
     width: 100%;
-    height: 500px;
     background-color: #000000;
     color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    //justify-content: space-evenly;
+    align-items: center;
+    .h5{
+      display: flex;
+      flex-direction: row;
+      margin-right: 1rem;
+      h4{
+        padding-left: 1rem;
+        text-decoration: underline;
+      }
+    }
+
   }
 }

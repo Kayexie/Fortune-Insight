@@ -10,6 +10,12 @@ productRoutes.post('/', ProductController.queryProductBySearchQ)
 
 // productRoutes.post('/pf', ProductController.fetchProductsByFilter)
 
+productRoutes.delete('/delete', ProductController.deleteProduct)
+
+productRoutes.post('/create', ProductController.createProduct)
+
+productRoutes.put('/update', ProductController.updateProduct)
+
 
 
 

@@ -6,9 +6,10 @@
   justify-content: center;
 }
 .display-container .display-product-container {
-  width: 1600px;
+  width: 95%;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 /*# sourceMappingURL=Display.css.map */
