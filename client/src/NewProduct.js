@@ -82,18 +82,24 @@ export default function FloatingActionButtonSize() {
                                 <FormControl>
                                     <FormLabel>Id</FormLabel>
                                     <Input required name='id'
+                                           sx={{width: newProduct.image ? '330px' : '500px'}}
                                            onChange={paramHandler}
                                            value={newProduct.id}/>
                                 </FormControl>
-                                <FormControl>
+                                <FormControl sx={{position: 'relative'}}>
                                     <FormLabel>Image</FormLabel>
-                                    <Input required name='image'
-                                           onChange={paramHandler}
-                                           value={newProduct.image}/>
+                                    <div>
+                                        <Input required name='image'
+                                               onChange={paramHandler}
+                                               sx={{height: 36, width: newProduct.image ? '330px' : '500px'}}
+                                               value={newProduct.image}/>
+                                        {newProduct.image && <img width='120px' style={{right: '20px', top: '-15px', position: 'absolute'}} src={newProduct.image} alt=""/> }
+                                    </div>
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Current Price</FormLabel>
                                     <Input required name='currentPrice'
+                                           sx={{width: newProduct.image ? '330px' : '500px'}}
                                            onChange={paramHandler}
                                            value={newProduct.currentPrice}/>
                                 </FormControl>

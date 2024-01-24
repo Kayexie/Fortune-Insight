@@ -140,7 +140,7 @@ export default function BasicSpeedDial({p}) {
                                 </FormControl>
                                 <FormControl sx={{position: 'relative'}}>
                                     <FormLabel>Image</FormLabel>
-                                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                                    <div>
                                         <Input required name='image'
                                                onChange={editHandler}
                                                sx={{height: 36, width: editProduct.image ? '330px' : '500px'}}
