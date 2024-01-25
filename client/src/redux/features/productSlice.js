@@ -2,8 +2,7 @@ import {createAsyncThunk, createSlice, current} from "@reduxjs/toolkit";
 import axios from "axios";
 import {
     APIURL_ALLFILTERS,
-    APIURL_ALLPRODUCTS,
-    APIURL_ALLQUERIES,
+    APIURL_ALLQUERIES, APIURL_CREATEORDER,
     APIURL_CREATEPRODUCT,
     APIURL_DELETEPRODUCT, APIURL_UPDATEPRODUCT
 } from "../../helper.js";
@@ -88,6 +87,7 @@ export const updateProduct = createAsyncThunk(
         }
     }
 )
+
 
 
 const productSlice = createSlice({
