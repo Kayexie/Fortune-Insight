@@ -6,6 +6,16 @@
   align-items: center;
   justify-content: center;
 }
+.checkout-page .back-to-main {
+  width: 80%;
+  border-bottom: 1px solid black;
+  margin: auto;
+  padding-top: 1rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+}
 .checkout-page .checkout-page-container {
   display: grid;
   grid-column-gap: 1.5625rem;
@@ -15,14 +25,15 @@
   margin: 0 auto;
 }
 .checkout-page .checkout-page-container .checkout-page-title {
+  font-size: 2.3rem;
   margin: 1.5rem 0;
   text-align: center;
   grid-column: 2/12;
-  font-size: 2.3rem;
   line-height: 1.2;
   font-weight: 700;
 }
-.checkout-page .checkout-page-container .checkout-page-login {
+.checkout-page .checkout-page-container .checkout-page-payment {
+  border: 1px solid black;
   margin-right: 3.125rem;
   padding: 1rem 1.5625rem 2.5rem;
   background: white;

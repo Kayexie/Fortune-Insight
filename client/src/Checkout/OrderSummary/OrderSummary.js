@@ -18,7 +18,7 @@ const OrderSummary = ({cart}) => {
     return (
         <div className='order-summary-container'>
             <div>
-                <h2>Order Summary</h2>
+                <h2>Order Details</h2>
                 <div className='order-summary-header'>
                     <div className='order-summary-left'>
                         <svg className='order-summary-bagicon' viewBox="0 0 24 24"

@@ -2,14 +2,17 @@ import './CheckoutPage.scss'
 import React from 'react';
 import OrderSummary from "./OrderSummary/OrderSummary";
 import {useSelector} from "react-redux";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-
-
+import {ArrowBack} from "@mui/icons-material";
+import {PayPalScriptProvider, PayPalButtons} from "@paypal/react-paypal-js";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 
 const CheckoutPage = () => {
 
     const carts = useSelector(state => state?.product.cart)
+    // const orderId = useSelector(state => state?.order.orderId)
+    // console.log(orderId)
+
 
 
     return <div className='checkout-page'>
@@ -20,11 +23,30 @@ const CheckoutPage = () => {
                 <h1>infinite fortune vendor</h1>
             </div>
         </div>
+        <div className='back-to-main' onClick={() => window.location.replace('/')}>
+            <ArrowBack/>
+            Back To Main Page
+        </div>
         <div className="checkout-page-container">
             <div className="checkout-page-title">
                 Checkout
             </div>
-            <div className="checkout-page-login">
+            <div className="checkout-page-payment">
+                <div className='order-number'>
+                    <div>
+                        <div>
+                            <CheckCircleIcon style={{color:'green'}}/>
+                            <p>You Have Created The Order</p>
+                        </div>
+                        <div>Order Id: </div>
+                    </div>
+                </div>
+                <div>
+                    <PayPalScriptProvider options={{clientId: "test"}}>
+                        <PayPalButtons style={{layout: "horizontal"}}/>
+                    </PayPalScriptProvider>
+                </div>
+
             </div>
             <div className="checkout-page-order-summary">
                 <OrderSummary cart={carts}/>
