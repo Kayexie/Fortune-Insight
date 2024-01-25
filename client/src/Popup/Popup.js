@@ -54,7 +54,6 @@ const Popup = ({openPop}) => {
         navigate('/checkout')
     }
 
-
     return (
         <div className='pop-up'>
             <div className='pop-up-model'>
