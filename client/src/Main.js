@@ -23,6 +23,7 @@ export const Main = () => {
     const token = useSelector(state => state?.user?.token)
     const logInMsg = useSelector(state => state?.user?.message)
     const userInfo = useSelector(state => state?.user?.userInfo)
+    const orderId = useSelector(state => state?.order?.orderInfo)
 
 
     const [sort, setSort] = useState('ASC')

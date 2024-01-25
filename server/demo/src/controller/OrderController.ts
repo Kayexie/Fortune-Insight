@@ -100,6 +100,7 @@ class OrderController {
 
             return res.send({
                 message: "YOU CREATE AN ORDER",
+                orderId,
                 newOrderLine
             })
 
