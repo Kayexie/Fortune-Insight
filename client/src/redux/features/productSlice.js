@@ -92,6 +92,7 @@ const productSlice = createSlice({
     name: 'product',
     initialState,
     reducers: {
+
         // fetchAllFilters: (state, action)=>{
         //     const filters = action.payload //todo: add more info
         //     state.filters = filters

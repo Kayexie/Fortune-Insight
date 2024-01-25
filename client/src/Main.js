@@ -16,7 +16,6 @@ import Page from './Page.js';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Popup from "./Popup/Popup";
 
-
 export const Main = () => {
     const dispatch = useDispatch()
     const products = useSelector(state => state?.product?.products) //selector will automatically subscribe to the store, and run whenever an action is dispatched
@@ -31,7 +30,7 @@ export const Main = () => {
     const [page, setPage] = useState(1)
 
     const [isLogin, setIsLogin] = useState(false)
-
+    
     const [showPop, setShowPop] = useState(false)
     const carts = useSelector(state => state?.product.cart)
 
@@ -39,6 +38,7 @@ export const Main = () => {
     console.log('filters in main page====', filters)
 
     const baseUrl = 'http://localhost:3000/product/'
+
 
     useEffect(() => {
         dispatch(fetchAllFilters())
@@ -72,7 +72,7 @@ export const Main = () => {
         window.history.replaceState({path: newUrl.href}, '', newUrl.href)
     }, [sort, search, page, filters])
 
-    // -------- token ------
+    // --------handling token------
     useEffect(() => {
         //todo: set token to cookie
         token && setIsLogin(true)
@@ -86,7 +86,6 @@ export const Main = () => {
     //calculate the ttl Qty in shopping cart
     const QtyArr = carts.map(item => item.quantity)
     const ttlQty = QtyArr.length !==0 ? QtyArr.reduce((a,c) => a + c) : 0
-
 
     document.querySelector('body').style.overflow = 'auto'
 
