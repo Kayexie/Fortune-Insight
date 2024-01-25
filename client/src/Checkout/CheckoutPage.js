@@ -1,7 +1,7 @@
 import './CheckoutPage.scss'
-import React from 'react';
+import React, {useEffect} from 'react';
 import OrderSummary from "./OrderSummary/OrderSummary";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {ArrowBack} from "@mui/icons-material";
 import {PayPalScriptProvider, PayPalButtons} from "@paypal/react-paypal-js";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -11,8 +11,12 @@ const CheckoutPage = () => {
 
     const carts = useSelector(state => state?.product.cart)
     const id = useSelector(state => state?.order.orderInfo)
+    const dispatch = useDispatch()
     console.log(id)
 
+    // useEffect(() => {
+    //     dispatch(fetch)
+    // }, []);
 
     return <div className='checkout-page'>
 
