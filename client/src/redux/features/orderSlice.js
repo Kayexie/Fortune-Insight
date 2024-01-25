@@ -3,19 +3,19 @@ import axios from "axios";
 import {APIURL_CREATEORDER} from "../../helper.js";
 
 const initialState = {
-    orderId:'',
+    orderInfo:'',
 }
 
 
 export const fetchToCreateOrder = createAsyncThunk(
-    'product/fetchToCreateOrder',
+    'orderSlice/fetchToCreateOrder',
     async (newCarts) => {
         try{
             const data = newCarts.newCarts
             console.log(data)
             const res = await axios.post(APIURL_CREATEORDER,data)
             console.log(res.data)
-            return res.data.orderId
+            return res.data
         }catch (e) {
             console.log('err: ', e)
         }
@@ -31,7 +31,9 @@ const orderSlice = createSlice({
     },
     extraReducers: (builder)=> {
         builder.addCase(fetchToCreateOrder.fulfilled, (state, action) => {
-            state.orderId = action.payload
+            state.orderInfo = action.payload.orderId
+            console.log("this is from orderSlice ------------- ",action.payload.orderId)
+            console.log("this is from orderSlice ------------- ",state.orderInfo)
         })
     }
 })
