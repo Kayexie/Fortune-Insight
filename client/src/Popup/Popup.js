@@ -1,11 +1,14 @@
 import React from 'react';
 import './Popup.scss';
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import PopProductList from "./PopProductList";
 import './PopProductList.scss'
+import {fetchToCreateOrder} from "../redux/features/orderSlice";
 
 const Popup = ({openPop}) => {
+
+    const dispatch = useDispatch()
 
     const carts = useSelector(state => state?.product.cart)
 
@@ -27,9 +30,25 @@ const Popup = ({openPop}) => {
 
     document.querySelector('body').style.overflow = 'hidden'
 
-    // const handleNavigation = () => {
-    //     window.location.replace('/checkout')
-    // }
+    const handleCheckout = () => {
+        //处理一下产品
+        const newCarts = [];
+        carts.map(item => {
+            let newItem = {
+                productId: item.id,
+                currentPrice: item.price,
+                quantity:item.quantity
+            }
+            newCarts.push(newItem)
+        })
+        // console.log(newCarts)
+        dispatch(fetchToCreateOrder({newCarts}))
+
+        //todo:清空购物车
+        //todo: with authorized token to check out
+
+        // window.location.replace('/checkout')
+    }
 
 
     return (
@@ -67,7 +86,7 @@ const Popup = ({openPop}) => {
                 </div>
                 <div className='pop-up-checkout'>
                     <div className='continue' onClick={() => openPop()}>CONTINUE SHOPPING</div>
-                    <div className='checkout' onClick={() => window.location.replace('/checkout')} >CHECK OUT</div>
+                    <div className='checkout' onClick={() => handleCheckout()} >CHECK OUT</div>
                 </div>
             </div>
             <div className='overlay'></div>
