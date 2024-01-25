@@ -5,10 +5,13 @@ import {useDispatch, useSelector} from "react-redux";
 import PopProductList from "./PopProductList";
 import './PopProductList.scss'
 import {fetchToCreateOrder} from "../redux/features/orderSlice";
+import {useNavigate} from "react-router-dom";
 
 const Popup = ({openPop}) => {
 
     const dispatch = useDispatch()
+
+    const navigate = useNavigate()
 
     const carts = useSelector(state => state?.product.cart)
 
@@ -48,6 +51,7 @@ const Popup = ({openPop}) => {
         //todo: with authorized token to check out
 
         // window.location.replace('/checkout')
+        navigate('/checkout')
     }
 
 
