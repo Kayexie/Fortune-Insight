@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
-import {APIURL_ALLFILTERS, APIURL_ALLPRODUCTS, APIURL_ALLQUERIES, APIURL_LOGINAUTH} from "../../helper.js";
+import {APIURL_LOGINAUTH} from "../../helper.js";
 
 const initialState = {
     token: '',

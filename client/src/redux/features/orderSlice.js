@@ -14,8 +14,8 @@ export const fetchToCreateOrder = createAsyncThunk(
             const data = newCarts.newCarts
             console.log(data)
             const res = await axios.post(APIURL_CREATEORDER,data)
-            console.log(res.data.orderId)
-            return res.data
+            console.log(res.data)
+            return res.data.orderId
         }catch (e) {
             console.log('err: ', e)
         }

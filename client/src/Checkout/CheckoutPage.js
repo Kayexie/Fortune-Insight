@@ -10,9 +10,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 const CheckoutPage = () => {
 
     const carts = useSelector(state => state?.product.cart)
-    // const orderId = useSelector(state => state?.order.orderId)
-    // console.log(orderId)
-
+    const id = useSelector(state => state?.order.orderId)
+    console.log(id)
 
 
     return <div className='checkout-page'>
