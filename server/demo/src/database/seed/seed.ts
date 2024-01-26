@@ -18,7 +18,7 @@ class generateSeeds implements Seeder {
         // seed random data
         // const products = await factory(Product)().createMany(5)
 
-        //
+
         // // initialize categories
         // const categories = [
         //     {techType: 'Public Blockchains'},
@@ -44,7 +44,7 @@ class generateSeeds implements Seeder {
         //     pl.name = plData.name
         //     await plRepo.save(pl)
         // }
-
+        //
         // // initialize roles
         // const roles = [
         //     {roleName: 'Admin', permission: 'all_access'},
@@ -93,67 +93,67 @@ class generateSeeds implements Seeder {
 
         // ============ for init owner table START ===========
 
-        // // initialize admin in Owner table
-        // const repoRole:Repository<Role> = getRepository(Role)
-        // const adminRole = await repoRole.findOne({where:{roleName:'Admin'}})
-        //
-        // const repoOwner = getRepository(Owner)
-        // let owner = new Owner()
-        // owner.name = "BBs"
-        // owner.age = 102
-        // owner.email = "bearbbcjtc@gmail.com"
-        // owner.password = "bb900415"
-        // owner.roles = [adminRole]
-        // await repoOwner.save(owner)
-        //
-        // // generate first 4+1 owners
-        // try{
-        //     const initOnwerList = [
-        //         {name: 'Hao'},
-        //         {name: 'Yan'},
-        //         {name: 'Xie'},
-        //         {name: 'Louis'},
-        //     ]
-        //     await initFirstOwnerTable(initOnwerList, roles)
-        //     console.log('init first 4+1 owners is done')
-        // }catch (e){
-        //     console.log("init Owner table failure",e)
-        // }
+        // initialize admin in Owner table
+        const repoRole:Repository<Role> = getRepository(Role)
+        const adminRole = await repoRole.findOne({where:{roleName:'Admin'}})
 
-        // //generate random customer data
-        // let customerRole
-        // try{
-        //    customerRole = await getRepository(Role)
-        //        .findOne({where: {roleName: 'Customer'}})
-        //     console.log('customerRole is found')
-        // }catch (e){console.log(e)}
+        const repoOwner = getRepository(Owner)
+        let owner = new Owner()
+        owner.name = "BBs"
+        owner.age = 102
+        owner.email = "bearbbcjtc@gmail.com"
+        owner.password = "bb900415"
+        owner.roles = [adminRole]
+        await repoOwner.save(owner)
 
-        // const owners = await factory(Owner)(customerRole).createMany(5)
+        // generate first 4+1 owners
+        try{
+            const initOnwerList = [
+                {name: 'Hao'},
+                {name: 'Yan'},
+                {name: 'Xie'},
+                {name: 'Louis'},
+            ]
+            await initFirstOwnerTable(initOnwerList, roles)
+            console.log('init first 4+1 owners is done')
+        }catch (e){
+            console.log("init Owner table failure",e)
+        }
+
+        //generate random customer data
+        let customerRole
+        try{
+           customerRole = await getRepository(Role)
+               .findOne({where: {roleName: 'Customer'}})
+            console.log('customerRole is found')
+        }catch (e){console.log(e)}
+
+        const owners = await factory(Owner)(customerRole).createMany(5)
 
         // ============ for init owner table END ===========
 
         // ============ for init product table START ===========
-        // // filter vendor owners
-        // let vendors
-        // try{
-        //     vendors = await getRepository(Owner)
-        //         .createQueryBuilder("owner")
-        //         .innerJoinAndSelect("owner.roles", "role")
-        //         .where("role.roleName = :roleName", {roleName: "Vendor"})
-        //         .getMany()
-        // }catch (e){
-        //     console.log(e)
-        // }
-        //
-        // // generate random product data from csv
-        // const filePath = 'src/data/coin-all-data.csv' //regarding current working directory 'demo'
-        // try{
-        //     const data = await readCSV(filePath)
-        //     await insertDataIntoDB(data, categories, vendors, pls)
-        //     console.log('csv to DB is done')
-        // }catch (e){
-        //     console.log(e, 'csv to DB failure')
-        // }
+        // filter vendor owners
+        let vendors
+        try{
+            vendors = await getRepository(Owner)
+                .createQueryBuilder("owner")
+                .innerJoinAndSelect("owner.roles", "role")
+                .where("role.roleName = :roleName", {roleName: "Vendor"})
+                .getMany()
+        }catch (e){
+            console.log(e)
+        }
+
+        // generate random product data from csv
+        const filePath = 'src/data/coin-all-data.csv' //regarding current working directory 'demo'
+        try{
+            const data = await readCSV(filePath)
+            await insertDataIntoDB(data, categories, vendors, pls)
+            console.log('csv to DB is done')
+        }catch (e){
+            console.log(e, 'csv to DB failure')
+        }
         // ============ for init product table END ===========
 
         // ============ for init order and line table START ===========
