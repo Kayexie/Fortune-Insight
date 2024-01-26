@@ -103,12 +103,12 @@ export const Main = () => {
         <div className='main-page-container'>
             <div className="main-page-header">
                 <div className='main-page-logo'>
-                    <img src="/logo.png" alt=""/>
+                    <img style={{transform: 'scale(1.4)'}} src="/logo.png" alt=""/>
                     <h1>infinite fortune vendor</h1>
                 </div>
-                <div className='main-page-shopping' onClick={() => openPop()}>
+                <div className='main-page-shopping'>
                     <ShoppingCartOutlinedIcon/>
-                    <p>Shopping Cart ({ttlQty})</p>
+                    <p style={{margin: '0 0 -2px 5px'}} onClick={() => openPop()}>Shopping Cart ({ttlQty})</p>
                 </div>
             </div>
 

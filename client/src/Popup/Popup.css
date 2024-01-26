@@ -6,8 +6,15 @@
   width: 30%;
   height: 100%;
   box-sizing: border-box;
-  padding: 1rem;
   background-color: #fafafa;
+  font-family: "Roboto Condensed", "sans-serif";
+  padding: 10px 0;
+}
+.pop-up-model h4 {
+  font: 600 0.95rem/1.6 Roboto Condensed, sans-serif;
+}
+.pop-up-model p {
+  font: 500 0.95rem/1.6 Roboto Condensed, sans-serif;
 }
 .pop-up-model .close-icon {
   position: absolute;
@@ -31,6 +38,7 @@
   overflow: auto;
   padding: 0.2rem;
   color: #494949;
+  background-color: white;
 }
 
 .overlay {
@@ -48,8 +56,8 @@
   background-color: #fafafa;
 }
 .pop-up-order-summary .pop-up-order {
-  padding-top: 1rem;
   background-color: white;
+  padding: 1rem;
 }
 .pop-up-order-summary .pop-up-order .subtotal {
   color: #494949;
@@ -80,7 +88,9 @@
 }
 
 .pop-up-checkout {
-  margin-top: 2rem;
+  margin-top: 1rem;
+  font: 550 1.1rem/1.6 Roboto Condensed, sans-serif;
+  padding: 1rem;
 }
 .pop-up-checkout .continue {
   background-color: black;
@@ -88,7 +98,6 @@
   text-align: center;
   padding: 0.6rem;
   margin-bottom: 1rem;
-  font-weight: bolder;
   cursor: pointer;
 }
 .pop-up-checkout .continue:hover {
@@ -99,7 +108,6 @@
   color: white;
   text-align: center;
   padding: 0.6rem;
-  font-weight: bolder;
   cursor: pointer;
 }
 .pop-up-checkout .checkout:hover {
