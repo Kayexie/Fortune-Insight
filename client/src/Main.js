@@ -19,6 +19,7 @@ import Popup from "./Popup/Popup";
 import {fetchUserInfo, setStateToken} from "./redux/features/userSlice";
 import MsgAlert from "./MsgAlert";
 import Logout from "./Logout";
+import {useNavigate} from "react-router-dom";
 
 export const Main = () => {
     const dispatch = useDispatch()
@@ -29,8 +30,7 @@ export const Main = () => {
     const userInfo = useSelector(state => state?.user?.userInfo)
     const orderId = useSelector(state => state?.order?.orderInfo)
     const prodState = useSelector(state => state?.product?.state)
-
-
+    const navigate = useNavigate()
     const [sort, setSort] = useState('ASC')
     const [search, setSearch] = useState('')
     const [page, setPage] = useState(1)
@@ -133,8 +133,8 @@ export const Main = () => {
     }
 
     //calculate the ttl Qty in shopping cart
-    const QtyArr = carts.map(item => item.quantity)
-    const ttlQty = QtyArr.length !==0 ? QtyArr.reduce((a,c) => a + c) : 0
+    const QtyArr = !!carts && carts.map(item => item.quantity)
+    const ttlQty = !!QtyArr && QtyArr.length !==0 ? QtyArr.reduce((a,c) => a + c) : 0
 
     document.querySelector('body').style.overflow = 'auto'
 
@@ -149,9 +149,14 @@ export const Main = () => {
                     <img style={{transform: 'scale(1.4)'}} src="/logo.png" alt=""/>
                     <h1>infinite fortune vendor</h1>
                 </div>
-                <div className='main-page-shopping'>
-                    <ShoppingCartOutlinedIcon/>
-                    <p style={{margin: '0 0 -2px 5px'}} onClick={() => openPop()}>Shopping Cart ({ttlQty})</p>
+                <div className='main-page-info'>
+                    <div className='main-page-user-info'>
+                        {token? <p onClick={() => navigate('/userAccount')}><i><u>{userInfo.name}</u></i> Account</p> : <p>LogIn</p>}
+                    </div>
+                    <div className='main-page-shopping'>
+                        <ShoppingCartOutlinedIcon/>
+                        <p style={{margin: '0 0 -2px 5px'}} onClick={() => openPop()}>Shopping Cart ({ttlQty})</p>
+                    </div>
                 </div>
             </div>
 

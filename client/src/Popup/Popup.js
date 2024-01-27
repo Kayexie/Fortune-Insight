@@ -6,16 +6,16 @@ import PopProductList from "./PopProductList";
 import './PopProductList.scss'
 import {fetchToCreateOrder} from "../redux/features/orderSlice";
 import {useNavigate} from "react-router-dom";
+import {emptyCart} from "../redux/features/productSlice";
 
 const Popup = ({openPop}) => {
 
     const dispatch = useDispatch()
-
     const navigate = useNavigate()
-
     const carts = useSelector(state => state?.product.cart)
+    const token = useSelector(state => state?.user.token)
 
-    console.log("this is form popup window for shopping cart", carts)
+    console.log("this is form popup window for shopping cart", token)
 
     //calculate single product ttl $
     const singleTtlArr = carts.map(item => item.quantity * item.price)
@@ -27,7 +27,7 @@ const Popup = ({openPop}) => {
 
     const QtyArr = carts.map(item => item.quantity)
     // console.log(QtyArr)
-    const ttlQty = QtyArr.length !==0 ? QtyArr.reduce((a,c) => a + c) : 0
+    const ttlQty =QtyArr.length !==0 ? QtyArr.reduce((a,c) => a + c) : 0
 
     // console.log(subtotal)
 
@@ -36,22 +36,32 @@ const Popup = ({openPop}) => {
     const handleCheckout = () => {
         //处理一下产品
         const newCarts = [];
-        carts.map(item => {
-            let newItem = {
-                productId: item.id,
-                currentPrice: item.price,
-                quantity:item.quantity
-            }
-            newCarts.push(newItem)
-        })
-        // console.log(newCarts)
-        dispatch(fetchToCreateOrder({newCarts}))
+        if(carts){
+            carts.map(item => {
+                let newItem = {
+                    productId: item.id,
+                    currentPrice: item.price,
+                    quantity:item.quantity
+                }
+                newCarts.push(newItem)
+            })
+        }
 
-        //todo:清空购物车
+        // console.log(newCarts)
         //todo: with authorized token to check out
 
-        // window.location.replace('/checkout')
-        navigate('/checkout')
+
+        //todo:清空购物车
+        if(token){
+            dispatch(fetchToCreateOrder({newCarts}))
+            dispatch(emptyCart())
+            navigate('/checkout')
+        }else{
+            console.log('please log in first ')
+        }
+
+
+
     }
 
     const numberHandler = (number) => {
