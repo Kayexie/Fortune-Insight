@@ -18,6 +18,7 @@ import Page from './Page.js';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Popup from "./Popup/Popup";
 import FacebookSharpIcon from '@mui/icons-material/FacebookSharp';
+import {useNavigate} from "react-router-dom";
 
 
 
@@ -28,6 +29,7 @@ export const Main = () => {
     const token = useSelector(state => state?.user?.token)
     const logInMsg = useSelector(state => state?.user?.message)
     const userInfo = useSelector(state => state?.user?.userInfo)
+    const navigate = useNavigate()
 
 
     const [sort, setSort] = useState('ASC')
@@ -103,12 +105,17 @@ export const Main = () => {
         <div className='main-page-container'>
             <div className="main-page-header">
                 <div className='main-page-logo'>
-                    <img src="/logo.png" alt=""/>
+                    <img style={{transform: 'scale(1.4)'}} src="/logo.png" alt=""/>
                     <h1>infinite fortune vendor</h1>
                 </div>
-                <div className='main-page-shopping' onClick={() => openPop()}>
-                    <ShoppingCartOutlinedIcon/>
-                    <p>Shopping Cart ({ttlQty})</p>
+                <div className='main-page-info'>
+                    <div className='main-page-user-info'>
+                        {token? <p onClick={() => navigate('/userAccount')}><i><u>{userInfo.name}</u></i> Account</p> : <p>LogIn</p>}
+                    </div>
+                    <div className='main-page-shopping'>
+                        <ShoppingCartOutlinedIcon/>
+                        <p style={{margin: '0 0 -2px 5px'}} onClick={() => openPop()}>Shopping Cart ({ttlQty})</p>
+                    </div>
                 </div>
             </div>
 

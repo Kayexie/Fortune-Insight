@@ -7,11 +7,15 @@ class OrderController {
 
     static queryAllOrders = async (req: Request, res: Response) => {
 
+        const {userId} = req.params
+        console.log(userId)
+
         try {
             //connect order database
             let orders: Order[] = await getRepository(Order)
                 .createQueryBuilder('order')
                 .leftJoinAndSelect('order.orderLines', 'orderLines')
+                .where('order.customerId = :userId', {userId})
                 .getMany()
 
             //connect orderLine database
@@ -33,7 +37,6 @@ class OrderController {
             // console.log(orderId)
 
             //connect order database
-
             let singleOrder: Order = await getRepository(Order)
                 .createQueryBuilder('order')
                 .leftJoinAndSelect('order.orderLines','orderLines')

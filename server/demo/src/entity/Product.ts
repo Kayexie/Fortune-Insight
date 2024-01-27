@@ -33,15 +33,11 @@ class Product extends BaseClass {
     @Length(1, 200)
     image: string
 
-    @Column()
+    @Column({
+        type: 'double'
+    })
     @Min(0)
     currentPrice: number
-    
-    // @Column({
-    //     type: "decimal"
-    // })
-    // @Min(0)
-    // currentPrice: string
 
     @Column({
         nullable: false,
@@ -60,7 +56,9 @@ class Product extends BaseClass {
     @Min(0)
     totalVolume: number
 
-    @Column()
+    @Column({
+        type: 'double'
+    })
     priceChange24h: number
 
     //relations:

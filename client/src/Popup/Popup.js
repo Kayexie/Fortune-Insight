@@ -64,13 +64,16 @@ const Popup = ({openPop}) => {
 
     }
 
+    const numberHandler = (number) => {
+        return String(number).length - String(number).indexOf('.') - 1
+    }
 
     return (
         <div className='pop-up'>
             <div className='pop-up-model'>
                 <CloseSharpIcon onClick={() => openPop()} className='close-icon'/>
                 <div className='pop-up-title'>
-                    <h2>My Shopping Bag ({ttlQty})</h2>
+                    <h2 style={{font: '600 1.5rem/1.6 Roboto Condensed,sans-serif', marginBottom: '-5px'}}>My Shopping Bag ({ttlQty})</h2>
                 </div>
                 <div className='pop-up-container'>
                     <div className='pop-up-wrap'>
@@ -80,12 +83,12 @@ const Popup = ({openPop}) => {
                 </div>
                 <div className='pop-up-order-summary'>
                     <div className='pop-up-title'>
-                        <h2>Order Summery</h2>
+                        <h2 style={{font: '600 1.5rem/1.6 Roboto Condensed,sans-serif', marginBottom: '-5px'}}>Order Summery</h2>
                     </div>
                     <div className='pop-up-order'>
                         <div className='subtotal'>
                             <h4>SUBTOTAL</h4>
-                            <p>$ {subtotal}.00</p>
+                            <p>$ {numberHandler(subtotal) > 8 ? subtotal.toFixed(8) : subtotal}</p>
                         </div>
                         <div className='tax'>
                             <h4>TAX</h4>
@@ -93,7 +96,7 @@ const Popup = ({openPop}) => {
                         </div>
                         <div className='total'>
                             <h4>ESTIMATED TOTAL</h4>
-                            <p>$ {estimateTtl}.00</p>
+                            <p>$ {numberHandler(estimateTtl) > 8 ? estimateTtl.toFixed(8) : estimateTtl}</p>
                         </div>
                     </div>
 

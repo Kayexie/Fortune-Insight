@@ -3,48 +3,41 @@
 .pop-up-products {
   width: 100%;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  padding-top: .5rem;
-  padding-bottom: .5rem;
+  display: grid;
   border-bottom: 1px solid #efefef;
-  justify-content: space-between;
+  align-items: center;
   font-size: 1rem;
-  background-color: white;
+  padding: 0.5rem 1.5rem 0.5rem 0.5rem;
+  grid-template-columns: 12% 1fr;
+  overflow-x: hidden;
+
   .product-info{
     margin-left: 1rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 35% 30% 1fr;
+    align-items: center;
     width: 100%;
 
     .product-name{
       line-height: 1.4rem;
-      width: 30%;
-
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      align-items: end;
     }
   }
   .product-quantity{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    justify-content: center;
+    letter-spacing: 0.5px;
 
     .product-quantity-editor{
-      box-sizing: border-box;
-      margin-top: .5rem;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
+      padding: 0 4px;
+      display: grid;
+      grid-template-columns: 20% 1fr 20%;
+      justify-items: center;
       align-items: center;
       border: 1px solid grey;
-      padding: 0 .3rem;
-      .product-quantity-number{
-        padding: .2rem;
-        font-weight: bolder;
-      }
-      p{
-        padding: 0 .5rem;
-      }
     }
   }
   img {
@@ -54,10 +47,10 @@
 }
 
 .product-info-ttlPrice{
-  display: flex;
-  flex-direction: column;
-  justify-content:space-between;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
   align-items: end;
+  justify-items: end;
   .price-number{
     font-weight: bolder;
   }

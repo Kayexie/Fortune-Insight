@@ -27,15 +27,28 @@
   width: 200px;
   height: 200px;
 }
-.main-page-container .main-page-header .main-page-shopping {
+.main-page-container .main-page-header .main-page-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  font: 500 1.1rem/1.6 Roboto Condensed, sans-serif;
+}
+.main-page-container .main-page-header .main-page-info .main-page-user-info {
+  cursor: pointer;
+}
+.main-page-container .main-page-header .main-page-info .main-page-shopping {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: right;
+  font: 500 1rem/1.6 Roboto Condensed, sans-serif;
+  margin-left: 1rem;
 }
-.main-page-container .main-page-header .main-page-shopping p:hover {
+.main-page-container .main-page-header .main-page-info .main-page-shopping p:hover {
   cursor: pointer;
   text-decoration: underline;
+  text-underline-offset: 4px;
 }
 .main-page-container .login-row-container {
   display: flex;
@@ -56,7 +69,7 @@
   margin-left: 5px;
 }
 .main-page-container .main-page-content .sortBar-container {
-  margin: -10px 36px 5px 0;
+  margin: -10px 120px 5px 0;
 }
 .main-page-container .page-content {
   width: 100%;
@@ -76,6 +89,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  font: 400 0.95rem/1.6 Roboto Condensed, sans-serif;
 }
 .main-page-container .main-page-footer .h5 {
   display: flex;
@@ -85,6 +99,7 @@
 .main-page-container .main-page-footer .h5 h4 {
   padding-left: 1rem;
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /*# sourceMappingURL=Main.css.map */

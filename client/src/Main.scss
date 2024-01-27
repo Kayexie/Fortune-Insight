@@ -28,14 +28,27 @@
         height: 200px;
       }
     }
-    .main-page-shopping{
+    .main-page-info{
       display: flex;
       flex-direction: row;
+      justify-content: flex-end;
       align-items: center;
-      justify-content: right;
-      p:hover{
+      font: 500 1.1rem/1.6 Roboto Condensed,sans-serif;
+      .main-page-user-info{
         cursor: pointer;
-        text-decoration: underline;
+      }
+      .main-page-shopping{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: right;
+        font: 500 1rem/1.6 Roboto Condensed,sans-serif;
+        margin-left: 1rem;
+        p:hover{
+          cursor: pointer;
+          text-decoration: underline;
+          text-underline-offset: 4px;
+        }
       }
     }
   }
@@ -59,7 +72,7 @@
     }
 
     .sortBar-container {
-      margin: -10px 36px 5px 0;
+      margin: -10px 120px 5px 0;
     }
   }
 
@@ -84,6 +97,7 @@
     flex-direction: column;
     //justify-content: space-evenly;
     align-items: center;
+    font: 400 .95rem/1.6 Roboto Condensed,sans-serif;
     .h5{
       display: flex;
       flex-direction: row;
@@ -91,6 +105,7 @@
       h4{
         padding-left: 1rem;
         text-decoration: underline;
+        text-underline-offset: 3px;
       }
     }
 

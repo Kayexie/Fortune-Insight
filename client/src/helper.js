@@ -16,6 +16,8 @@ export const APIURL_UPDATEPRODUCT = 'http://localhost:8000/product/update'
 
 export const APIURL_CREATEORDER = 'http://localhost:8000/order'
 
+export const APIURL_ORDERBYUSER = 'http://localhost:8000/order/user'
+
 export const actionType = {
     'FETCH_ALL_PRODUCTS': 'FETCH_ALL_PRODUCTS',
     'FETCH_PAGE_PRODUCTS': 'FETCH_PAGE_PRODUCTS',
