@@ -1,24 +1,9 @@
-.login-btns-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 600px;
-  margin: 20px 0 20px 29%;
-}
-.login-btns-container .login-form {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr 120px;
-}
-.login-btns-container .login-form > * {
-  width: 200px;
-}
 .login-btns-container .login-btn {
   color: white;
   background-color: black;
   font: 600 1rem/1.6 Roboto Condensed, sans-serif;
   padding: 5px 20px;
-  width: 120px;
+  margin-top: 20px;
   border: none;
   cursor: pointer;
   border-radius: 3px;

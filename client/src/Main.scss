@@ -36,6 +36,10 @@
       font: 500 1.1rem/1.6 Roboto Condensed,sans-serif;
       .main-page-user-info{
         cursor: pointer;
+
+        .user-account:hover {
+          color: orange;
+        }
       }
       .main-page-shopping{
         display: flex;
@@ -43,11 +47,17 @@
         align-items: center;
         justify-content: right;
         font: 500 1rem/1.6 Roboto Condensed,sans-serif;
-        margin-left: 1rem;
-        p:hover{
+        margin-left: 0.5rem;
+
+        &:hover{
           cursor: pointer;
           text-decoration: underline;
-          text-underline-offset: 4px;
+          text-underline-offset: 2px;
+          color: gold;
+
+          .MuiSvgIcon-root {
+            color: gold;
+          }
         }
       }
     }

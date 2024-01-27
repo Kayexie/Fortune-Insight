@@ -1,0 +1,12 @@
+.logout-button {
+  font: 500 1.1rem/1.6 Roboto Condensed, sans-serif;
+  color: white;
+  margin-left: 1.5rem;
+}
+.logout-button:hover {
+  color: #c70808;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/*# sourceMappingURL=Logout.css.map */
