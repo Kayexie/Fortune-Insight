@@ -16,7 +16,6 @@ export default function BasicTextFields() {
     const dispatch = useDispatch()
 
     const submitHandler = (e) => {
-        console.log('=========trigger submitHandler=========', formData);
         e.preventDefault(); // stop auto refreshed by button
         const {email, password} = formData
         //validate data
@@ -30,7 +29,6 @@ export default function BasicTextFields() {
     }
 
     const changeHandler = ({target}) => {
-        // console.log('=========trigger changeHandler=========', target);
         const {name, value} = target
         // validate data
         if(name === 'email'){

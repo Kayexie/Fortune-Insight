@@ -15,6 +15,7 @@ const initialState = {
     params: {},
     cart: items,
     message: '',
+    state:'',
 }
 
 export const fetchAllFilters = createAsyncThunk(
@@ -54,10 +55,10 @@ export const deleteProductById = createAsyncThunk(
             console.log(`The product ${id} is going to be deleted`)
             const state = thunkAPI.getState()
             const token = state.user.token
-            console.log('this action is going to delete the token: ', token)
             const res = await axios.delete(`${APIURL_DELETEPRODUCT}?id=${id}`, {headers:{'Authorization':`Bearer ${token}`}})
             //delete does not use body
             console.log('this action is going to delete the product ', res.data)
+            // return {data: res.data, status: res.status}
             return res.data
         }catch (e) {
             return thunkAPI.rejectWithValue(e.response.data)
@@ -220,9 +221,11 @@ const productSlice = createSlice({
         })
         builder.addCase(deleteProductById.fulfilled, (state, action) => {
             state.message = action.payload.message
+            state.state = 200
         })
         builder.addCase(deleteProductById.rejected, (state, action) => {
             state.message = action.payload.message
+            state.state = 400
         })
     }
 })

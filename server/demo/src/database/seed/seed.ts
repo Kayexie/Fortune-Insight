@@ -20,6 +20,10 @@ class generateSeeds implements Seeder {
         // seed random data
         // const products = await factory(Product)().createMany(5)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> f8a1ff9c5607965900f7e1734a78b012aa561250
         // // initialize categories
         // const categories = [
         //     {techType: 'Public Blockchains'},
@@ -31,20 +35,6 @@ class generateSeeds implements Seeder {
         //     const category = new Category()
         //     category.techType = cateData.techType
         //     await cateRepo.save(category)
-        // }
-        //
-        // // initialize owners
-        // const owners = [
-        //     {name: 'Hao'},
-        //     {name: 'Yan'},
-        //     {name: 'Xie'},
-        //     {name: 'Louis'},
-        // ]
-        // const ownerRepo = getRepository(Owner)
-        // for (const ownerData of owners) {
-        //     const owner = new Owner()
-        //     owner.name = ownerData.name
-        //     await ownerRepo.save(owner)
         // }
         //
         // // initialize pricelevel
@@ -59,7 +49,7 @@ class generateSeeds implements Seeder {
         //     pl.name = plData.name
         //     await plRepo.save(pl)
         // }
-
+        //
         // // initialize roles
         // const roles = [
         //     {roleName: 'Admin', permission: 'all_access'},
@@ -109,7 +99,11 @@ class generateSeeds implements Seeder {
         // ============ for init owner table START ===========
 
         // initialize admin in Owner table
+<<<<<<< HEAD
         const repoRole = getRepository(Role)
+=======
+        const repoRole:Repository<Role> = getRepository(Role)
+>>>>>>> f8a1ff9c5607965900f7e1734a78b012aa561250
         const adminRole = await repoRole.findOne({where:{roleName:'Admin'}})
 
         const repoOwner = getRepository(Owner)
@@ -144,10 +138,11 @@ class generateSeeds implements Seeder {
             console.log('customerRole is found')
         }catch (e){console.log(e)}
 
-        owners = await factory(Owner)(customerRole).createMany(5)
+        const owners = await factory(Owner)(customerRole).createMany(5)
 
         // ============ for init owner table END ===========
 
+<<<<<<< HEAD
         // // ============ for init product table START ===========
 
         // // filter vendor owners
@@ -173,6 +168,30 @@ class generateSeeds implements Seeder {
         //     console.log(e, 'csv to DB failure')
         // }
 
+=======
+        // ============ for init product table START ===========
+        // filter vendor owners
+        let vendors
+        try{
+            vendors = await getRepository(Owner)
+                .createQueryBuilder("owner")
+                .innerJoinAndSelect("owner.roles", "role")
+                .where("role.roleName = :roleName", {roleName: "Vendor"})
+                .getMany()
+        }catch (e){
+            console.log(e)
+        }
+
+        // generate random product data from csv
+        const filePath = 'src/data/coin-all-data.csv' //regarding current working directory 'demo'
+        try{
+            const data = await readCSV(filePath)
+            await insertDataIntoDB(data, categories, vendors, pls)
+            console.log('csv to DB is done')
+        }catch (e){
+            console.log(e, 'csv to DB failure')
+        }
+>>>>>>> f8a1ff9c5607965900f7e1734a78b012aa561250
         // ============ for init product table END ===========
 
         // ============ for init order and line table START ===========

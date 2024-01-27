@@ -45,6 +45,12 @@ const userSlice = createSlice({
         // set token from cookie to state
         setStateToken: (state, action)=>{
             state.token = action.payload
+        },
+        //clear
+        clearReduxInfo: (state, action) => {
+            state.token = ''
+            state.userInfo= {}
+            state.message= ''
         }
 
     },
@@ -77,4 +83,5 @@ export default userSlice.reducer
 
 export const {
     setStateToken,
+    clearReduxInfo,
 } = userSlice.actions

@@ -18,7 +18,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Popup from "./Popup/Popup";
 import {fetchUserInfo, setStateToken} from "./redux/features/userSlice";
 import MsgAlert from "./MsgAlert";
-import {Alert} from "@mui/joy";
+import Logout from "./Logout";
 
 export const Main = () => {
     const dispatch = useDispatch()
@@ -28,6 +28,7 @@ export const Main = () => {
     const logInMsg = useSelector(state => state?.user?.message)
     const userInfo = useSelector(state => state?.user?.userInfo)
     const orderId = useSelector(state => state?.order?.orderInfo)
+    const prodState = useSelector(state => state?.product?.state)
 
 
     const [sort, setSort] = useState('ASC')
@@ -41,8 +42,7 @@ export const Main = () => {
 
     console.log('products in main page====', products)
     console.log('filters in main page====', filters)
-    console.log('userInfo in main page====', userInfo)
-    console.log('logInMsg in main page====', logInMsg)
+    console.log('prodState in main page====', prodState)
 
     const baseUrl = 'http://localhost:3000/product/'
 
@@ -77,19 +77,17 @@ export const Main = () => {
         }
     }, []);
 
-    // ----------
+    // ---------- for permission denied -------
 
     const[alertShown, setAlertShown] = useState(false)
     const msg = useSelector(state => state?.product?.message)
-    console.log('jojjojojo=', msg)
     useEffect(() => {
         if (msg) {
             setAlertShown(true)
-
         }
     }, [msg])
 
-    // ------------
+    // -----------for permission denied---------
 
     // --------sort search page filters------
     useEffect(() => {
@@ -143,17 +141,17 @@ export const Main = () => {
     return (
         <div className='main-page-container'>
             {
-                alertShown && <MsgAlert msg={msg} setAlertShown={setAlertShown} alertShown={alertShown}/>
+                alertShown && <MsgAlert msg={msg} setAlertShown={setAlertShown} alertShown={alertShown} prodState={prodState}/>
             }
 
             <div className="main-page-header">
                 <div className='main-page-logo'>
-                    <img src="/logo.png" alt=""/>
+                    <img style={{transform: 'scale(1.4)'}} src="/logo.png" alt=""/>
                     <h1>infinite fortune vendor</h1>
                 </div>
-                <div className='main-page-shopping' onClick={() => openPop()}>
+                <div className='main-page-shopping'>
                     <ShoppingCartOutlinedIcon/>
-                    <p>Shopping Cart ({ttlQty})</p>
+                    <p style={{margin: '0 0 -2px 5px'}} onClick={() => openPop()}>Shopping Cart ({ttlQty})</p>
                 </div>
             </div>
 
@@ -161,6 +159,9 @@ export const Main = () => {
                 {isLogin?
                     <h4>{logInMsg}, Hi, {userInfo?.name}, your role: {userInfo?.roles}</h4>
                     :<div><Login/><h4>{logInMsg}</h4></div>}
+            </div>
+            <div className="logout-row-container">
+                <Logout/>
             </div>
 
             {showPop && <Popup openPop={openPop}/>}

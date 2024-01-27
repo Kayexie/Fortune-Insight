@@ -6,7 +6,7 @@ import {useEffect} from "react";
 import {clearMsg} from "./redux/features/productSlice.js";
 import {useDispatch} from "react-redux";
 
-export default function CustomizedSnackbars({msg, alertShown, setAlertShown}) {
+export default function CustomizedSnackbars({msg, alertShown, setAlertShown, prodState}) {
     const [open, setOpen] = React.useState(false);
 
     const dispatch = useDispatch();
@@ -31,11 +31,11 @@ export default function CustomizedSnackbars({msg, alertShown, setAlertShown}) {
                 open={open}
                 autoHideDuration={6000}
                 onClose={handleClose}
-                anchorOrigin={{ vertical:'center', horizontal:'center' }}
+                anchorOrigin={{ vertical:'top', horizontal:'center' }}
             >
                 <Alert
                     onClose={handleClose}
-                    severity="error"
+                    severity={prodState===200?"success":"error"}
                     variant="filled"
                     sx={{ width: '100%' }}
                 >
