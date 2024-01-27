@@ -14,6 +14,7 @@ import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
 import {useDispatch, useSelector} from "react-redux";
 import {
+    clearMsg,
     deleteProductById,
     fetchProductsByAllQuery,
     updateProduct
@@ -24,7 +25,8 @@ import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
 import RadioGroup from "@mui/joy/RadioGroup";
 import Radio from "@mui/joy/Radio";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import {Alert} from "@mui/joy";
 
 export default function BasicSpeedDial({p}) {
     const [openDelete, setOpenDelete] = React.useState(false);
@@ -34,6 +36,11 @@ export default function BasicSpeedDial({p}) {
     const filters = useSelector(state => state?.product?.filters)
     const row = Math.ceil(filters.owners.length / 6)
     // console.log('edit page --> ', editProduct)
+
+
+
+
+
 
     const deleteHandler = () => {
         const id = p.id
@@ -76,6 +83,7 @@ export default function BasicSpeedDial({p}) {
                     onClick={() => setOpenDelete(true)}
                 />
             </SpeedDial>
+
             <React.Fragment>
                 <Modal open={openDelete} onClose={() => setOpenDelete(false)}>
                     <ModalDialog variant="outlined" role="alertdialog">

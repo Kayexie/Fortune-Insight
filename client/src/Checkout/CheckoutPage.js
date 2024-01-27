@@ -11,12 +11,10 @@ const CheckoutPage = () => {
 
     const carts = useSelector(state => state?.product.cart)
     const id = useSelector(state => state?.order.orderInfo)
+
     const dispatch = useDispatch()
     console.log(id)
 
-    // useEffect(() => {
-    //     dispatch(fetch)
-    // }, []);
 
     return <div className='checkout-page'>
 
