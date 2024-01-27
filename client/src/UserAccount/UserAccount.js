@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './UserAccount.scss';
 import {useDispatch, useSelector} from "react-redux";
-import {allOrdersPerUser} from "../redux/features/orderSlice";
+import {allOrdersPerUser, singleOrdersPerUser} from "../redux/features/orderSlice";
 
 const UserAccount = () => {
     const userInfo = useSelector(state => state?.user?.userInfo)
@@ -9,15 +9,19 @@ const UserAccount = () => {
     const userId = userInfo.userId
     const dispatch = useDispatch()
     const orderList = useSelector(state => state?.order.orderList)
-    console.log(userId)
+    const orderDetails = useSelector( state => state?.order.orderDetails)
+    const orderDetailsId = useSelector(state => state?.order.orderDetailsId)
+    console.log(orderDetails, orderDetailsId)
 
     useEffect(() => {
         dispatch(allOrdersPerUser({userId}))
     }, [])
 
-    const handleExpand = () => {
-
+    const handleExpand = (orderId) => {
+        // console.log(orderId)
+        dispatch(singleOrdersPerUser({orderId}))
     }
+
 
 
     return (
@@ -33,9 +37,19 @@ const UserAccount = () => {
                 <div className='user-order-list'>
                     <h4>OrderList:</h4>
                     { !!orderList && orderList.map((o,idx) =>
-                        <div className='order-list-id' key={idx} onClick={() => handleExpand()}>
-                            {o.id}
+                        <div key={idx} onClick={() => handleExpand(o.id)}>
+                            <div className='order-list-id'>{o.id}</div>
+                            {o.id === orderDetailsId && orderDetails.length > 0 && orderDetails.map( (o, idx) => <div key={idx}>
+                                <div>
+                                    <img style={{width:'1rem'}} src={o.product.image} alt={o.product.id}/>
+                                    <div>  {o.product.name}</div>
+                                    <div> {o.quantity}</div>
+                                    <div> {o.unitPrice}</div>
+                                    <div> {o.product.id}</div>
+                                </div>
+                            </div>)}
                         </div>
+
                     )}
 
                 </div>
