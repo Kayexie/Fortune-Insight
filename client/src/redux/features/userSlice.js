@@ -2,9 +2,12 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 import {APIURL_LOGINAUTH, APIURL_USERINFO} from "../../helper.js";
 
+const token = localStorage.getItem('token') !== null ? localStorage.getItem('token') : '';
+const userInfo = localStorage.getItem('userInfo') !== null ? JSON.parse(localStorage.getItem('userInfo')) : '';
+
 const initialState = {
-    token: '',
-    userInfo: {},
+    token: token,
+    userInfo: userInfo,
     message:'',
 
 }
@@ -60,6 +63,9 @@ const userSlice = createSlice({
                     state.token = action.payload.token //payload in asyncThunk create function is the return value
                     state.userInfo = action.payload.userInfo
                     state.message = action.payload.message
+
+                localStorage.setItem('token', state.token)
+                localStorage.setItem('userInfo', JSON.stringify(state.userInfo))
 
         })
             .addCase(loginAuth.rejected, (state, action)=>{

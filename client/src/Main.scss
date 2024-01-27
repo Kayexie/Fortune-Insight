@@ -28,16 +28,27 @@
         height: 200px;
       }
     }
-    .main-page-shopping{
+    .main-page-info{
       display: flex;
       flex-direction: row;
+      justify-content: flex-end;
       align-items: center;
-      justify-content: right;
       font: 500 1.1rem/1.6 Roboto Condensed,sans-serif;
-      p:hover{
+      .main-page-user-info{
         cursor: pointer;
-        text-decoration: underline;
-        text-underline-offset: 4px;
+      }
+      .main-page-shopping{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: right;
+        font: 500 1rem/1.6 Roboto Condensed,sans-serif;
+        margin-left: 1rem;
+        p:hover{
+          cursor: pointer;
+          text-decoration: underline;
+          text-underline-offset: 4px;
+        }
       }
     }
   }

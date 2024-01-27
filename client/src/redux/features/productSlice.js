@@ -7,7 +7,7 @@ import {
     APIURL_DELETEPRODUCT, APIURL_UPDATEPRODUCT
 } from "../../helper.js";
 
-const items = localStorage.getItem('cartItems') !== null ? JSON.parse(localStorage.getItem('cartItems')) : []
+const items = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []
 
 const initialState = {
     filters: {},
@@ -122,7 +122,7 @@ const productSlice = createSlice({
             state.filters = newFilters
         },
 
-        //----------------------------- add to bag ------------------------------------
+        //----------------------------- shopping cart  ------------------------------------
 
         addToBag: (state, action) => {
 
@@ -203,7 +203,16 @@ const productSlice = createSlice({
             localStorage.setItem('cartItems', JSON.stringify(state.cart.map(item => item)))
         },
 
-        //----------------------------- add to bag ------------------------------------
+        emptyCart:(state, action) => {
+            let newCart = [...state.cart]
+            newCart = []
+
+            state.cart = newCart
+            localStorage.setItem('cartItems', state.cart)
+        },
+
+
+        //----------------------------- shopping cart  ------------------------------------
 
         clearMsg: (state, action) => {
             state.message = ''
@@ -238,5 +247,6 @@ export const {
     deleteProduct,
     decreaseQuantity,
     increaseQuantity,
+    emptyCart,
     clearMsg,
 } = productSlice.actions

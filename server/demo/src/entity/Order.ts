@@ -19,4 +19,10 @@ export class Order extends BaseClass {
     @OneToMany( ()=> OrderLine, orderLine => orderLine.order)
     orderLines: OrderLine[]
 
+    // @OneToMany(
+    //     type => Invite,
+    //     invite => invite.order,
+    // )
+    // invites?:Invite[]
+
 }
