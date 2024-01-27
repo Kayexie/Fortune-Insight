@@ -112,10 +112,6 @@ class ProductController {
         try{
             const {search, sort, page} = req.query
             const {categories, owners, priceLevel} = req.body
-            // const data = req.body
-
-            console.log(search, sort, page)
-            console.log('from back end controller queryProductBySearchQ')
 
             const productsQuery = getRepository(Product).createQueryBuilder('product').where('product.isDelete = false')
 
@@ -448,6 +444,7 @@ class ProductController {
     static deleteProduct = async (req: Request, res: Response) => {
        try{
            const {id} = req.query
+
 
            if(!id) {
                return res.status(300).send({

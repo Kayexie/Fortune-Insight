@@ -7,19 +7,18 @@ import NewProduct from './NewProduct.js'
 import {useDispatch} from "react-redux";
 import {useSelector} from "react-redux";
 import {
+    clearMsg,
     fetchAllFilters,
     fetchProductsByAllQuery,
 } from "./redux/features/productSlice.js";
 import {useEffect, useState} from "react";
-
 import Login from "./Login.js";
-
 import Page from './Page.js';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Popup from "./Popup/Popup";
-import FacebookSharpIcon from '@mui/icons-material/FacebookSharp';
-
-
+import {fetchUserInfo, setStateToken} from "./redux/features/userSlice";
+import MsgAlert from "./MsgAlert";
+import Logout from "./Logout";
 
 export const Main = () => {
     const dispatch = useDispatch()
@@ -28,6 +27,8 @@ export const Main = () => {
     const token = useSelector(state => state?.user?.token)
     const logInMsg = useSelector(state => state?.user?.message)
     const userInfo = useSelector(state => state?.user?.userInfo)
+    const orderId = useSelector(state => state?.order?.orderInfo)
+    const prodState = useSelector(state => state?.product?.state)
 
 
     const [sort, setSort] = useState('ASC')
@@ -39,25 +40,59 @@ export const Main = () => {
     const [showPop, setShowPop] = useState(false)
     const carts = useSelector(state => state?.product.cart)
 
-
     console.log('products in main page====', products)
     console.log('filters in main page====', filters)
+    console.log('prodState in main page====', prodState)
 
     const baseUrl = 'http://localhost:3000/product/'
 
-    
+    const setCookie = (name, value, daysToExpire) => {
+        const date = new Date()
+        date.setTime(date.getTime()+(daysToExpire * 24 * 60 * 60 * 1000))
+        document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/`
+    }
+
+    const getCookie = (name) => {
+        const nameEQ = name + '='
+        const arr = document.cookie.split(';')
+        for(let i=0; i < arr.length; i++){
+            let char = arr[i]
+            while(char.charAt(0)===' '){
+                char = char.substring(1)
+            }
+            if(char.indexOf(nameEQ) === 0){
+                return char.substring(nameEQ.length)
+            }
+        }
+        return null
+    }
 
 
     useEffect(() => {
         dispatch(fetchAllFilters())
+        const tokenFromCookie = getCookie('token')
+        if(tokenFromCookie){
+            dispatch(setStateToken(tokenFromCookie))
+            dispatch(fetchUserInfo())
+        }
     }, []);
+
+    // ---------- for permission denied -------
+
+    const[alertShown, setAlertShown] = useState(false)
+    const msg = useSelector(state => state?.product?.message)
+    useEffect(() => {
+        if (msg) {
+            setAlertShown(true)
+        }
+    }, [msg])
+
+    // -----------for permission denied---------
 
     // --------sort search page filters------
     useEffect(() => {
-        // console.log('changed:', sort, search, page, filters)
 
         dispatch(fetchProductsByAllQuery({sort, search, page, filters}))
-
         localStorage.setItem('conditions', JSON.stringify({sort, search, page, filters}))
 
         // --------change url------
@@ -82,11 +117,16 @@ export const Main = () => {
 
     // --------handling token------
     useEffect(() => {
-        //todo: set token to cookie
-        token && setIsLogin(true)
+        //set token to cookie, 0.5 days to expire
+        if(!token){
+            setCookie('token', '', 0.5)
+            setIsLogin(false)
+        }else{
+            setCookie('token', token, 0.5)
+            setIsLogin(true)
+        }
     }, [token])
 
- 
     // --------handling shopping cart click------
     const openPop = () => {
         setShowPop(!showPop)
@@ -98,9 +138,12 @@ export const Main = () => {
 
     document.querySelector('body').style.overflow = 'auto'
 
-
     return (
         <div className='main-page-container'>
+            {
+                alertShown && <MsgAlert msg={msg} setAlertShown={setAlertShown} alertShown={alertShown} prodState={prodState}/>
+            }
+
             <div className="main-page-header">
                 <div className='main-page-logo'>
                     <img style={{transform: 'scale(1.4)'}} src="/logo.png" alt=""/>
@@ -114,10 +157,12 @@ export const Main = () => {
 
             <div className="login-row-container">
                 {isLogin?
-                    <h4>{logInMsg}, Hi, {userInfo.name}, your role: {userInfo.roles}</h4>
+                    <h4>{logInMsg}, Hi, {userInfo?.name}, your role: {userInfo?.roles}</h4>
                     :<div><Login/><h4>{logInMsg}</h4></div>}
             </div>
-
+            <div className="logout-row-container">
+                <Logout/>
+            </div>
 
             {showPop && <Popup openPop={openPop}/>}
 
