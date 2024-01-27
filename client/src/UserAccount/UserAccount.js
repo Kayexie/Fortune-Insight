@@ -15,6 +15,10 @@ const UserAccount = () => {
         dispatch(allOrdersPerUser({userId}))
     }, [])
 
+    const handleExpand = () => {
+
+    }
+
 
     return (
         <div>
@@ -29,7 +33,7 @@ const UserAccount = () => {
                 <div className='user-order-list'>
                     <h4>OrderList:</h4>
                     { !!orderList && orderList.map((o,idx) =>
-                        <div key={idx}>
+                        <div className='order-list-id' key={idx} onClick={() => handleExpand()}>
                             {o.id}
                         </div>
                     )}
