@@ -12,7 +12,7 @@ import DialogContent from '@mui/joy/DialogContent';
 import DialogActions from '@mui/joy/DialogActions';
 import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
     deleteProductById,
     fetchProductsByAllQuery,
@@ -31,6 +31,8 @@ export default function BasicSpeedDial({p}) {
     const [openEdit, setOpenEdit] = React.useState(false);
     const [editProduct, setEditProduct] = React.useState(Object.assign({}, p, {categoryName: p?.category?.techType, ownerName: p?.owner?.name}))
     const dispatch = useDispatch()
+    const filters = useSelector(state => state?.product?.filters)
+    const row = Math.ceil(filters.owners.length / 6)
     // console.log('edit page --> ', editProduct)
 
     const deleteHandler = () => {
@@ -104,7 +106,6 @@ export default function BasicSpeedDial({p}) {
                 <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
                     <ModalDialog sx={{width: 550, bgcolor: 'white'}}>
                         <DialogTitle>Edit the product</DialogTitle>
-                        <DialogContent>Please change the information of the product.</DialogContent>
                         <form
                             onSubmit={(event) => {
                                 event.preventDefault();
@@ -178,9 +179,9 @@ export default function BasicSpeedDial({p}) {
                                     <RadioGroup  name="categoryName" orientation='horizontal'
                                                  defaultValue={editProduct.categoryName}
                                                  onChange={editHandler}>
-                                        <Radio value="Public Blockchains" label="Public Blockchains" size="sm" />
-                                        <Radio value="Consortium Blockchains" label="Consortium Blockchains" size="sm" />
-                                        <Radio value="Private Blockchains" label="Private Blockchains" size="sm" />
+                                        {filters && filters.categories && filters.categories.map(item =>
+                                            <Radio value={item.name} label={item.name} size="sm" />
+                                        )}
                                     </RadioGroup>
                                 </FormControl>
                                 <FormControl>
@@ -188,11 +189,13 @@ export default function BasicSpeedDial({p}) {
                                     <RadioGroup  name="ownerName" orientation='horizontal'
                                                  defaultValue={editProduct.ownerName}
                                                  onChange={editHandler}
+                                                 sx={{width: 508, display: 'grid', gridTemplateRows: `repeat(${row}, 1fr)`,
+                                                     gridTemplateColumns: 'repeat(6, 1fr)'
+                                                 }}
                                     >
-                                        <Radio value="Louis" label="Louis" size="sm" />
-                                        <Radio value="Hao" label="Hao" size="sm" />
-                                        <Radio value="Yan" label="Yan" size="sm" />
-                                        <Radio value="Xie" label="Xie" size="sm" />
+                                        {filters && filters.owners && filters.owners.map((item, index) =>
+                                            <div><Radio value={item.name} label={item.name} size="sm" /></div>
+                                        )}
                                     </RadioGroup>
                                 </FormControl>
                                 <Button type="submit">Submit</Button>

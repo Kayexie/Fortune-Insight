@@ -51,7 +51,11 @@
   color: #000000;
   margin: 0 auto;
 }
+.main-page-container .main-page-content .page-left {
+  width: 20%;
+}
 .main-page-container .main-page-content .page-right {
+  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;

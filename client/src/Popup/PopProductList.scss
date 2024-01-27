@@ -9,7 +9,7 @@
   font-size: 1rem;
   padding: 0.5rem 1.5rem 0.5rem 0.5rem;
   grid-template-columns: 12% 1fr;
-  overflow-x: hidden;
+  overflow: hidden;
 
   .product-info{
     margin-left: 1rem;
@@ -23,6 +23,27 @@
       display: grid;
       grid-template-rows: 1fr 1fr;
       align-items: end;
+      white-space: nowrap;
+
+      & > * {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        cursor: pointer;
+
+        &:hover {
+          text-overflow: inherit;
+          overflow: visible;
+          white-space: nowrap;
+        }
+      }
+
+      h3 {
+        height: 22px;
+        width: 120px;
+        font: 600 0.95rem/1.6 Roboto Condensed,sans-serif;
+        margin-bottom: -2px;
+      }
     }
   }
   .product-quantity{
