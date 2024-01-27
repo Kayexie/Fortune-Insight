@@ -27,15 +27,17 @@
   align-items: center;
 }
 .pop-up-products .product-quantity .product-quantity-editor {
+  box-sizing: border-box;
   margin-top: 0.5rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   border: 1px solid grey;
+  padding: 0 0.3rem;
 }
 .pop-up-products .product-quantity .product-quantity-editor .product-quantity-number {
-  padding: 0.2rem 1rem;
+  padding: 0.2rem;
   font-weight: bolder;
 }
 .pop-up-products .product-quantity .product-quantity-editor p {

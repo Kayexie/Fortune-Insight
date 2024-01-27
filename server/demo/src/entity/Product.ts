@@ -36,6 +36,7 @@ class Product extends BaseClass {
     @Column()
     @Min(0)
     currentPrice: number
+    
     // @Column({
     //     type: "decimal"
     // })

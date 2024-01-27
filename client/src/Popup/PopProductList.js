@@ -49,9 +49,9 @@ const PopProductList = ({c, i}) => {
                     <div className='product-quantity'>
                         <p><b>Quantity</b></p>
                         <div className='product-quantity-editor'>
-                            <AddSharpIcon style={{fontSize: "small"}} onClick={() => handleIncrease(c.id, c.quantity)}/>
-                            <p className='product-quantity-number'>{c.quantity}</p>
                             <RemoveSharpIcon style={{fontSize: "small"}} onClick={() => handleDecrease(c.id, c.quantity)}/>
+                            <p className='product-quantity-number'>{c.quantity}</p>
+                            <AddSharpIcon style={{fontSize: "small"}} onClick={() => handleIncrease(c.id, c.quantity)}/>
                         </div>
                     </div>
                     <div className='product-info-ttlPrice'>

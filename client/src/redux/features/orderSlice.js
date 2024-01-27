@@ -2,8 +2,12 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 import {APIURL_CREATEORDER} from "../../helper.js";
 
+const id = localStorage.getItem('orderId') !== null ? localStorage.getItem('orderId') : '';
+const orderLine = localStorage.getItem('orderLine') !== null ? JSON.parse(localStorage.getItem('orderLine')) : '';
+
 const initialState = {
-    orderInfo:'',
+    orderId:id,
+    orderLine:orderLine,
 }
 
 
@@ -31,9 +35,11 @@ const orderSlice = createSlice({
     },
     extraReducers: (builder)=> {
         builder.addCase(fetchToCreateOrder.fulfilled, (state, action) => {
-            state.orderInfo = action.payload.orderId
-            console.log("this is from orderSlice ------------- ",action.payload.orderId)
-            console.log("this is from orderSlice ------------- ",state.orderInfo)
+            state.orderId = action.payload.orderId
+            state.orderLine = action.payload.newOrderLine
+
+            localStorage.setItem('orderId', state.orderId)
+            localStorage.setItem('orderLine', JSON.stringify(state.orderLine))
         })
     }
 })

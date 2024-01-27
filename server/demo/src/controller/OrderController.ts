@@ -1,9 +1,7 @@
 import {Request, Response} from "express";
-import {createQueryBuilder, getRepository} from "typeorm";
+import {getRepository, LockNotSupportedOnGivenDriverError} from "typeorm";
 import {Order} from "../entity/Order";
-import {validate} from "class-validator";
 import {OrderLine} from "../entity/OrderLine";
-import {create} from "domain";
 
 class OrderController {
 
@@ -16,6 +14,7 @@ class OrderController {
                 .leftJoinAndSelect('order.orderLines', 'orderLines')
                 .getMany()
 
+            //connect orderLine database
             console.log(orders)
 
             return res.status(200).send(({
@@ -31,26 +30,16 @@ class OrderController {
 
         try {
             const {orderId} = req.params
-            console.log(orderId)
-            //todo: add userId to request body
+            // console.log(orderId)
 
             //connect order database
-            let singleOrder: Order[] = await getRepository(Order)
+
+            let singleOrder: Order = await getRepository(Order)
                 .createQueryBuilder('order')
-                .leftJoinAndSelect('order.orderLines', 'orderLines')
-                .select([
-                    // 'order.id',
-                    'orderLines.productId',
-                    'orderLines.unitPrice',
-                    'orderLines.quantity'
-                ])
+                .leftJoinAndSelect('order.orderLines','orderLines')
+                .leftJoinAndSelect('orderLines.product','product')
                 .where('order.id =:orderId', {orderId})
-                .getRawMany()
-
-
-            console.log(singleOrder)
-
-
+                .getOne()
 
             return res.status(200).send(({
                 orderId,

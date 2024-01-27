@@ -9,14 +9,13 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const CheckoutPage = () => {
 
-    const carts = useSelector(state => state?.product.cart)
-    const id = useSelector(state => state?.order.orderInfo)
-    const dispatch = useDispatch()
-    console.log(id)
+    // const carts = useSelector(state => state?.product.cart)
+    const orderLine = useSelector(state => state?.order.orderLine)
+    const id = useSelector(state => state?.order.orderId)
+    console.log(orderLine)
 
-    // useEffect(() => {
-    //     dispatch(fetch)
-    // }, []);
+    document.querySelector('body').style.overflow = 'auto'
+
 
     return <div className='checkout-page'>
 
@@ -37,11 +36,11 @@ const CheckoutPage = () => {
             <div className="checkout-page-payment">
                 <div className='order-number'>
                     <div>
-                        <div>
+                        <div className='order-number-check'>
                             <CheckCircleIcon style={{color:'green'}}/>
-                            <p>You Have Created The Order</p>
+                            <p>You Have Created The Order : </p>
                         </div>
-                        <div>Order Id: </div>
+                        <h2><strong>{id}</strong></h2>
                     </div>
                 </div>
                 <div>
@@ -52,7 +51,7 @@ const CheckoutPage = () => {
 
             </div>
             <div className="checkout-page-order-summary">
-                <OrderSummary cart={carts}/>
+                <OrderSummary orderLine={orderLine}/>
             </div>
         </div>
         <div className="main-page-footer">

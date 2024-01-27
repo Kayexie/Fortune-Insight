@@ -30,14 +30,16 @@
     align-items: center;
 
     .product-quantity-editor{
+      box-sizing: border-box;
       margin-top: .5rem;
       display: flex;
       flex-direction: row;
       justify-content: center;
       align-items: center;
       border: 1px solid grey;
+      padding: 0 .3rem;
       .product-quantity-number{
-        padding: .2rem 1rem;
+        padding: .2rem;
         font-weight: bolder;
       }
       p{
