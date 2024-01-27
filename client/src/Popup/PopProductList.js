@@ -44,7 +44,7 @@ const PopProductList = ({c, i}) => {
                 <img src={c.image} alt={c.name}/>
                 <div className='product-info'>
                     <div className='product-name'>
-                        <h3 style={{height: '22px', overflow: 'hidden', fontSize: '0.95rem', font: '600 0.95rem/1.6 Roboto Condensed,sans-serif', marginBottom: '-2px'}}>{c.name}</h3>
+                        <h3>{c.name}</h3>
                         <p style={{marginBottom: '-5px'}}>Id:<span style={{marginLeft: '3px'}}>{c.id}</span></p>
                     </div>
                     <div className='product-quantity'>
