@@ -3,6 +3,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  width: 600px;
+  margin: 20px 0 20px 29%;
+
+  .login-form {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 120px;
+
+    & > * {
+      width: 200px;
+    }
+  }
+
+  .login-btn {
+    color: white;
+    background-color: black;
+    font: 600 1rem/1.6 Roboto Condensed,sans-serif;
+    padding: 5px 20px;
+    width: 120px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    letter-spacing: 1px;
+  }
 }

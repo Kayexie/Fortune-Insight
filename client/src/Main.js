@@ -158,7 +158,7 @@ export const Main = () => {
             <div className="login-row-container">
                 {isLogin?
                     <h4>{logInMsg}, Hi, {userInfo?.name}, your role: {userInfo?.roles}</h4>
-                    :<div><Login/><h4>{logInMsg}</h4></div>}
+                    :<div style={{width: '100%'}}><Login/><h4>{logInMsg}</h4></div>}
             </div>
             <div className="logout-row-container">
                 <Logout/>

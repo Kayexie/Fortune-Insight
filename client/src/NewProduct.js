@@ -33,7 +33,7 @@ export default function FloatingActionButtonSize() {
     })
     const dispatch = useDispatch()
     const filters = useSelector(state => state?.product?.filters)
-    const row = Math.ceil(filters.owners.length / 6)
+    const row = Math.ceil(filters?.owners?.length / 6)
     // console.log('select this --> ', filters)
 
     const paramHandler = ({target}) => {

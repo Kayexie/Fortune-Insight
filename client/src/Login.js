@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import './Login.scss'
 import {useDispatch} from "react-redux";
@@ -54,8 +53,9 @@ export default function BasicTextFields() {
             <form
                 // component="form"
                 sx={{
-                    '& > :not(style)': {m: 1, width: '25ch'},
+                    '& > :not(style)': {m: 1, width: '150px'},
                 }}
+                className='login-form'
                 noValidate
                 autoComplete="off"
                 onSubmit={submitHandler}
@@ -66,6 +66,7 @@ export default function BasicTextFields() {
                            name='email'
                            value={formData.email}
                            onChange={changeHandler}
+                           size='small'
                 />
                 <TextField id="outlined-basic-psd" label="Passwaord" variant="outlined"
                            required
@@ -73,8 +74,9 @@ export default function BasicTextFields() {
                            name='password'
                            value={formData.password}
                            onChange={changeHandler}
+                           size='small'
                 />
-                <button className="login-btn" type='submit'>Login</button>
+                <button className="login-btn" type='submit'>LOG IN</button>
             </form>
 
         </div>

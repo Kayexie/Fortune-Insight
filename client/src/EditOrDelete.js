@@ -34,7 +34,7 @@ export default function BasicSpeedDial({p}) {
     const [editProduct, setEditProduct] = React.useState(Object.assign({}, p, {categoryName: p?.category?.techType, ownerName: p?.owner?.name}))
     const dispatch = useDispatch()
     const filters = useSelector(state => state?.product?.filters)
-    const row = Math.ceil(filters.owners.length / 6)
+    const row = Math.ceil(filters?.owners?.length / 6)
     // console.log('edit page --> ', editProduct)
 
 
