@@ -10,16 +10,19 @@ import './ProductCard.scss'
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import EditOrDelete from './EditOrDelete.js'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addToBag} from "./redux/features/productSlice";
 import FiberNewOutlinedIcon from '@mui/icons-material/FiberNewOutlined';
+import {useEffect, useState} from "react";
+import {clearMsg} from "./redux/features/productSlice";
 
 export default function ProductCard({index, p}) {
 
     const dispatch = useDispatch()
-    // console.log('this is from ============productCart product', p)
     const nowDate = new Date()
     const productDate = new Date(p?.createdAt).getDate()
+
+
 
 
     // ----------this is for add to bag function start---------

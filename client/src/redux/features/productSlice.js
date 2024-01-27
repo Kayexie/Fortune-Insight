@@ -14,6 +14,8 @@ const initialState = {
     products: [],
     params: {},
     cart: items,
+    message: '',
+    state:'',
 }
 
 export const fetchAllFilters = createAsyncThunk(
@@ -37,9 +39,7 @@ export const fetchProductsByAllQuery = createAsyncThunk(
     async (params, thunkAPI) => {
         try {
             const {sort, search, page, filters} = params
-            // console.log("from Slice sort, search, page:", sort, search, page, filters)
             const res = await axios.post(`${APIURL_ALLQUERIES}?search=${search}&sort=${sort}&page=${page}`, filters)
-            // console.log('in new action to fetch search products with sort, search, page ====>', res.data)
             return res.data
         } catch (e) {
             console.log('err', e)
@@ -49,15 +49,19 @@ export const fetchProductsByAllQuery = createAsyncThunk(
 
 export const deleteProductById = createAsyncThunk(
     'product/deleteProductById',
-    async (param) => {
+    async (param, thunkAPI) => {
         try{
             const {id} = param
             console.log(`The product ${id} is going to be deleted`)
-            const res = await axios.delete(`${APIURL_DELETEPRODUCT}?id=${id}`)
+            const state = thunkAPI.getState()
+            const token = state.user.token
+            const res = await axios.delete(`${APIURL_DELETEPRODUCT}?id=${id}`, {headers:{'Authorization':`Bearer ${token}`}})
+            //delete does not use body
             console.log('this action is going to delete the product ', res.data)
+            // return {data: res.data, status: res.status}
             return res.data
         }catch (e) {
-            console.log('err: ', e)
+            return thunkAPI.rejectWithValue(e.response.data)
         }
     }
 )
@@ -87,8 +91,6 @@ export const updateProduct = createAsyncThunk(
         }
     }
 )
-
-
 
 const productSlice = createSlice({
     name: 'product',
@@ -200,16 +202,21 @@ const productSlice = createSlice({
             state.cart = newCart
             localStorage.setItem('cartItems', JSON.stringify(state.cart.map(item => item)))
         },
+
         emptyCart:(state, action) => {
             let newCart = [...state.cart]
             newCart = []
 
             state.cart = newCart
             localStorage.setItem('cartItems', state.cart)
-        }
+        },
+
 
         //----------------------------- shopping cart  ------------------------------------
 
+        clearMsg: (state, action) => {
+            state.message = ''
+        },
 
     },
     extraReducers: (builder) => {
@@ -220,6 +227,14 @@ const productSlice = createSlice({
         builder.addCase(fetchProductsByAllQuery.fulfilled, (state, action) => {
             state.products = action.payload.products
             state.params = action.payload.params
+        })
+        builder.addCase(deleteProductById.fulfilled, (state, action) => {
+            state.message = action.payload.message
+            state.state = 200
+        })
+        builder.addCase(deleteProductById.rejected, (state, action) => {
+            state.message = action.payload.message
+            state.state = 400
         })
     }
 })
@@ -232,5 +247,6 @@ export const {
     deleteProduct,
     decreaseQuantity,
     increaseQuantity,
-    emptyCart
+    emptyCart,
+    clearMsg,
 } = productSlice.actions

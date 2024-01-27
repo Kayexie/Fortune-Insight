@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import './UserAccount.scss';
 import {useDispatch, useSelector} from "react-redux";
 import {allOrdersPerUser, singleOrdersPerUser} from "../redux/features/orderSlice";
+import {ArrowBack} from "@mui/icons-material";
 
 const UserAccount = () => {
     const userInfo = useSelector(state => state?.user?.userInfo)
@@ -9,7 +10,7 @@ const UserAccount = () => {
     const userId = userInfo.userId
     const dispatch = useDispatch()
     const orderList = useSelector(state => state?.order.orderList)
-    const orderDetails = useSelector( state => state?.order.orderDetails)
+    const orderDetails = useSelector(state => state?.order.orderDetails)
     const orderDetailsId = useSelector(state => state?.order.orderDetailsId)
     console.log(orderDetails, orderDetailsId)
 
@@ -23,7 +24,6 @@ const UserAccount = () => {
     }
 
 
-
     return (
         <div>
             <div className="main-page-header">
@@ -33,15 +33,20 @@ const UserAccount = () => {
                 </div>
             </div>
             <div className='user-order-container'>
+                <div className='back-to-main' onClick={() => window.location.replace('/')}>
+                    <ArrowBack/>
+                    Back To Main Page
+                </div>
                 <h2>Hello! {userInfo.name}</h2>
                 <div className='user-order-list'>
                     <h4>OrderList:</h4>
-                    { !!orderList && orderList.map((o,idx) =>
+                    {!!orderList && orderList.map((o, idx) =>
                         <div key={idx} onClick={() => handleExpand(o.id)}>
                             <div className='order-list-id'>{o.id}</div>
-                            {o.id === orderDetailsId && orderDetails.length > 0 && orderDetails.map( (o, idx) => <div key={idx}>
+                            {o.id === orderDetailsId && orderDetails.length > 0 && orderDetails.map((o, idx) => <div
+                                key={idx}>
                                 <div>
-                                    <img style={{width:'1rem'}} src={o.product.image} alt={o.product.id}/>
+                                    <img style={{width: '1rem'}} src={o.product.image} alt={o.product.id}/>
                                     <div>  {o.product.name}</div>
                                     <div> {o.quantity}</div>
                                     <div> {o.unitPrice}</div>
@@ -49,7 +54,6 @@ const UserAccount = () => {
                                 </div>
                             </div>)}
                         </div>
-
                     )}
 
                 </div>

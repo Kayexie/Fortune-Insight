@@ -5,6 +5,7 @@ const orderRoutes = Router()
 
 
 orderRoutes.post('/login', UserController.loginAuth)
+orderRoutes.post('/info', UserController.userInfo)
 
 
 

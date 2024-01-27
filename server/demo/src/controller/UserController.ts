@@ -7,6 +7,36 @@ import * as jwt from 'jsonwebtoken';
 
 class UserController {
 
+    // role verify middleware
+    static verifyVendorRole = (req: Request, res: Response, next: NextFunction) => {
+        const authHeader = req.headers.authorization
+        if(authHeader){
+            const token = authHeader && authHeader.split(' ')[1]
+            const key = process.env.JWT_SECRET
+            jwt.verify(token, key, (err, decoded)=>{
+                if(err){
+                    res.status(400).send({
+                        message: 'token is invalid',
+                        err
+                    })
+                }
+
+                //verify vendor role
+                if(decoded.roles.includes('Vendor')){
+                    next()
+                }else{
+                    res.status(400).send({
+                        message: 'Permission denied'
+                    })
+                }
+            })
+        }else{
+            res.status(400).send({
+                message: 'token is not provided'
+            })
+        }
+    }
+
     static loginAuth = async (req: Request, res: Response, next: NextFunction)=> {
         try{
             const {email, password} = req.body
@@ -71,6 +101,37 @@ class UserController {
             }catch(e){console.log(e)}
     }
 
+    static userInfo = async (req:Request, res: Response)=>{
+        try{
+            const authHeader = req.headers.authorization
+            if(authHeader){
+                const token = authHeader && authHeader.split(' ')[1]
+                const key = process.env.JWT_SECRET
+                jwt.verify(token, key, (err, decoded)=>{
+                    if(err){
+                        res.status(400).send({
+                            message: 'token is invalid',
+                            err
+                        })
+                    }
+                    res.status(200).send({
+                        message: 'Welcome back',
+                        decoded
+                    })
+                })
+
+            }else{
+                res.status(400).send({
+                    msg: 'no token is provided in header'
+                })
+            }
+
+
+
+
+        }catch(e){console.log(e)}
+
+    }
 }
 
 export default UserController;

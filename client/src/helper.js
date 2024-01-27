@@ -3,6 +3,7 @@ export const USER_API = 'c2d2e2d2-0b9e-4e3e-8b9a-9b8c7d6e5f4g'
 export const APIURL_ALLFILTERS = 'http://localhost:8000/product/filters'
 export const APIURL_ALLQUERIES = 'http://localhost:8000/product'
 export const APIURL_LOGINAUTH = 'http://localhost:8000/user/login'
+export const APIURL_USERINFO = 'http://localhost:8000/user/info'
 
 export const emailRegex = /\S+@\S+\.\S+/;
 export const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
