@@ -29,6 +29,8 @@ import DialogContent from '@mui/joy/DialogContent';
 import Badge from '@mui/joy/Badge';
 import Typography from '@mui/joy/Typography';
 import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
+import Tooltip from '@mui/joy/Tooltip';
+import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
 
 export const Main = () => {
     const dispatch = useDispatch()
@@ -168,29 +170,31 @@ export const Main = () => {
                     <div className='main-page-user-info'>
                         {token
                             ? <div style={{display: 'flex', marginBottom: 0}}>
-                                <p className='user-account' onClick={() => navigate('/userAccount')}>
-                                    <AccountBoxIcon sx={{margin: '0 5px -5px 0'}}/><i><u>{userInfo.name}</u></i>
-                                </p>
+                                <Tooltip title={userInfo?.roles} variant="outlined" size='sm' placement='bottom-start' sx={{backgroundColor: 'orange', '.MuiTooltip-root': {marginTop: '-10px'}}} >
+                                    <p className='user-account' onClick={() => navigate('/userAccount')}>
+                                        <AccountBoxIcon sx={{margin: '0 5px -5px 0'}}/><i><u>{userInfo.name}</u></i>
+                                    </p>
+                                </Tooltip>
                                 <Logout/>
                             </div>
-                            : <p onClick={() => setOpenLogin(true)} style={{'&:hover': {textDecoration: 'underline'}}}>Log In</p>}
+                            : <p className='user-login' onClick={() => setOpenLogin(true)}><VpnKeyOutlinedIcon sx={{fontSize: '21px', margin: '0 4px -3px 0'}}/>Log In</p>}
                     </div>
                     <div className='main-page-shopping'>
                         <Badge badgeContent={ttlQty} showZero={true} sx={{transform: 'scale(0.65)'}} color='success' variant='solid'>
                             <Typography level="h3" size='sm'>
-                                <CurrencyBitcoinIcon sx={{color: 'white', fontSize: '45px', transform: 'rotate(15deg)'}}/>
+                                <CurrencyBitcoinIcon sx={{color: 'white', fontSize: '45px', marginBottom: '1px', transform: 'rotate(15deg)'}}/>
                             </Typography>
                         </Badge>
-                        <p style={{margin: '0 0 -3px -5px'}} onClick={() => openPop()}>My bag</p>
+                        <p style={{margin: '0 0 0 -8px'}} onClick={() => openPop()}>My bag</p>
                     </div>
                 </div>
             </div>
 
-            <div className="login-row-container">
-                {isLogin?
-                    <h4>{logInMsg}, Hi, {userInfo?.name}, your role: {userInfo?.roles}</h4>
-                    :<div style={{width: '100%'}}><h4>{logInMsg}</h4></div>}
-            </div>
+            {/*<div className="login-row-container">*/}
+            {/*    {isLogin?*/}
+            {/*        <h4>{logInMsg}, Hi, {userInfo?.name}, your role: {userInfo?.roles}</h4>*/}
+            {/*        :<div style={{width: '100%'}}><h4>{logInMsg}</h4></div>}*/}
+            {/*</div>*/}
 
             {showPop && <Popup openPop={openPop}/>}
 
@@ -217,9 +221,6 @@ export const Main = () => {
                 <NewProduct/>
             </div>
             <div className="main-page-footer">
-                {/*<div className='social-media'>*/}
-                {/*    <FacebookSharpIcon/>*/}
-                {/*</div>*/}
                 <div className='h5'>
                     <h4>Contact Us</h4>
                     <h4>Private Policy</h4>

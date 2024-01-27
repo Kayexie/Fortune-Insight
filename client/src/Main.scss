@@ -12,7 +12,7 @@
   overflow-x: hidden;
 
   .main-page-header{
-    padding: 20px;
+    padding: 20px 20px 0 20px;
     width: 100%;
     height: auto;
     background-color: #000000;
@@ -34,11 +34,18 @@
       justify-content: flex-end;
       align-items: center;
       font: 500 1.1rem/1.6 Roboto Condensed,sans-serif;
+      height: 60px;
       .main-page-user-info{
         cursor: pointer;
 
         .user-account:hover {
           color: orange;
+        }
+
+        .user-login:hover {
+          color: #8a7ec9;
+          text-decoration: underline;
+          text-underline-offset: 2px;
         }
       }
       .main-page-shopping{
@@ -46,7 +53,7 @@
         flex-direction: row;
         align-items: center;
         justify-content: right;
-        font: 500 1rem/1.6 Roboto Condensed,sans-serif;
+        font: 500 1.1rem/1.6 Roboto Condensed,sans-serif;
         margin-left: 0.5rem;
 
         &:hover{
