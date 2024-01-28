@@ -15,7 +15,10 @@ import {useEffect, useState} from "react";
 import Login from "./Login.js";
 import Page from './Page.js';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import FaceIcon from '@mui/icons-material/Face';
+import ReportIcon from '@mui/icons-material/Report';
+import Alert from '@mui/joy/Alert';
+import IconButton from '@mui/joy/IconButton';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import Popup from "./Popup/Popup";
 import {fetchUserInfo, setStateToken} from "./redux/features/userSlice";
 import MsgAlert from "./MsgAlert";
@@ -31,6 +34,7 @@ import Typography from '@mui/joy/Typography';
 import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
 import Tooltip from '@mui/joy/Tooltip';
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export const Main = () => {
     const dispatch = useDispatch()
@@ -49,7 +53,6 @@ export const Main = () => {
     const [isLogin, setIsLogin] = useState(false)
     const [openLogin, setOpenLogin] = useState(!isLogin)
     console.log('whether open dialog --> ', openLogin)
-    console.log('whether login --> ', isLogin)
 
     const [showPop, setShowPop] = useState(false)
     const carts = useSelector(state => state?.product.cart)
@@ -105,6 +108,23 @@ export const Main = () => {
     }, [msg])
 
     // -----------for permission denied---------
+
+    //------------login alert msg-----------
+    const [alertOpen, setAlertOpen] = useState(false)
+    const [successOpen, setSuccessOpen] = useState(false)
+    console.log('login message ->', logInMsg)
+    useEffect(() => {
+        if(logInMsg) {
+            if(logInMsg === 'Welcome back') {
+                setSuccessOpen(true)
+            } else {
+                setAlertOpen(true)
+            }
+        } else {
+            setAlertOpen(false)
+            setSuccessOpen(false)
+        }
+    }, [logInMsg]);
 
     // --------sort search page filters------
     useEffect(() => {
@@ -229,10 +249,51 @@ export const Main = () => {
                 <p>Copyright © 2024 infinite fortune vendor Since 2023.</p>
             </div>
             {
-                !isLogin && <Modal open={openLogin} onClose={() => setOpenLogin(false)}>
-                    <ModalDialog>
+                !isLogin &&
+                <Modal open={openLogin} onClose={() => setOpenLogin(false)}>
+                    <ModalDialog sx={{width: 350}}>
                         <DialogTitle sx={{font: '600 1.3rem/1.6 Roboto Condensed,sans-serif'}}>Log In</DialogTitle>
                         <DialogContent sx={{font: '400 0.85rem/1.6 Roboto Condensed,sans-serif'}}>required(*)</DialogContent>
+                        <DialogContent>
+                            {alertOpen && <Alert
+                                key='Error'
+                                sx={{alignItems: 'flex-start', zIndex: 2}}
+                                startDecorator={<ReportIcon/>}
+                                variant="soft"
+                                color='danger'
+                                endDecorator={
+                                    <IconButton variant="soft" color='danger'>
+                                        <CloseRoundedIcon onClick={() => setAlertOpen(false)}/>
+                                    </IconButton>
+                                }
+                            >
+                                <div>
+                                    <div>Error</div>
+                                    <Typography level="body-sm" color='danger'>
+                                        {logInMsg}
+                                    </Typography>
+                                </div>
+                            </Alert>}
+                            {successOpen && <Alert
+                                key='Success'
+                                sx={{alignItems: 'flex-start', zIndex: 2}}
+                                startDecorator={<CheckCircleIcon />}
+                                variant="soft"
+                                color='success'
+                                endDecorator={
+                                    <IconButton variant="soft" color='success'>
+                                        <CloseRoundedIcon onClick={() => setSuccessOpen(false)}/>
+                                    </IconButton>
+                                }
+                            >
+                                <div>
+                                    <div>Success</div>
+                                    <Typography level="body-sm" color='success'>
+                                        {logInMsg}
+                                    </Typography>
+                                </div>
+                            </Alert>}
+                        </DialogContent>
                         <Login setOpen={setOpenLogin}/>
                     </ModalDialog>
                 </Modal>

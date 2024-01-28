@@ -24,11 +24,11 @@ export default function BasicTextFields({setOpen}) {
         //validate data
         if(emailRegex.test(email) && passwordRegex.test(password)){
             console.log('valid data')
-            dispatch(loginAuth(formData))
-
+            // dispatch(loginAuth(formData))
         }else{
             console.log('invalid data')
         }
+        dispatch(loginAuth(formData))
     }
 
     const changeHandler = ({target}) => {
