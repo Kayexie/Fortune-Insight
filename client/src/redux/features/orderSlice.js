@@ -18,9 +18,9 @@ const initialState = {
 
 export const fetchToCreateOrder = createAsyncThunk(
     'orderSlice/fetchToCreateOrder',
-    async (newCarts) => {
+    async (createOrder) => {
         try{
-            const data = newCarts.newCarts
+            const data = createOrder
             console.log(data)
             const res = await axios.post(APIURL_CREATEORDER,data)
             console.log(res.data)
