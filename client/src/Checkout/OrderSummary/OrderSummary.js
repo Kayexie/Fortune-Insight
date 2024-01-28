@@ -31,7 +31,7 @@ const OrderSummary = ({orderLine}) => {
                         <div className='order-summary-item'><span></span> items</div>
                         <ExpandMore/>
                     </div>
-                    <div> $ {sum}.00</div>
+                    <div> $ {sum.toFixed(2)}</div>
                 </div>
             </div>
             { isShow &&  <div className='order-summary-list'>
@@ -41,7 +41,7 @@ const OrderSummary = ({orderLine}) => {
                             <div><strong>{c.product}</strong></div>
                             <div className='order-summary-product-sum'>
                                 <div>Quantity {c.quantity}</div>
-                                <div>${c.unitPrice * c.quantity}.00</div>
+                                <div>${c.unitPrice * c.quantity}</div>
                             </div>
                         </div>
                     </div>
@@ -50,7 +50,7 @@ const OrderSummary = ({orderLine}) => {
             <div className='order-summary-summary'>
                 <div className='order-summary-subtotal'>
                     <div>Subtotal</div>
-                    <div> $ {sum}.00</div>
+                    <div> $ {sum.toFixed(2)}</div>
                 </div>
                 <div className='order-summary-tax'>
                     <div>Tax</div>
@@ -59,7 +59,7 @@ const OrderSummary = ({orderLine}) => {
             </div>
             <div className='order-summary-total'>
                 <div><strong>Order total</strong></div>
-                <div><strong> $ {sum}.00</strong></div>
+                <div><strong> $ {sum.toFixed(2)}</strong></div>
             </div>
         </div>
     );

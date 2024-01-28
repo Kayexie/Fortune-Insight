@@ -1,4 +1,29 @@
 .order-list-id{
-  cursor: pointer;
-  text-decoration: underline;
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}
+
+.main-page-header {
+  font: 500 1.1rem/1.6 Roboto Condensed,sans-serif;
+
+  .back-to-main {
+    margin-bottom: -15px;
+    width: 210px;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  }
+}
+
+.user-order-container {
+  font: 500 1.1rem/1.6 Roboto Condensed,sans-serif;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
