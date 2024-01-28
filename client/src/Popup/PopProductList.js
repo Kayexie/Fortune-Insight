@@ -9,6 +9,7 @@ import AddSharpIcon from '@mui/icons-material/AddSharp';
 const PopProductList = ({c, i}) => {
 
     const dispatch = useDispatch()
+    const minQuantity = c?.currentPrice > 0.01 ? 1 : Math.ceil(0.01 / c?.currentPrice)
 
 
     const handleDelete = (id) => {
@@ -27,12 +28,11 @@ const PopProductList = ({c, i}) => {
 
     const handleDecrease = (id, quantity) => {
         // console.log('button - clicked', id, quantity)
-        if(quantity > 1){
+        if(quantity > minQuantity){
             dispatch(decreaseQuantity({id}))
         } else {
             dispatch(deleteProduct({id}))
         }
-
     }
 
     const singleTtlPrice = c.quantity * c.price

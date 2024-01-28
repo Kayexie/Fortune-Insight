@@ -34,7 +34,6 @@ import Typography from '@mui/joy/Typography';
 import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
 import Tooltip from '@mui/joy/Tooltip';
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export const Main = () => {
     const dispatch = useDispatch()
@@ -52,7 +51,6 @@ export const Main = () => {
 
     const [isLogin, setIsLogin] = useState(false)
     const [openLogin, setOpenLogin] = useState(!isLogin)
-    console.log('whether open dialog --> ', openLogin)
 
     const [showPop, setShowPop] = useState(false)
     const carts = useSelector(state => state?.product.cart)
@@ -93,7 +91,8 @@ export const Main = () => {
             dispatch(fetchUserInfo())
         }
         if(token) {
-            setOpenLogin(false)
+            setTimeout(setOpenLogin(false), 1000)
+            // setOpenLogin(false)
         }
     }, []);
 
@@ -111,18 +110,17 @@ export const Main = () => {
 
     //------------login alert msg-----------
     const [alertOpen, setAlertOpen] = useState(false)
-    const [successOpen, setSuccessOpen] = useState(false)
-    console.log('login message ->', logInMsg)
+
     useEffect(() => {
         if(logInMsg) {
-            if(logInMsg === 'Welcome back') {
-                setSuccessOpen(true)
+            if(logInMsg === 'login success') {
+                // console.log('open success')
+                setAlertOpen(false)
             } else {
                 setAlertOpen(true)
             }
         } else {
             setAlertOpen(false)
-            setSuccessOpen(false)
         }
     }, [logInMsg]);
 
@@ -210,12 +208,6 @@ export const Main = () => {
                 </div>
             </div>
 
-            {/*<div className="login-row-container">*/}
-            {/*    {isLogin?*/}
-            {/*        <h4>{logInMsg}, Hi, {userInfo?.name}, your role: {userInfo?.roles}</h4>*/}
-            {/*        :<div style={{width: '100%'}}><h4>{logInMsg}</h4></div>}*/}
-            {/*</div>*/}
-
             {showPop && <Popup openPop={openPop}/>}
 
             <SearchBar setSearch={setSearch}/>
@@ -255,40 +247,21 @@ export const Main = () => {
                         <DialogTitle sx={{font: '600 1.3rem/1.6 Roboto Condensed,sans-serif'}}>Log In</DialogTitle>
                         <DialogContent sx={{font: '400 0.85rem/1.6 Roboto Condensed,sans-serif'}}>required(*)</DialogContent>
                         <DialogContent>
-                            {alertOpen && <Alert
-                                key='Error'
+                            {logInMsg && alertOpen && <Alert
+                                key={logInMsg === 'login success' ? 'Success' : 'Error'}
                                 sx={{alignItems: 'flex-start', zIndex: 2}}
                                 startDecorator={<ReportIcon/>}
                                 variant="soft"
-                                color='danger'
+                                color={logInMsg === 'login success' ? 'success' : 'danger'}
                                 endDecorator={
-                                    <IconButton variant="soft" color='danger'>
+                                    <IconButton variant="soft" color={logInMsg === 'login success' ? 'success' : 'danger'}>
                                         <CloseRoundedIcon onClick={() => setAlertOpen(false)}/>
                                     </IconButton>
                                 }
                             >
                                 <div>
-                                    <div>Error</div>
-                                    <Typography level="body-sm" color='danger'>
-                                        {logInMsg}
-                                    </Typography>
-                                </div>
-                            </Alert>}
-                            {successOpen && <Alert
-                                key='Success'
-                                sx={{alignItems: 'flex-start', zIndex: 2}}
-                                startDecorator={<CheckCircleIcon />}
-                                variant="soft"
-                                color='success'
-                                endDecorator={
-                                    <IconButton variant="soft" color='success'>
-                                        <CloseRoundedIcon onClick={() => setSuccessOpen(false)}/>
-                                    </IconButton>
-                                }
-                            >
-                                <div>
-                                    <div>Success</div>
-                                    <Typography level="body-sm" color='success'>
+                                    <div>{logInMsg === 'login success' ? 'Success' : 'Error'}</div>
+                                    <Typography level="body-sm" color={logInMsg === 'login success' ? 'success' : 'danger'}>
                                         {logInMsg}
                                     </Typography>
                                 </div>

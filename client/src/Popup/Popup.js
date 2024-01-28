@@ -15,7 +15,7 @@ const Popup = ({openPop}) => {
     const carts = useSelector(state => state?.product.cart)
     const token = useSelector(state => state?.user.token)
     const userInfo = useSelector(state => state?.user.userInfo)
-    const userId = userInfo.userId
+    const userId = userInfo?.userId
 
     console.log("this is form popup window for shopping cart", userId)
 
@@ -94,7 +94,7 @@ const Popup = ({openPop}) => {
                     <div className='pop-up-order'>
                         <div className='subtotal'>
                             <h4>SUBTOTAL</h4>
-                            <p>$ {numberHandler(subtotal) > 8 ? subtotal.toFixed(8) : subtotal}</p>
+                            <p>$ {subtotal.toFixed(2)}</p>
                         </div>
                         <div className='tax'>
                             <h4>TAX</h4>
@@ -102,7 +102,7 @@ const Popup = ({openPop}) => {
                         </div>
                         <div className='total'>
                             <h4>ESTIMATED TOTAL</h4>
-                            <p>$ {numberHandler(estimateTtl) > 8 ? estimateTtl.toFixed(8) : estimateTtl}</p>
+                            <p>$ {estimateTtl.toFixed(2)}</p>
                         </div>
                     </div>
 

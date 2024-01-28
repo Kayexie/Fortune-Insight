@@ -12,7 +12,10 @@ import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import ReceiptLong from '@mui/icons-material/ReceiptLong';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Divider from '@mui/material/Divider';
+import { styled } from '@mui/material/styles';
 
 const UserAccount = () => {
     const userInfo = useSelector(state => state?.user?.userInfo)
@@ -34,6 +37,16 @@ const UserAccount = () => {
         // console.log(orderId)
         dispatch(singleOrdersPerUser({orderId}))
     }
+
+    const Root = styled('div')(({ theme }) => ({
+        width: '100%',
+        ...theme.typography.body2,
+        color: theme.palette.text.secondary,
+        '& > :not(style) ~ :not(style)': {
+            marginTop: theme.spacing(2),
+        },
+    }));
+
 
 
     return (
@@ -86,13 +99,30 @@ const UserAccount = () => {
                                     Hello <b style={{marginLeft: '10px'}}>{userInfo.name}</b> !
                                 </Typography>
                             </ListItem>
-                            <List sx={{ '--List-gap': '0px' }}>
+                            {orderList.length > 0
+                                ? <List sx={{ '--List-gap': '0px' }}>
                                 <ListItem>
-                                    <ListItemButton selected sx={{font: '500 1.1rem/1.6 Roboto Condensed,sans-serif'}}>Your order list</ListItemButton>
+                                    <ListItemButton selected>
+                                        <Alert variant="outlined" severity="success" sx={{font: '400 1.1rem/1.6 Roboto Condensed,sans-serif', paddingBottom: 0}}>
+                                            <AlertTitle sx={{font: '500 1.3rem/1.6 Roboto Condensed,sans-serif', marginTop: '-6px'}}>Order History</AlertTitle>
+                                            You have {orderList.length} {orderList.length > 1 ? 'orders' : 'order'}.
+                                        </Alert>
+                                    </ListItemButton>
                                 </ListItem>
                             </List>
+                                : <List sx={{ '--List-gap': '0px' }}>
+                                    <ListItem>
+                                        <ListItemButton selected>
+                                            <Alert variant="outlined" severity="info" sx={{font: '400 1.1rem/1.6 Roboto Condensed,sans-serif'}}>
+                                                <AlertTitle sx={{font: '500 1.3rem/1.6 Roboto Condensed,sans-serif', marginTop: '-6px'}}>Oops!</AlertTitle>
+                                                You don't have any shopping record yet. Go to shop now!
+                                            </Alert>
+                                        </ListItemButton>
+                                    </ListItem>
+                                </List>
+                            }
                         </ListItem>
-                        {!!orderList ? orderList.map((o, idx) =>
+                        {!!orderList && orderList.map((o, idx) =>
                             <ListItem
                                 nested
                                 className='orderlist'
@@ -139,13 +169,17 @@ const UserAccount = () => {
                                 {open[idx] && (
                                     <List sx={{ '--ListItem-paddingY': '8px', color: 'black', 'span': {fontSize: '16px'} }}>
                                         <ListItem>
-                                            <ListItemButton sx={{fontSize: '15px', display: 'grid', gridTemplateColumns: '1fr 1fr'}}>
-                                                <span>Create Time: {o.createdAt.substring(0, o.createdAt.indexOf('T'))}  {o.createdAt.substring(o.createdAt.indexOf('T') + 1, o.createdAt.indexOf('.'))}</span>
-                                                <span>Update Time: {o.updatedAt.substring(0, o.updatedAt.indexOf('T'))}  {o.updatedAt.substring(o.updatedAt.indexOf('T') + 1, o.updatedAt.indexOf('.'))}</span>
+                                            <ListItemButton sx={{fontSize: '15px'}}>
+                                                <Root>
+                                                    <Divider sx={{fontSize: '15px', width: 620}}>
+                                                        <span>Create Time: {o.createdAt.substring(0, o.createdAt.indexOf('T'))}  {o.createdAt.substring(o.createdAt.indexOf('T') + 1, o.createdAt.indexOf('.'))}</span>
+                                                        <span style={{marginLeft: 20}}>Update Time: {o.updatedAt.substring(0, o.updatedAt.indexOf('T'))}  {o.updatedAt.substring(o.updatedAt.indexOf('T') + 1, o.updatedAt.indexOf('.'))}</span>
+                                                    </Divider>
+                                                </Root>
                                             </ListItemButton>
                                         </ListItem>
                                         <ListItem>
-                                            <ListItemButton sx={{margin: '5px 0', display: 'grid', gridTemplateColumns: '30px 70px 150px 120px 100px 1fr'}}>
+                                            <ListItemButton sx={{margin: '5px 0', display: 'grid', gridTemplateColumns: '30px 70px 150px 130px 100px 1fr'}}>
                                                 <span>No.</span>
                                                 <span> </span>
                                                 <span>Name</span>
@@ -156,7 +190,7 @@ const UserAccount = () => {
                                         </ListItem>
                                         {o.id === orderDetailsId && orderDetails.length && orderDetails.map((o, idx) =>
                                             <ListItem key={idx}>
-                                                <ListItemButton sx={{margin: '2px 0', display: 'grid', gridTemplateColumns: '30px 70px 150px 150px 100px 1fr'}}>
+                                                <ListItemButton sx={{font: '400 15px/1.6 Roboto Condensed,sans-serif', margin: '2px 0', display: 'grid', gridTemplateColumns: '30px 70px 150px 150px 100px 1fr'}}>
                                                     <span>{idx + 1}.</span>
                                                     <img width='30px' src={o.product.image} alt={o.product.id} style={{margin: '0 10px'}}/>
                                                     <span>{o.product.name}</span>
@@ -168,9 +202,7 @@ const UserAccount = () => {
                                         )}
                                     </List>
                                 )}
-                            </ListItem>)
-                            : <div>Oops! you don't have any shopping record yet. go to shop now</div>
-                        }
+                            </ListItem>)}
                     </List>
                 </Box>
             </div>
