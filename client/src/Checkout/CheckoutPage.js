@@ -13,7 +13,7 @@ const CheckoutPage = () => {
     console.log(orderLine)
 
     document.querySelector('body').style.overflow = 'auto'
-    const id = useSelector(state => state?.order.orderInfo)
+    const id = useSelector(state => state?.order.orderId)
 
     const dispatch = useDispatch()
     console.log(id)

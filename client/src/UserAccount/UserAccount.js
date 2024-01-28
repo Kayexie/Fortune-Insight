@@ -40,7 +40,7 @@ const UserAccount = () => {
                 <h2>Hello! {userInfo.name}</h2>
                 <div className='user-order-list'>
                     <h4>OrderList:</h4>
-                    {!!orderList && orderList.map((o, idx) =>
+                    {!!orderList? orderList.map((o, idx) =>
                         <div key={idx} onClick={() => handleExpand(o.id)}>
                             <div className='order-list-id'>{o.id}</div>
                             {o.id === orderDetailsId && orderDetails.length > 0 && orderDetails.map((o, idx) => <div
@@ -54,7 +54,7 @@ const UserAccount = () => {
                                 </div>
                             </div>)}
                         </div>
-                    )}
+                    ) : <div>Oops! you don't have any shopping record yet. go to shop now</div>}
 
                 </div>
 
