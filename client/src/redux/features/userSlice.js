@@ -66,12 +66,15 @@ const userSlice = createSlice({
 
                 localStorage.setItem('token', state.token)
                 localStorage.setItem('userInfo', JSON.stringify(state.userInfo))
+                localStorage.setItem('loginMsg', JSON.stringify(state.message))
 
         })
             .addCase(loginAuth.rejected, (state, action)=>{
                 state.token = null
                 state.userInfo = null
                 state.message = action.payload.message
+                console.log('logging in-->', action.payload)
+                localStorage.setItem('loginMsg', JSON.stringify(state.message))
             })
             .addCase(fetchUserInfo.fulfilled, (state, action)=>{
                 state.userInfo = action.payload.decoded

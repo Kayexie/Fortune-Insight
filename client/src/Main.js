@@ -15,7 +15,10 @@ import {useEffect, useState} from "react";
 import Login from "./Login.js";
 import Page from './Page.js';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import FaceIcon from '@mui/icons-material/Face';
+import ReportIcon from '@mui/icons-material/Report';
+import Alert from '@mui/joy/Alert';
+import IconButton from '@mui/joy/IconButton';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import Popup from "./Popup/Popup";
 import {fetchUserInfo, setStateToken} from "./redux/features/userSlice";
 import MsgAlert from "./MsgAlert";
@@ -48,8 +51,6 @@ export const Main = () => {
 
     const [isLogin, setIsLogin] = useState(false)
     const [openLogin, setOpenLogin] = useState(!isLogin)
-    console.log('whether open dialog --> ', openLogin)
-    console.log('whether login --> ', isLogin)
 
     const [showPop, setShowPop] = useState(false)
     const carts = useSelector(state => state?.product.cart)
@@ -90,7 +91,8 @@ export const Main = () => {
             dispatch(fetchUserInfo())
         }
         if(token) {
-            setOpenLogin(false)
+            setTimeout(setOpenLogin(false), 1000)
+            // setOpenLogin(false)
         }
     }, []);
 
@@ -105,6 +107,22 @@ export const Main = () => {
     }, [msg])
 
     // -----------for permission denied---------
+
+    //------------login alert msg-----------
+    const [alertOpen, setAlertOpen] = useState(false)
+
+    useEffect(() => {
+        if(logInMsg) {
+            if(logInMsg === 'login success') {
+                // console.log('open success')
+                setAlertOpen(false)
+            } else {
+                setAlertOpen(true)
+            }
+        } else {
+            setAlertOpen(false)
+        }
+    }, [logInMsg]);
 
     // --------sort search page filters------
     useEffect(() => {
@@ -190,12 +208,6 @@ export const Main = () => {
                 </div>
             </div>
 
-            {/*<div className="login-row-container">*/}
-            {/*    {isLogin?*/}
-            {/*        <h4>{logInMsg}, Hi, {userInfo?.name}, your role: {userInfo?.roles}</h4>*/}
-            {/*        :<div style={{width: '100%'}}><h4>{logInMsg}</h4></div>}*/}
-            {/*</div>*/}
-
             {showPop && <Popup openPop={openPop}/>}
 
             <SearchBar setSearch={setSearch}/>
@@ -229,10 +241,32 @@ export const Main = () => {
                 <p>Copyright © 2024 infinite fortune vendor Since 2023.</p>
             </div>
             {
-                !isLogin && <Modal open={openLogin} onClose={() => setOpenLogin(false)}>
-                    <ModalDialog>
+                !isLogin &&
+                <Modal open={openLogin} onClose={() => setOpenLogin(false)}>
+                    <ModalDialog sx={{width: 350}}>
                         <DialogTitle sx={{font: '600 1.3rem/1.6 Roboto Condensed,sans-serif'}}>Log In</DialogTitle>
                         <DialogContent sx={{font: '400 0.85rem/1.6 Roboto Condensed,sans-serif'}}>required(*)</DialogContent>
+                        <DialogContent>
+                            {logInMsg && alertOpen && <Alert
+                                key={logInMsg === 'login success' ? 'Success' : 'Error'}
+                                sx={{alignItems: 'flex-start', zIndex: 2}}
+                                startDecorator={<ReportIcon/>}
+                                variant="soft"
+                                color={logInMsg === 'login success' ? 'success' : 'danger'}
+                                endDecorator={
+                                    <IconButton variant="soft" color={logInMsg === 'login success' ? 'success' : 'danger'}>
+                                        <CloseRoundedIcon onClick={() => setAlertOpen(false)}/>
+                                    </IconButton>
+                                }
+                            >
+                                <div>
+                                    <div>{logInMsg === 'login success' ? 'Success' : 'Error'}</div>
+                                    <Typography level="body-sm" color={logInMsg === 'login success' ? 'success' : 'danger'}>
+                                        {logInMsg}
+                                    </Typography>
+                                </div>
+                            </Alert>}
+                        </DialogContent>
                         <Login setOpen={setOpenLogin}/>
                     </ModalDialog>
                 </Modal>

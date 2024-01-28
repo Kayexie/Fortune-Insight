@@ -10,7 +10,9 @@ export class OrderLine extends BaseClass{
     @PrimaryGeneratedColumn('uuid')
     id:string
 
-    @Column()
+    @Column({
+        type: 'double'
+    })
     unitPrice: number
 
     @Column()

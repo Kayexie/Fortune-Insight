@@ -1,6 +1,27 @@
-.order-list-id {
-  cursor: pointer;
+.order-list-id:hover {
   text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.main-page-header {
+  font: 500 1.1rem/1.6 Roboto Condensed, sans-serif;
+}
+.main-page-header .back-to-main {
+  margin-bottom: -15px;
+  width: 210px;
+  cursor: pointer;
+}
+.main-page-header .back-to-main:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.user-order-container {
+  font: 500 1.1rem/1.6 Roboto Condensed, sans-serif;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 /*# sourceMappingURL=UserAccount.css.map */
