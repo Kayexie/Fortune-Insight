@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import {useDispatch} from "react-redux";
 import {clearReduxInfo} from "./redux/features/userSlice.js";
+import './Logout.scss'
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 
 
 export default function BasicButtons() {
@@ -15,11 +15,9 @@ export default function BasicButtons() {
 
 
     return (
-        <Stack spacing={2} direction="row">
-            <Button variant="contained"
-                    onClick={handleLogout}
-            >Log Out
-            </Button>
-        </Stack>
+        <span onClick={handleLogout} className='logout-button'>
+            <PowerSettingsNewIcon sx={{margin: '0 2px -5px 0'}}/>
+            LOG OUT
+        </span>
     );
 }

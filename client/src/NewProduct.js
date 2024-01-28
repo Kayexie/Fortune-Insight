@@ -14,7 +14,7 @@ import DialogContent from '@mui/joy/DialogContent';
 import Stack from '@mui/joy/Stack';
 import RadioGroup from '@mui/joy/RadioGroup';
 import Radio from '@mui/joy/Radio';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {createProduct, fetchProductsByAllQuery} from "./redux/features/productSlice.js";
 
 export default function FloatingActionButtonSize() {
@@ -32,7 +32,9 @@ export default function FloatingActionButtonSize() {
         ownerName: '',
     })
     const dispatch = useDispatch()
-    // console.log('select this --> ', newProduct)
+    const filters = useSelector(state => state?.product?.filters)
+    const row = Math.ceil(filters?.owners?.length / 6)
+    // console.log('select this --> ', filters)
 
     const paramHandler = ({target}) => {
         setNewProduct({...newProduct, [target.name]: target.value})
@@ -53,7 +55,6 @@ export default function FloatingActionButtonSize() {
                 <Modal open={open} onClose={() => setOpen(false)}>
                     <ModalDialog sx={{width: 550}}>
                         <DialogTitle>Add a new product</DialogTitle>
-                        <DialogContent>Please fill in the information of the product.</DialogContent>
                         <form
                             onSubmit={(event) => {
                                 event.preventDefault();
@@ -82,7 +83,7 @@ export default function FloatingActionButtonSize() {
                                 <FormControl>
                                     <FormLabel>Id</FormLabel>
                                     <Input required name='id'
-                                           sx={{width: newProduct.image ? '330px' : '500px'}}
+                                           sx={{width: newProduct.image ? '330px' : '508px'}}
                                            onChange={paramHandler}
                                            value={newProduct.id}/>
                                 </FormControl>
@@ -91,7 +92,7 @@ export default function FloatingActionButtonSize() {
                                     <div>
                                         <Input required name='image'
                                                onChange={paramHandler}
-                                               sx={{height: 36, width: newProduct.image ? '330px' : '500px'}}
+                                               sx={{height: 36, width: newProduct.image ? '330px' : '508px'}}
                                                value={newProduct.image}/>
                                         {newProduct.image && <img width='120px' style={{right: '20px', top: '-15px', position: 'absolute'}} src={newProduct.image} alt=""/> }
                                     </div>
@@ -99,7 +100,7 @@ export default function FloatingActionButtonSize() {
                                 <FormControl>
                                     <FormLabel>Current Price</FormLabel>
                                     <Input required name='currentPrice'
-                                           sx={{width: newProduct.image ? '330px' : '500px'}}
+                                           sx={{width: newProduct.image ? '330px' : '508px'}}
                                            onChange={paramHandler}
                                            value={newProduct.currentPrice}/>
                                 </FormControl>
@@ -125,20 +126,22 @@ export default function FloatingActionButtonSize() {
                                     <FormLabel>Category</FormLabel>
                                     <RadioGroup  name="categoryName" orientation='horizontal'
                                                 onChange={paramHandler}>
-                                        <Radio value="Public Blockchains" label="Public Blockchains" size="sm" />
-                                        <Radio value="Consortium Blockchains" label="Consortium Blockchains" size="sm" />
-                                        <Radio value="Private Blockchains" label="Private Blockchains" size="sm" />
+                                        {filters && filters.categories && filters.categories.map(item =>
+                                            <Radio value={item.name} label={item.name} size="sm" />
+                                        )}
                                     </RadioGroup>
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Owner</FormLabel>
                                     <RadioGroup  name="ownerName" orientation='horizontal'
                                                  onChange={paramHandler}
+                                                 sx={{width: 508, display: 'grid', gridTemplateRows: `repeat(${row}, 1fr)`,
+                                                     gridTemplateColumns: 'repeat(6, 1fr)'
+                                                 }}
                                     >
-                                        <Radio value="Louis" label="Louis" size="sm" />
-                                        <Radio value="Hao" label="Hao" size="sm" />
-                                        <Radio value="Yan" label="Yan" size="sm" />
-                                        <Radio value="Xie" label="Xie" size="sm" />
+                                        {filters && filters.owners && filters.owners.map((item, index) =>
+                                            <div><Radio value={item.name} label={item.name} size="sm" /></div>
+                                            )}
                                     </RadioGroup>
                                 </FormControl>
                                 <Button type="submit">Submit</Button>

@@ -7,7 +7,7 @@
   font-size: 1rem;
   padding: 0.5rem 1.5rem 0.5rem 0.5rem;
   grid-template-columns: 12% 1fr;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 .pop-up-products .product-info {
   margin-left: 1rem;
@@ -21,6 +21,24 @@
   display: grid;
   grid-template-rows: 1fr 1fr;
   align-items: end;
+  white-space: nowrap;
+}
+.pop-up-products .product-info .product-name > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.pop-up-products .product-info .product-name > *:hover {
+  text-overflow: inherit;
+  overflow: visible;
+  white-space: nowrap;
+}
+.pop-up-products .product-info .product-name h3 {
+  height: 22px;
+  width: 120px;
+  font: 600 0.95rem/1.6 Roboto Condensed, sans-serif;
+  margin-bottom: -2px;
 }
 .pop-up-products .product-quantity {
   display: grid;

@@ -14,12 +14,23 @@ import {
 import {useEffect, useState} from "react";
 import Login from "./Login.js";
 import Page from './Page.js';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import FaceIcon from '@mui/icons-material/Face';
 import Popup from "./Popup/Popup";
 import {fetchUserInfo, setStateToken} from "./redux/features/userSlice";
 import MsgAlert from "./MsgAlert";
 import Logout from "./Logout";
 import {useNavigate} from "react-router-dom";
+import * as React from 'react';
+import Modal from '@mui/joy/Modal';
+import ModalDialog from '@mui/joy/ModalDialog';
+import DialogTitle from '@mui/joy/DialogTitle';
+import DialogContent from '@mui/joy/DialogContent';
+import Badge from '@mui/joy/Badge';
+import Typography from '@mui/joy/Typography';
+import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
+import Tooltip from '@mui/joy/Tooltip';
+import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
 
 export const Main = () => {
     const dispatch = useDispatch()
@@ -36,7 +47,10 @@ export const Main = () => {
     const [page, setPage] = useState(1)
 
     const [isLogin, setIsLogin] = useState(false)
-    
+    const [openLogin, setOpenLogin] = useState(!isLogin)
+    console.log('whether open dialog --> ', openLogin)
+    console.log('whether login --> ', isLogin)
+
     const [showPop, setShowPop] = useState(false)
     const carts = useSelector(state => state?.product.cart)
 
@@ -74,6 +88,9 @@ export const Main = () => {
         if(tokenFromCookie){
             dispatch(setStateToken(tokenFromCookie))
             dispatch(fetchUserInfo())
+        }
+        if(token) {
+            setOpenLogin(false)
         }
     }, []);
 
@@ -151,23 +168,33 @@ export const Main = () => {
                 </div>
                 <div className='main-page-info'>
                     <div className='main-page-user-info'>
-                        {token? <p onClick={() => navigate('/userAccount')}><i><u>{userInfo.name}</u></i> Account</p> : <p>LogIn</p>}
+                        {token
+                            ? <div style={{display: 'flex', marginBottom: 0}}>
+                                <Tooltip title={userInfo?.roles} variant="outlined" size='sm' placement='bottom-start' sx={{backgroundColor: 'orange', '.MuiTooltip-root': {marginTop: '-10px'}}} >
+                                    <p className='user-account' onClick={() => navigate('/userAccount')}>
+                                        <AccountBoxIcon sx={{margin: '0 5px -5px 0'}}/><i><u>{userInfo.name}</u></i>
+                                    </p>
+                                </Tooltip>
+                                <Logout/>
+                            </div>
+                            : <p className='user-login' onClick={() => setOpenLogin(true)}><VpnKeyOutlinedIcon sx={{fontSize: '21px', margin: '0 4px -3px 0'}}/>Log In</p>}
                     </div>
                     <div className='main-page-shopping'>
-                        <ShoppingCartOutlinedIcon/>
-                        <p style={{margin: '0 0 -2px 5px'}} onClick={() => openPop()}>Shopping Cart ({ttlQty})</p>
+                        <Badge badgeContent={ttlQty} showZero={true} sx={{transform: 'scale(0.65)'}} color='success' variant='solid'>
+                            <Typography level="h3" size='sm'>
+                                <CurrencyBitcoinIcon sx={{color: 'white', fontSize: '45px', marginBottom: '1px', transform: 'rotate(15deg)'}}/>
+                            </Typography>
+                        </Badge>
+                        <p style={{margin: '0 0 0 -8px'}} onClick={() => openPop()}>My bag</p>
                     </div>
                 </div>
             </div>
 
-            <div className="login-row-container">
-                {isLogin?
-                    <h4>{logInMsg}, Hi, {userInfo?.name}, your role: {userInfo?.roles}</h4>
-                    :<div><Login/><h4>{logInMsg}</h4></div>}
-            </div>
-            <div className="logout-row-container">
-                <Logout/>
-            </div>
+            {/*<div className="login-row-container">*/}
+            {/*    {isLogin?*/}
+            {/*        <h4>{logInMsg}, Hi, {userInfo?.name}, your role: {userInfo?.roles}</h4>*/}
+            {/*        :<div style={{width: '100%'}}><h4>{logInMsg}</h4></div>}*/}
+            {/*</div>*/}
 
             {showPop && <Popup openPop={openPop}/>}
 
@@ -194,9 +221,6 @@ export const Main = () => {
                 <NewProduct/>
             </div>
             <div className="main-page-footer">
-                {/*<div className='social-media'>*/}
-                {/*    <FacebookSharpIcon/>*/}
-                {/*</div>*/}
                 <div className='h5'>
                     <h4>Contact Us</h4>
                     <h4>Private Policy</h4>
@@ -204,6 +228,15 @@ export const Main = () => {
                 </div>
                 <p>Copyright © 2024 infinite fortune vendor Since 2023.</p>
             </div>
+            {
+                !isLogin && <Modal open={openLogin} onClose={() => setOpenLogin(false)}>
+                    <ModalDialog>
+                        <DialogTitle sx={{font: '600 1.3rem/1.6 Roboto Condensed,sans-serif'}}>Log In</DialogTitle>
+                        <DialogContent sx={{font: '400 0.85rem/1.6 Roboto Condensed,sans-serif'}}>required(*)</DialogContent>
+                        <Login setOpen={setOpenLogin}/>
+                    </ModalDialog>
+                </Modal>
+            }
         </div>
     )
 }

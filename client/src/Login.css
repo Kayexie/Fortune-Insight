@@ -1,9 +1,13 @@
-.login-btns-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.login-btns-container .login-btn {
+  color: white;
+  background-color: black;
+  font: 600 1rem/1.6 Roboto Condensed, sans-serif;
+  padding: 5px 20px;
   margin-top: 20px;
-  margin-bottom: 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  letter-spacing: 1px;
 }
 
 /*# sourceMappingURL=Login.css.map */

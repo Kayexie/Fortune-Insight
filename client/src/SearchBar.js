@@ -21,8 +21,16 @@ export default function UnstyledInputIntroduction({setSearch}) {
 //set the search input value to useState
     const [searchInput, setSearchInput] = useState('')
 
+    const keyHandler = (e) => {
+        if(e.key === 'Enter') {
+            console.log('going to search --> ', e.target.value)
+            setSearchInput(e.target.value)
+            setSearch(e.target.value)
+        }
+    }
+
     return <div className='search-bar-container'>
-        <Input aria-label="Demo input" placeholder="Type something…" onChange={(e) => handleChang(e)}/>
+        <Input aria-label="Demo input" placeholder="Type something…" onChange={(e) => handleChang(e)} onKeyDown={keyHandler} />
         <ButtonIcon
             setSearch={setSearch}
             searchInput={searchInput}

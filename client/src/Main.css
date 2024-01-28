@@ -10,7 +10,7 @@
   overflow-x: hidden;
 }
 .main-page-container .main-page-header {
-  padding: 20px;
+  padding: 20px 20px 0 20px;
   width: 100%;
   height: auto;
   background-color: #000000;
@@ -33,22 +33,35 @@
   justify-content: flex-end;
   align-items: center;
   font: 500 1.1rem/1.6 Roboto Condensed, sans-serif;
+  height: 60px;
 }
 .main-page-container .main-page-header .main-page-info .main-page-user-info {
   cursor: pointer;
+}
+.main-page-container .main-page-header .main-page-info .main-page-user-info .user-account:hover {
+  color: orange;
+}
+.main-page-container .main-page-header .main-page-info .main-page-user-info .user-login:hover {
+  color: #8a7ec9;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 .main-page-container .main-page-header .main-page-info .main-page-shopping {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: right;
-  font: 500 1rem/1.6 Roboto Condensed, sans-serif;
-  margin-left: 1rem;
+  font: 500 1.1rem/1.6 Roboto Condensed, sans-serif;
+  margin-left: 0.5rem;
 }
-.main-page-container .main-page-header .main-page-info .main-page-shopping p:hover {
+.main-page-container .main-page-header .main-page-info .main-page-shopping:hover {
   cursor: pointer;
   text-decoration: underline;
-  text-underline-offset: 4px;
+  text-underline-offset: 2px;
+  color: gold;
+}
+.main-page-container .main-page-header .main-page-info .main-page-shopping:hover .MuiSvgIcon-root {
+  color: gold;
 }
 .main-page-container .login-row-container {
   display: flex;
@@ -62,7 +75,11 @@
   color: #000000;
   margin: 0 auto;
 }
+.main-page-container .main-page-content .page-left {
+  width: 20%;
+}
 .main-page-container .main-page-content .page-right {
+  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
