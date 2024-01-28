@@ -14,8 +14,10 @@ const Popup = ({openPop}) => {
     const navigate = useNavigate()
     const carts = useSelector(state => state?.product.cart)
     const token = useSelector(state => state?.user.token)
+    const userInfo = useSelector(state => state?.user.userInfo)
+    const userId = userInfo.userId
 
-    console.log("this is form popup window for shopping cart", token)
+    console.log("this is form popup window for shopping cart", userId)
 
     //calculate single product ttl $
     const singleTtlArr = carts.map(item => item.quantity * item.price)
@@ -41,19 +43,23 @@ const Popup = ({openPop}) => {
                 let newItem = {
                     productId: item.id,
                     currentPrice: item.price,
-                    quantity:item.quantity
+                    quantity:item.quantity,
                 }
                 newCarts.push(newItem)
             })
         }
 
-        // console.log(newCarts)
-        //todo: with authorized token to check out
+        const createOrder = {
+            userId:userId,
+            productList: newCarts
+        }
+        console.log(createOrder)
+        // todo: with authorized token to check out
 
 
         //todo:清空购物车
         if(token){
-            dispatch(fetchToCreateOrder({newCarts}))
+            dispatch(fetchToCreateOrder({createOrder}))
             dispatch(emptyCart())
             navigate('/checkout')
         }else{
