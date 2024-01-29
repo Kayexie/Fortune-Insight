@@ -16,6 +16,7 @@ class OrderController {
                 .createQueryBuilder('order')
                 .leftJoinAndSelect('order.orderLines', 'orderLines')
                 .where('order.customerId = :userId', {userId})
+                .andWhere({isDelete: false})
                 .getMany()
 
             //connect orderLine database
@@ -34,13 +35,12 @@ class OrderController {
 
         try {
             const {orderId} = req.params
-            // console.log(orderId)
 
             //connect order database
             let singleOrder: Order = await getRepository(Order)
                 .createQueryBuilder('order')
-                .leftJoinAndSelect('order.orderLines','orderLines')
-                .leftJoinAndSelect('orderLines.product','product')
+                .leftJoinAndSelect('order.orderLines', 'orderLines')
+                .leftJoinAndSelect('orderLines.product', 'product')
                 .where('order.id =:orderId', {orderId})
                 .getOne()
 
@@ -60,19 +60,19 @@ class OrderController {
 
             const data = req.body
             const productList = data.createOrder.productList
-            // console.log(productList)
+
             //to get the userId
             const userId = data.createOrder.userId
-            // console.log(userId)
+
             // create a new order
             const newOrder = Order.create({
-                customer:userId
+                customer: userId
             })
             await newOrder.save()
 
             //obtain the orderId
             const orderId: string = newOrder.id
-            // console.log(orderId)
+
 
             //obtain the productRoutes info from req.body, which should contain productId, price & quantity
 
@@ -106,13 +106,42 @@ class OrderController {
 
     }
 
-    // static updateSingleOrder = async (req: Request, res: Response) => {
-    //
-    // }
-    //
-    // static deleteSingleOrder = async (req: Request, res: Response) => {
-    //
-    // }
+    static deleteSingleOrder = async (req: Request, res: Response) => {
+
+        const data = req.body
+        const orderId = req.params.orderId
+        let orderLinesId = data.targetOrder.orderLinesId
+
+        // console.log(orderId)
+
+        try {
+            //set order isDelete equals to true
+                await getRepository(Order).createQueryBuilder('order')
+                    .update(Order)
+                    .where("order.id = :orderId",{orderId})
+                    .set({isDelete:true})
+                    .execute()
+
+            //set orderLines isDelete equals to true
+            for (let i = 0; i < orderLinesId.length; i++){
+                await getRepository(OrderLine).createQueryBuilder('o')
+                    .update(OrderLine)
+                    .where("id = :orderLineId",{orderLineId:orderLinesId[i]})
+                    .set({isDelete:true})
+                    .execute()
+            }
+
+
+            return res.status(200).send(({
+                message: "order deleted",
+                // targetOrder
+            }))
+            //
+        } catch (e) {
+            console.log('err', e)
+        }
+    }
+
 
 }
 
