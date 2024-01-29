@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import './UserAccount.scss';
 import {useDispatch, useSelector} from "react-redux";
-import {allOrdersPerUser, singleOrdersPerUser} from "../redux/features/orderSlice";
+import {allOrdersPerUser, deleteOrder, singleOrdersPerUser} from "../redux/features/orderSlice";
 import {ArrowBack} from "@mui/icons-material";
 import * as React from 'react';
 import Box from '@mui/joy/Box';
@@ -16,6 +16,7 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Divider from '@mui/material/Divider';
 import { styled } from '@mui/material/styles';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const UserAccount = () => {
     const userInfo = useSelector(state => state?.user?.userInfo)
@@ -25,6 +26,7 @@ const UserAccount = () => {
     const orderList = useSelector(state => state?.order.orderList)
     const orderDetails = useSelector(state => state?.order.orderDetails)
     const orderDetailsId = useSelector(state => state?.order.orderDetailsId)
+
     console.log(orderDetails, orderDetailsId)
 
     const [open, setOpen] = React.useState(new Array(orderList.length).fill(false));
@@ -47,6 +49,23 @@ const UserAccount = () => {
         },
     }));
 
+    // useEffect( () => {
+    //     window.location.reload()
+    // },[orderList])
+
+    const softDelete = (o) => {
+        // console.log(o)
+        let orderLinesId = []
+        o.orderLines.map( orderLine => orderLinesId.push(orderLine.id))
+        const targetOrder = {
+            orderId: o.id,
+            orderLinesId: orderLinesId
+        }
+        console.log(targetOrder)
+        dispatch(deleteOrder({targetOrder}))
+        window.location.reload()
+    }
+
 
 
     return (
@@ -61,6 +80,9 @@ const UserAccount = () => {
                     Back To Main Page
                 </div>
             </div>
+
+            {/*============================= above header ==================================*/}
+
             <div className='user-order-container'>
                 <Box sx={{width: 700, pl: '24px', margin: '10px auto'}}>
                     <List
@@ -122,8 +144,12 @@ const UserAccount = () => {
                                 </List>
                             }
                         </ListItem>
+
+                        {/*============================= orderList begin ==================================*/}
+
                         {!!orderList && orderList.map((o, idx) =>
                             <ListItem
+                                key={idx}
                                 nested
                                 className='orderlist'
                                 sx={{ my: 1, width: 650 }}
@@ -165,7 +191,11 @@ const UserAccount = () => {
                                     >
                                         Order Id -<span className='order-list-id' style={{marginLeft: '5px'}}>{o.id}</span>
                                     </Typography>
+                                    <DeleteIcon style={{fontSize:"medium"}} onClick={ () => softDelete(o)}/>
                                 </ListItem>
+
+                                {/*=============================  order details  ==================================*/}
+
                                 {open[idx] && (
                                     <List sx={{ '--ListItem-paddingY': '8px', color: 'black', 'span': {fontSize: '16px'} }}>
                                         <ListItem>
@@ -174,6 +204,8 @@ const UserAccount = () => {
                                                     <Divider sx={{fontSize: '15px', width: 620}}>
                                                         <span>Create Time: {o.createdAt.substring(0, o.createdAt.indexOf('T'))}  {o.createdAt.substring(o.createdAt.indexOf('T') + 1, o.createdAt.indexOf('.'))}</span>
                                                         <span style={{marginLeft: 20}}>Update Time: {o.updatedAt.substring(0, o.updatedAt.indexOf('T'))}  {o.updatedAt.substring(o.updatedAt.indexOf('T') + 1, o.updatedAt.indexOf('.'))}</span>
+                                                        <br/>
+                                                        {/*<span>Order Total: $ .00</span>*/}
                                                     </Divider>
                                                 </Root>
                                             </ListItemButton>
@@ -195,17 +227,19 @@ const UserAccount = () => {
                                                     <img width='30px' src={o.product.image} alt={o.product.id} style={{margin: '0 10px'}}/>
                                                     <span>{o.product.name}</span>
                                                     <span>{o.product.id}</span>
-                                                    <span>{o.unitPrice}</span>
+                                                    <span>${o.unitPrice}.00</span>
                                                     <span>{o.quantity}</span>
                                                 </ListItemButton>
                                             </ListItem>
-                                        )}
+                                            )}
                                     </List>
                                 )}
                             </ListItem>)}
                     </List>
                 </Box>
             </div>
+
+            {/*============================= below footer ==================================*/}
             <div className="main-page-footer">
                 <div className='h5'>
                     <h4>Contact Us</h4>

@@ -8,8 +8,8 @@ orderRoutes.get('/user/:userId', OrderController.queryAllOrders)
 orderRoutes.get('/:orderId', OrderController.querySingleOrder)
 orderRoutes.post('/', OrderController.createNewOrder)
 // orderRoutes.put('/:orderId', OrderController.updateSingleOrder)
-// orderRoutes.delete('/:orderId', OrderController.deleteSingleOrder)
-//
+orderRoutes.delete('/:orderId', OrderController.deleteSingleOrder)
+
 
 
 

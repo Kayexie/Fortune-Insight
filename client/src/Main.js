@@ -172,7 +172,6 @@ export const Main = () => {
     const ttlQty = !!QtyArr && QtyArr.length !==0 ? QtyArr.reduce((a,c) => a + c) : 0
 
     document.querySelector('body').style.overflow = 'auto'
-
     return (
         <div className='main-page-container'>
             {

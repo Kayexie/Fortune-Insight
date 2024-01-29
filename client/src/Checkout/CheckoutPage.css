@@ -1,3 +1,7 @@
+.checkout-page {
+  font: 500 1.1rem/1.6 Roboto Condensed, sans-serif;
+  height: 100vh;
+}
 .checkout-page .checkout-page-header {
   height: 70px;
   width: 100%;
@@ -7,7 +11,7 @@
   justify-content: center;
 }
 .checkout-page .navigate-to-other {
-  padding: 1rem 3.75rem;
+  padding: 0.2rem 3.75rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -39,6 +43,7 @@
   padding: 0 3.125rem 3.75rem;
   max-width: 90rem;
   margin: 0 auto;
+  height: 80%;
 }
 .checkout-page .checkout-page-container .checkout-page-title {
   font-size: 2.3rem;
@@ -74,6 +79,7 @@
   width: 330px;
   top: 0;
   right: 0;
+  bottom: 0;
   align-self: flex-start;
   grid-column: 9/12;
   order: 2;
