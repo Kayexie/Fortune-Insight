@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
-import {APIURL_CREATEORDER, APIURL_ORDERBYUSER} from "../../helper.js";
+import {APIURL_CREATEORDER, APIURL_DELETEORDER, APIURL_ORDERBYUSER} from "../../helper.js";
 
 const id = localStorage.getItem('orderId') !== null ? localStorage.getItem('orderId') : '';
 const orderLine = localStorage.getItem('orderLine') !== null ? JSON.parse(localStorage.getItem('orderLine')) : '';
@@ -51,6 +51,24 @@ export const singleOrdersPerUser = createAsyncThunk(
             const {orderId} = params
             // console.log(userId)
             const res = await axios.get(`${APIURL_CREATEORDER}/${orderId}`)
+            // console.log(res.data)
+            return res.data
+        }catch (e) {
+            console.log('err: ', e)
+        }
+    }
+)
+
+export const deleteOrder = createAsyncThunk(
+    'orderSlice/deleteOrder',
+    async (targetOrder) => {
+        try{
+            // console.log(targetOrder)
+            const res = await axios({
+                method:'delete',
+                url: APIURL_CREATEORDER + `/` + `${targetOrder.targetOrder.orderId}`,
+                data: targetOrder
+            })
             console.log(res.data)
             return res.data
         }catch (e) {
@@ -81,7 +99,6 @@ const orderSlice = createSlice({
         builder.addCase(singleOrdersPerUser.fulfilled, (state, action) => {
             state.orderDetails = action.payload.singleOrder.orderLines
             state.orderDetailsId = action.payload.orderId
-            // localStorage.setItem('orderLineList', JSON.stringify(state.orderLineList))
         })
     }
 })

@@ -5,12 +5,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {ArrowBack} from "@mui/icons-material";
 import {PayPalScriptProvider, PayPalButtons} from "@paypal/react-paypal-js";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import Tooltip from "@mui/joy/Tooltip";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import {useNavigate} from "react-router-dom";
 import ArrowForwardSharpIcon from '@mui/icons-material/ArrowForwardSharp';
-import {allOrdersPerUser, singleOrdersPerUser} from "../redux/features/orderSlice";
 import {emptyCart} from "../redux/features/productSlice";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 
 const CheckoutPage = () => {
@@ -47,16 +46,23 @@ const CheckoutPage = () => {
                 <h1>infinite fortune vendor</h1>
             </div>
         </div>
-        <div className='navigate-to-other'>
-            <div className='back-to-main' onClick={() => backToMain()}>
-                <ArrowBack/>
-                Back To Main Page
-            </div>
-            <div className='go-to-account' onClick={() => goToAccount()}>
-                Go To My Account Page
-                <ArrowForwardSharpIcon/>
-            </div>
-        </div>
+            <Box className='navigate-to-other' sx={{'& button': {m: 1}}}>
+                <div onClick={() => backToMain()}>
+                    <Button style={{color:"black"}} size="large">
+                        <ArrowBack/>
+                        Back To Main Page
+                    </Button>
+                </div>
+                <div onClick={() => goToAccount()}>
+                    <Button style={{color: "black"}} size="large">
+                        Go To My Account Page
+                        <ArrowForwardSharpIcon/>
+                    </Button>
+                </div>
+            </Box>
+
+        {/*============================= above header ==================================*/}
+
 
         <div className="checkout-page-container">
             <div className="checkout-page-title">
@@ -83,6 +89,8 @@ const CheckoutPage = () => {
                 <OrderSummary carts={carts}/>
             </div>
         </div>
+
+        {/*============================= below footer ==================================*/}
         <div className="main-page-footer">
             <div className='h5'>
                 <h4>Contact Us</h4>

@@ -97,7 +97,6 @@ const Popup = ({openPop}) => {
     // console.log(subtotal)
 
     document.querySelector('body').style.overflow = 'hidden'
-
     const handleCheckout = () => {
         //处理一下产品
         const newCarts = [];
@@ -143,7 +142,6 @@ const Popup = ({openPop}) => {
                 <div className='pop-up-container'>
                     <div className='pop-up-wrap'>
                         {!!carts && carts.map((c, i) => <PopProductList c={c} i={i} key={i}/>)}
-
                     </div>
                 </div>
                 <div className='pop-up-order-summary'>
