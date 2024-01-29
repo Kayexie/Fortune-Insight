@@ -4,11 +4,10 @@ import ExpandMoreSharpIcon from '@mui/icons-material/ExpandMoreSharp';
 import {ExpandMore} from "@mui/icons-material";
 
 
-const OrderSummary = ({orderLine}) => {
+const OrderSummary = ({carts}) => {
 
     const [isShow, setIsShow] = useState(true)
-    console.log('this is from ordersummery orderLine component', orderLine)
-    const sum = !!orderLine && orderLine.length > 0 ? orderLine.map(c => c.unitPrice * c.quantity).reduce((c,a) => c + a) : 0
+    const sum = !!carts && carts.length > 0 ? carts.map(c => c.price * c.quantity).reduce((c,a) => c + a) : 0
     // const totalItem = orderLine.map(p => p.quantity).reduce((c, a) => c + a, 0)
 
     const handleExpand = () => {
@@ -35,13 +34,14 @@ const OrderSummary = ({orderLine}) => {
                 </div>
             </div>
             { isShow &&  <div className='order-summary-list'>
-                {!!orderLine && orderLine.map((c, i) => {
+                {!!carts && carts.map((c, i) => {
                     return <div className='order-summary-product' key={i}>
+                        <img src={c.image} alt={c.id}/>
                         <div className='order-summary-info'>
-                            <div><strong>{c.product}</strong></div>
+                            <div><strong>{c.name}</strong></div>
                             <div className='order-summary-product-sum'>
                                 <div>Quantity {c.quantity}</div>
-                                <div>${c.unitPrice * c.quantity}</div>
+                                <div>${c.price * c.quantity}</div>
                             </div>
                         </div>
                     </div>
