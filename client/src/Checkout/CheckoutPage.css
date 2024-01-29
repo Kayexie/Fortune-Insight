@@ -6,15 +6,31 @@
   align-items: center;
   justify-content: center;
 }
-.checkout-page .back-to-main {
-  width: 80%;
-  border-bottom: 1px solid black;
-  margin: auto;
-  padding-top: 1rem;
+.checkout-page .navigate-to-other {
+  padding: 1rem 3.75rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #fafafa;
+  font-size: 1.2rem;
+}
+.checkout-page .navigate-to-other .back-to-main {
   cursor: pointer;
   font-size: 1.2rem;
   display: flex;
   align-items: center;
+}
+.checkout-page .navigate-to-other .back-to-main:hover {
+  text-decoration: underline;
+}
+.checkout-page .navigate-to-other .go-to-account {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+.checkout-page .navigate-to-other .go-to-account:hover {
+  text-decoration: underline;
 }
 .checkout-page .checkout-page-container {
   display: grid;

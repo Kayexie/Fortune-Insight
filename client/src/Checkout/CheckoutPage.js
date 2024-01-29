@@ -5,18 +5,38 @@ import {useDispatch, useSelector} from "react-redux";
 import {ArrowBack} from "@mui/icons-material";
 import {PayPalScriptProvider, PayPalButtons} from "@paypal/react-paypal-js";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Tooltip from "@mui/joy/Tooltip";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import {useNavigate} from "react-router-dom";
+import ArrowForwardSharpIcon from '@mui/icons-material/ArrowForwardSharp';
+import {allOrdersPerUser, singleOrdersPerUser} from "../redux/features/orderSlice";
+import {emptyCart} from "../redux/features/productSlice";
 
 
 const CheckoutPage = () => {
 
     const orderLine = useSelector(state => state?.order.orderLine)
-    console.log(orderLine)
+    // const userInfo = useSelector(state => state?.user?.userInfo)
+    const navigate = useNavigate()
+    const carts = useSelector(state => state?.product.cart)
+    console.log(carts)
 
     document.querySelector('body').style.overflow = 'auto'
+
     const id = useSelector(state => state?.order.orderId)
 
     const dispatch = useDispatch()
     console.log(id)
+
+    const backToMain = () => {
+        navigate('/')
+        dispatch(emptyCart())
+    }
+
+    const goToAccount = () => {
+        navigate('/userAccount')
+        dispatch(emptyCart())
+    }
 
 
     return <div className='checkout-page'>
@@ -27,10 +47,17 @@ const CheckoutPage = () => {
                 <h1>infinite fortune vendor</h1>
             </div>
         </div>
-        <div className='back-to-main' onClick={() => window.location.replace('/')}>
-            <ArrowBack/>
-            Back To Main Page
+        <div className='navigate-to-other'>
+            <div className='back-to-main' onClick={() => backToMain()}>
+                <ArrowBack/>
+                Back To Main Page
+            </div>
+            <div className='go-to-account' onClick={() => goToAccount()}>
+                Go To My Account Page
+                <ArrowForwardSharpIcon/>
+            </div>
         </div>
+
         <div className="checkout-page-container">
             <div className="checkout-page-title">
                 Checkout
@@ -39,7 +66,7 @@ const CheckoutPage = () => {
                 <div className='order-number'>
                     <div>
                         <div className='order-number-check'>
-                            <CheckCircleIcon style={{color:'green'}}/>
+                            <CheckCircleIcon style={{color: 'green'}}/>
                             <p>You Have Created The Order : </p>
                         </div>
                         <h2><strong>{id}</strong></h2>
@@ -53,7 +80,7 @@ const CheckoutPage = () => {
 
             </div>
             <div className="checkout-page-order-summary">
-                <OrderSummary orderLine={orderLine}/>
+                <OrderSummary carts={carts}/>
             </div>
         </div>
         <div className="main-page-footer">

@@ -4,8 +4,6 @@ import {APIURL_CREATEORDER, APIURL_ORDERBYUSER} from "../../helper.js";
 
 const id = localStorage.getItem('orderId') !== null ? localStorage.getItem('orderId') : '';
 const orderLine = localStorage.getItem('orderLine') !== null ? JSON.parse(localStorage.getItem('orderLine')) : '';
-// const orderList = localStorage.getItem('orderList') !== null && localStorage.getItem('orderList') !== undefined ? JSON.parse(localStorage.getItem('orderList')) : '';
-// const orderLineList = localStorage.getItem('orderLineList') !== null ? JSON.parse(localStorage.getItem('orderLineList')) : '';
 
 const initialState = {
     orderId:id,

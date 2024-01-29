@@ -4,8 +4,8 @@
    "port": 3306,
    "username": "root",
 
-   "password": "yhiffy@163",
-   "database": "tut",
+   "password": "Maru0216@",
+   "database": "manycoins",
 
    "synchronize": false,
    "logging": false,

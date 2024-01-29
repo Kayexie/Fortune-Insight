@@ -57,13 +57,13 @@ class OrderController {
     static createNewOrder = async (req: Request, res: Response) => {
 
         try {
-            //todo: add userId here also
+
             const data = req.body
             const productList = data.createOrder.productList
-            console.log(productList)
+            // console.log(productList)
             //to get the userId
             const userId = data.createOrder.userId
-            console.log(userId)
+            // console.log(userId)
             // create a new order
             const newOrder = Order.create({
                 customer:userId
@@ -72,14 +72,11 @@ class OrderController {
 
             //obtain the orderId
             const orderId: string = newOrder.id
-            console.log(orderId)
+            // console.log(orderId)
 
             //obtain the productRoutes info from req.body, which should contain productId, price & quantity
 
-            // console.log(productList)
-
             //loop over productList and push the value of orderId into the array:
-            //？？？?if i use the orderId directly, it will say format wrong ,don't know why
             productList.map(p => p.orderId = orderId)
 
 
@@ -109,13 +106,13 @@ class OrderController {
 
     }
 
-    static updateSingleOrder = async (req: Request, res: Response) => {
-
-    }
-
-    static deleteSingleOrder = async (req: Request, res: Response) => {
-
-    }
+    // static updateSingleOrder = async (req: Request, res: Response) => {
+    //
+    // }
+    //
+    // static deleteSingleOrder = async (req: Request, res: Response) => {
+    //
+    // }
 
 }
 
