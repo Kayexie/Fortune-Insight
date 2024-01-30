@@ -1,32 +1,50 @@
-.order-list-id:hover {
+.user-account .order-list-id:hover {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-
-.main-page-header {
+.user-account .main-page-header {
   font: 500 1.1rem/1.6 Roboto Condensed, sans-serif;
+  height: 33vh;
 }
-.main-page-header .back-to-main {
+.user-account .main-page-header .back-to-main {
   margin-bottom: -15px;
   width: 210px;
   cursor: pointer;
 }
-.main-page-header .back-to-main:hover {
+.user-account .main-page-header .back-to-main:hover {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-
-.user-order-container {
+.user-account .user-order-container {
   font: 500 1.1rem/1.6 Roboto Condensed, sans-serif;
+  min-height: calc(67vh - 99px);
+  margin-bottom: 89px;
 }
-
-body::-webkit-scrollbar {
+.user-account body::-webkit-scrollbar {
   display: none;
 }
-
-.main-page-footer {
-  position: fixed;
-  bottom: 0;
+.user-account .user-account-page-footer {
+  margin-top: -89px;
+  line-height: 2rem;
+  padding: 20px;
+  width: 100%;
+  background-color: #000000;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font: 400 0.95rem/1.6 Roboto Condensed, sans-serif;
+  z-index: 10;
+}
+.user-account .user-account-page-footer .h5 {
+  display: flex;
+  flex-direction: row;
+  margin-right: 1rem;
+}
+.user-account .user-account-page-footer .h5 h4 {
+  padding-left: 1rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /*# sourceMappingURL=UserAccount.css.map */

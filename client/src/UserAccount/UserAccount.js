@@ -69,7 +69,7 @@ const UserAccount = () => {
 
 
     return (
-        <div>
+        <div className='user-account'>
             <div className="main-page-header">
                 <div className='main-page-logo'>
                     <img style={{transform: 'scale(1.4)'}} src="/logo.png" alt=""/>
@@ -227,7 +227,7 @@ const UserAccount = () => {
                                                     <img width='30px' src={o.product.image} alt={o.product.id} style={{margin: '0 10px'}}/>
                                                     <span>{o.product.name}</span>
                                                     <span>{o.product.id}</span>
-                                                    <span>${o.unitPrice}.00</span>
+                                                    <span>${o.unitPrice}</span>
                                                     <span>{o.quantity}</span>
                                                 </ListItemButton>
                                             </ListItem>
@@ -240,7 +240,7 @@ const UserAccount = () => {
             </div>
 
             {/*============================= below footer ==================================*/}
-            <div className="main-page-footer">
+            <div className="user-account-page-footer">
                 <div className='h5'>
                     <h4>Contact Us</h4>
                     <h4>Private Policy</h4>
