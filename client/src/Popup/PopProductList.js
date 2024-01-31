@@ -19,9 +19,9 @@ const PopProductList = ({c, i}) => {
 
     const handleIncrease = (id, quantity) => {
 
-        if(quantity < (c.totalVolume - 1)){
-            dispatch(increaseQuantity({id}))
-        }
+        // if(quantity < (c.totalVolume - 1)){
+        dispatch(increaseQuantity({id}))
+        // }
         // if(quantity < )
 
     }
@@ -48,11 +48,11 @@ const PopProductList = ({c, i}) => {
                         <p style={{marginBottom: '-5px'}}>Id:<span style={{marginLeft: '3px'}}>{c.id}</span></p>
                     </div>
                     <div className='product-quantity'>
-                        <p style={{fontWeight: 550}}>Quantity</p>
+                        <p style={{fontWeight: 550, marginLeft: 1}}>Quantity</p>
                         <div className='product-quantity-editor'>
-                            <RemoveSharpIcon style={{fontSize: "small"}} onClick={() => handleDecrease(c.id, c.quantity)}/>
+                            <RemoveSharpIcon style={{fontSize: "small", cursor: 'pointer'}} onClick={() => handleDecrease(c.id, c.quantity)}/>
                             <p className='product-quantity-number' style={{fontSize: '14px'}}>{c.quantity}</p>
-                            <AddSharpIcon style={{fontSize: "small"}} onClick={() => handleIncrease(c.id, c.quantity)}/>
+                            <AddSharpIcon style={{fontSize: "small", cursor: 'pointer'}} onClick={() => handleIncrease(c.id, c.quantity)}/>
                         </div>
                     </div>
                     <div className='product-info-ttlPrice'>
